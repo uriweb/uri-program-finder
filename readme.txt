@@ -1,4 +1,4 @@
-=== URI Archive ===
+=== URI Project Finder Tools ===
 
 Contributors: John Pennypacker
 Tags: widgets
