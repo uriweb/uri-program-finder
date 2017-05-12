@@ -10,4 +10,6 @@ Program finder tools and shortcodes
 
 == Description ==
 
+Add [programs-categories] to a page and a form magically appears.
+
 TBD
