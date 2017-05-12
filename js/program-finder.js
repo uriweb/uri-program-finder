@@ -72,6 +72,7 @@
 		
 		//@todo: max is 100, what if there are more programs?
 		url = URIProgramFinder.base + '/wp-json/wp/v2/posts?orderby=title&per_page=100&categories=' + cats.join(',');
+		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category/' + cats.join(',');
 
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send();
@@ -80,13 +81,16 @@
 	function handleResponse(raw) {
 		var data, i, result, entry;
 		data = JSON.parse(raw);
-		console.log(data);
+
 		resultsDiv.innerHTML = '';
 		
 		for(i=0; i<data.length; i++) {
 			result = document.createElement('div');
-			entry = '<h4><a href="' + data[i].link + '">' + data[i].title.rendered + '</a></h4>';
-			//entry += data[i].excerpt.rendered;
+			entry = '<div class="card"><h1>' + data[i].title + '</h1>';
+			entry += '<p>' + data[i].excerpt + '</p>';
+			entry += '<a class="button" href="' + data[i].link + '">Explore</a>';
+			entry += '</div>';
+
 			result.innerHTML = entry
 			resultsDiv.appendChild(result);
 		}

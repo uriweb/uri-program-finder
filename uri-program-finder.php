@@ -37,6 +37,58 @@ add_action( 'wp_enqueue_scripts', 'uri_program_finder_scripts' );
 
 
 /**
+ * Selects posts by category using AND instead of OR
+ *
+ * @param array $data Options for the function.
+ * @return string|null Post title for the latest,  * or null if none.
+ */
+function uri_program_finder_api_callback( $data ) {
+
+	$args = array(
+		'post_type' => 'post',
+		'tax_query' => array(
+			'relation' => 'AND',
+			array(
+				'taxonomy' => 'category',
+				'field'    => 'term_id',
+				'terms'    => explode(',', $data['id']),
+				'operator' => 'AND',
+			),
+		),
+	);
+	$query = new WP_Query( $args );
+	
+	$result = array();
+	// The Loop
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$result[] = array(
+				'title' => get_the_title(),
+				'excerpt' => get_the_excerpt(),
+				'link' => get_permalink(),
+				'image' => ''
+			);
+		}
+		/* Restore original Post Data */
+		wp_reset_postdata();
+	} else {
+		// no posts found
+	}
+
+	return $result;
+
+}
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'uri-programs/v1', '/category/(?P<id>[\d,]+)', array(
+    'methods' => 'GET',
+    'callback' => 'uri_program_finder_api_callback',
+  ) );
+} );
+
+
+/**
  * Shortcode callback -- generates a form, loads a script
  */
 function uri_program_finder_shortcode($attributes, $content, $shortcode) {
