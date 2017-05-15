@@ -1,7 +1,11 @@
+"use strict";
+
 (function(){
 
+	// @todo: this is probably the wrong scope for this variable
 	var resultsDiv;
 	window.addEventListener('load', initFinder, false);
+	
 	
 	/**
 	 * Find program finders and set them up to be awesome.
@@ -12,6 +16,7 @@
 			convertForm(els[i]);			
 		}
 	}
+
 
 	/**
 	 * Convert the exiting non-js form to something a little slicker
