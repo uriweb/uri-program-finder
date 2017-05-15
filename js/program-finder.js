@@ -1,9 +1,11 @@
-"use strict";
-
 (function(){
+
+	'use strict';
 
 	// @todo: this is probably the wrong scope for this variable
 	var resultsDiv;
+	var timers = [];
+	var delay = 50; // set the delay between cards appearing on the page (in milliseconds)
 	window.addEventListener('load', initFinder, false);
 	
 	
@@ -160,6 +162,12 @@
 		xmlhttp.send();
 	}
 	
+	function clearTimeouts() {
+		for(var i in timers) {
+			window.clearTimeout(timers[i]);
+		}
+	}
+
 	
 	/**
 	 * AJAX success callback
@@ -171,12 +179,21 @@
 		data = JSON.parse(raw);
 
 		clearResults();
-		
+		clearTimeouts();
+
 		if(data.length == 0) {
 			noResults();
 		} else {
 			for(i=0; i<data.length; i++) {
-				resultsDiv.appendChild( createResultCard(data[i]) );
+			//	resultsDiv.appendChild( createResultCard(data[i]) );
+
+				(function(arg) {
+					timers.push(window.setTimeout(function() {
+						resultsDiv.appendChild( createResultCard(arg.data) )
+					}, (delay*arg.i)));
+				}({'el': resultsDiv, 'data': data[i], 'i': i}));
+
+
 			}
 		}
 	}
