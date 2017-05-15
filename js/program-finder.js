@@ -40,9 +40,19 @@
 	}
 	
 	function changeListener(el) {
+		clearResults();
+		showLoader();
 		loadPrograms(el);
 	}
 	
+	function clearResults() {
+		resultsDiv.innerHTML = '';
+	}
+
+	function showLoader() {
+		resultsDiv.innerHTML = '<div class="loading"><p>Loading...</p></div>';
+	}
+
 	
 	function loadPrograms(el) {
 		var cats, xmlhttp, url, selects;
@@ -73,7 +83,7 @@
 		
 		//@todo: max is 100, what if there are more programs?
 		url = URIProgramFinder.base + '/wp-json/wp/v2/posts?orderby=title&per_page=100&categories=' + cats.join(',');
-		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category/' + cats.join(',');
+		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category/' + cats.join(',') + '?orderby=title&per_page=100';
 
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send();
@@ -83,17 +93,23 @@
 		var data, i, result, entry;
 		data = JSON.parse(raw);
 
-		resultsDiv.innerHTML = '';
+		clearResults();
 		
 		for(i=0; i<data.length; i++) {
 			result = document.createElement('div');
-			entry = '<div class="card"><h1>' + data[i].title + '</h1>';
+			result.className = 'card';
+			entry = '<h1>' + data[i].title + '</h1>';
 			entry += '<p>' + data[i].excerpt + '</p>';
 			entry += '<a class="button" href="' + data[i].link + '">Explore</a>';
-			entry += '</div>';
 
 			result.innerHTML = entry
 			resultsDiv.appendChild(result);
+		}
+		
+		console.log(data.length);
+		
+		if(data.length == 0) {
+			resultsDiv.innerHTML = '<p class="no-results">No matches found.</p>';
 		}
 		
 	}
