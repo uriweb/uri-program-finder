@@ -3,25 +3,28 @@
 	var resultsDiv;
 	window.addEventListener('load', initFinder, false);
 	
+	/**
+	 * Find program finders and set them up to be awesome.
+	 */
 	function initFinder() {
 		var els = document.querySelectorAll('.program-finder');
 		for(var i=0; i<els.length; i++) {
 			convertForm(els[i]);			
 		}
 	}
-	
+
+	/**
+	 * Convert the exiting non-js form to something a little slicker
+	 * @param obj el the program finder parent element
+	 */
 	function convertForm(el) {
 		var form, els, selects
 		
 		form = document.createElement('form');
 		form.className = 'has-js';
 		el.appendChild(form);
-
-		resultsDiv = document.createElement('div');
-		resultsDiv.id = 'program-results';
-		resultsDiv.className = 'tiles fitted thirds';
-		el.parentNode.insertBefore(resultsDiv, el.nextSibling);
-
+		
+		initResultsDiv(el);
 		
 		els = el.querySelectorAll('.program-finder-nojs');
 		for(var i=0; i<els.length; i++) {
@@ -35,60 +38,101 @@
 				changeListener(el)
 			}, false);
 		}
-
-
 	}
 	
+	/**
+	 * Create the results DIV
+	 * @param obj el the program finder parent element
+	 */
+	function initResultsDiv(el) {
+		resultsDiv = document.createElement('div');
+		resultsDiv.id = 'program-results';
+		resultsDiv.className = 'tiles fitted thirds';
+		el.parentNode.insertBefore(resultsDiv, el.nextSibling);
+	}
+
+	
+	/**
+	 * Listen for change events on the select menus
+	 * @param obj el the program finder parent element
+	 */
 	function changeListener(el) {
 		clearResults();
 		showLoader();
 		loadPrograms(el);
 	}
+
 	
+	/**
+	 * Empty the results div
+	 */
 	function clearResults() {
 		resultsDiv.innerHTML = '';
 	}
 
+
+	/**
+	 * Show the loading DIV
+	 */
 	function showLoader() {
 		resultsDiv.innerHTML = '<div class="loading"><p>Loading...</p></div>';
 	}
 
-	
+	/**
+	 * Load programs from the REST API
+	 * @param obj el the program finder parent element
+	 */
 	function loadPrograms(el) {
-		var cats, xmlhttp, url, selects;
+		var cats, selects, i, url;
 		
 		cats = [];
 
 		selects = el.querySelectorAll('select');
-		for(var i=0; i<selects.length; i++) {
+		for(i=0; i<selects.length; i++) {
 			if(selects[i].value) {
 				cats.push(selects[i].value);
 			}
 		}
+		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category/' + cats.join(',');
+
+		fetchPrograms(url, handleResponse);
+
+	}
+
+
+	/**
+	 * make the AJAX call
+	 * @param url the URL to query
+	 * @param callback function for a successful call
+	 */
+	function fetchPrograms(url, success) {
+		var xmlhttp;
 		
 		xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
 				if (xmlhttp.status == 200) {
-					handleResponse(xmlhttp.responseText);
+					success(xmlhttp.responseText);
 				}
 	// 			else if (xmlhttp.status == 400) {
 	// 				alert('There was an error 400');
 	// 			}
 				else {
-					alert('something else other than 200 was returned');
+					console.log('something else other than 200 was returned');
 				}
 			}
 		};
 		
-		//@todo: max is 100, what if there are more programs?
-		url = URIProgramFinder.base + '/wp-json/wp/v2/posts?orderby=title&per_page=100&categories=' + cats.join(',');
-		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category/' + cats.join(',') + '?orderby=title&per_page=100';
-
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send();
 	}
-
+	
+	
+	/**
+	 * AJAX success callback
+	 * parses the response, puts the data into the results div
+	 * @param str raw the data from the URL (JSON as a string)
+	 */
 	function handleResponse(raw) {
 		var data, i, result, entry;
 		data = JSON.parse(raw);
@@ -105,9 +149,7 @@
 			result.innerHTML = entry
 			resultsDiv.appendChild(result);
 		}
-		
-		console.log(data.length);
-		
+				
 		if(data.length == 0) {
 			resultsDiv.innerHTML = '<p class="no-results">No matches found.</p>';
 		}
