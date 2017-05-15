@@ -19,6 +19,7 @@
 
 		resultsDiv = document.createElement('div');
 		resultsDiv.id = 'program-results';
+		resultsDiv.className = 'tiles fitted';
 		el.parentNode.insertBefore(resultsDiv, el.nextSibling);
 
 		
