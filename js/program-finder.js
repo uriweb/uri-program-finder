@@ -55,7 +55,7 @@
 	function initResultsDiv(el) {
 		resultsDiv = document.createElement('div');
 		resultsDiv.id = 'program-results';
-		resultsDiv.className = 'tiles fitted thirds';
+		resultsDiv.className = 'tiles thirds fitted reveal';
 		el.parentNode.insertBefore(resultsDiv, el.nextSibling);
 	}
 
