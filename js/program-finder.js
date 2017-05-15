@@ -39,7 +39,8 @@
 			}, false);
 		}
 	}
-	
+
+
 	/**
 	 * Create the results DIV
 	 * @param obj el the program finder parent element
@@ -49,17 +50,6 @@
 		resultsDiv.id = 'program-results';
 		resultsDiv.className = 'tiles fitted thirds';
 		el.parentNode.insertBefore(resultsDiv, el.nextSibling);
-	}
-
-	
-	/**
-	 * Listen for change events on the select menus
-	 * @param obj el the program finder parent element
-	 */
-	function changeListener(el) {
-		clearResults();
-		showLoader();
-		loadPrograms(el);
 	}
 
 	
@@ -78,6 +68,45 @@
 		resultsDiv.innerHTML = '<div class="loading"><p>Loading...</p></div>';
 	}
 
+
+	/**
+	 * Show the no results DIV
+	 */
+	function noResults() {
+		resultsDiv.innerHTML = '<p class="no-results">No matches found.</p>';
+	}
+			
+
+	/**
+	 * Create a result row's HTML
+	 * @param obj data
+	 * @return obj HTML element
+	 */
+	function createResultCard(data) {
+		var result;
+
+		result = document.createElement('div');
+		result.className = 'card';
+		
+		result.innerHTML = '<h1>' + data.title + '</h1>';
+		result.innerHTML += '<p>' + data.excerpt + '</p>';
+		result.innerHTML += '<a class="button" href="' + data.link + '">Explore</a>';
+		
+		return result;
+	}
+
+
+	/**
+	 * Listen for change events on the select menus
+	 * @param obj el the program finder parent element
+	 */
+	function changeListener(el) {
+		clearResults();
+		showLoader();
+		loadPrograms(el);
+	}
+
+	
 	/**
 	 * Load programs from the REST API
 	 * @param obj el the program finder parent element
@@ -95,8 +124,7 @@
 		}
 		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category/' + cats.join(',');
 
-		fetchPrograms(url, handleResponse);
-
+		fetch(url, handleResponse);
 	}
 
 
@@ -105,7 +133,7 @@
 	 * @param url the URL to query
 	 * @param callback function for a successful call
 	 */
-	function fetchPrograms(url, success) {
+	function fetch(url, success) {
 		var xmlhttp;
 		
 		xmlhttp = new XMLHttpRequest();
@@ -134,26 +162,18 @@
 	 * @param str raw the data from the URL (JSON as a string)
 	 */
 	function handleResponse(raw) {
-		var data, i, result, entry;
+		var data, i;
 		data = JSON.parse(raw);
 
 		clearResults();
 		
-		for(i=0; i<data.length; i++) {
-			result = document.createElement('div');
-			result.className = 'card';
-			entry = '<h1>' + data[i].title + '</h1>';
-			entry += '<p>' + data[i].excerpt + '</p>';
-			entry += '<a class="button" href="' + data[i].link + '">Explore</a>';
-
-			result.innerHTML = entry
-			resultsDiv.appendChild(result);
-		}
-				
 		if(data.length == 0) {
-			resultsDiv.innerHTML = '<p class="no-results">No matches found.</p>';
+			noResults();
+		} else {
+			for(i=0; i<data.length; i++) {
+				resultsDiv.appendChild( createResultCard(data[i]) );
+			}
 		}
-		
 	}
 	
 })();
