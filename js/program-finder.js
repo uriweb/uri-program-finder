@@ -5,6 +5,7 @@
 	// @todo: this is probably the wrong scope for this variable
 	var resultsDiv, statusDiv;
 	var timers = [];
+    var cache = [];
 	var delay = 50; // set the delay between cards appearing on the page (in milliseconds)
 	window.addEventListener('load', initFinder, false);
 	
@@ -149,7 +150,7 @@
 	 * @param obj el the program finder parent element
 	 */
 	function changeListener(el) {
-		clearResults();
+		// clearResults();
 		showLoader();
 		loadPrograms(el);
 	}
@@ -208,6 +209,8 @@
 			window.clearTimeout(timers[i]);
 		}
 	}
+    
+    
 
 	
 	/**
@@ -218,26 +221,53 @@
 	function handleResponse(raw) {
 		var data, i, s;
 		data = JSON.parse(raw);
-
-		clearResults();
+                
+        var ids = [];
+        for (i in data) {
+            ids.push(data[i]['id']);
+        }
+        
+        //console.log(cache);
+        //console.log(ids);
+        
+        var idsToRemove = [];
+        for (i=0; i<cache.length; i++) {
+            if ( ids.indexOf(cache[i]) == -1 ) idsToRemove.push(cache[i]);
+        }
+            
+        var idsToAdd = [];
+        for (i=0; i<ids.length; i++) {
+            if ( cache.indexOf(ids[i]) == -1 ) idsToAdd.push(ids[i]);
+        }
+            
+        //console.log(idsToRemove);
+        //console.log(idsToAdd);
+    
 		clearStatus();
 		clearTimeouts();
-
-		if(data.length == 0) {
+        
+        if(data.length == 0) {
+            clearResults();
 			noResults();
 		} else {
-			s = (data.length != 1) ? 'programs' : 'progam';
+            s = (data.length != 1) ? 'programs' : 'progam';
 			setStatus( '<p class="program-count">' + data.length + ' matching ' + s + '.</p>' );
-			for(i=0; i<data.length; i++) {
-				(function(arg) {
-					timers.push(window.setTimeout(function() {
-						resultsDiv.appendChild( createResultCard(arg.data) );
-					}, (delay*arg.i)));
-				}({'el': resultsDiv, 'data': data[i], 'i': i}));
-
-
-			}
-		}
+            for(i=0; i<idsToRemove.length; i++) {
+                jQuery('#program-results').find('[data-id="'+idsToRemove[i]+'"]').remove();
+            }
+            for(i=0; i<data.length; i++) {
+                if (idsToAdd.indexOf(data[i]['id']) != -1) {
+                    (function(arg) {
+                        timers.push(window.setTimeout(function() {
+                            resultsDiv.appendChild( createResultCard(arg.data) );
+                        }, (delay*arg.i)));
+                    }({'el': resultsDiv, 'data': data[i], 'i': i}));
+                }
+            }
+        } 
+        
+        cache = ids;
+        
 	}
 	
 })();
