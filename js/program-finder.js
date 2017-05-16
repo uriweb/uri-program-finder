@@ -1,4 +1,4 @@
-(function(){
+(function($){
 
 	'use strict';
 
@@ -253,7 +253,7 @@
             s = (data.length != 1) ? 'programs' : 'progam';
 			setStatus( '<p class="program-count">' + data.length + ' matching ' + s + '.</p>' );
             for(i=0; i<idsToRemove.length; i++) {
-                jQuery('#program-results').find('[data-id="'+idsToRemove[i]+'"]').remove();
+                $('#program-results').find('[data-id="'+idsToRemove[i]+'"]').remove();
             }
             for(i=0; i<data.length; i++) {
                 if (idsToAdd.indexOf(data[i]['id']) != -1) {
@@ -270,4 +270,4 @@
         
 	}
 	
-})();
+})(jQuery);

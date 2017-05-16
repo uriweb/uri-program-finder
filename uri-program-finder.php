@@ -46,6 +46,8 @@ function uri_program_finder_api_callback( $data ) {
 
 	$args = array(
 		'post_type' => 'post',
+		'orderby' => 'title',
+		'order' => 'ASC',
 		'nopaging' => TRUE,
 		'tax_query' => array(
 			'relation' => 'AND',
