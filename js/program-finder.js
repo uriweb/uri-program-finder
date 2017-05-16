@@ -3,7 +3,7 @@
 	'use strict';
 
 	// @todo: this is probably the wrong scope for this variable
-	var resultsDiv;
+	var resultsDiv, statusDiv;
 	var timers = [];
 	var delay = 50; // set the delay between cards appearing on the page (in milliseconds)
 	window.addEventListener('load', initFinder, false);
@@ -32,6 +32,7 @@
 		el.appendChild(form);
 		
 		initResultsDiv(el);
+		initStatusDiv(el);
 		
 		els = el.querySelectorAll('.program-finder-nojs');
 		for(var i=0; i<els.length; i++) {
@@ -47,6 +48,16 @@
 		}
 	}
 
+
+	/**
+	 * Create the status DIV
+	 * @param obj el the program finder parent element
+	 */
+	function initStatusDiv(el) {
+		statusDiv = document.createElement('div');
+		statusDiv.id = 'program-status';
+		el.parentNode.insertBefore(statusDiv, el.nextSibling);
+	}
 
 	/**
 	 * Create the results DIV
@@ -67,20 +78,34 @@
 		resultsDiv.innerHTML = '';
 	}
 
-
 	/**
 	 * Show the loading DIV
 	 */
 	function showLoader() {
-		resultsDiv.innerHTML = '<div class="loading"><p>Loading...</p></div>';
+		setStatus( '<div class="loading"><p>Loading...</p></div>' );
 	}
-
+	
+	/**
+	 * Set the status div
+	 */
+	function setStatus(html) {
+		console.log(html);
+		statusDiv.innerHTML = html;
+	}
+	
+	/**
+	 * Clear the status div
+	 */
+	function clearStatus() {
+		console.log('clear status');
+		statusDiv.innerHTML = '';
+	}
 
 	/**
 	 * Show the no results DIV
 	 */
 	function noResults() {
-		resultsDiv.innerHTML = '<p class="no-results">No matches found.</p>';
+		setStatus( '<p class="no-results">No matches found.</p>' );
 	}
 			
 
@@ -93,13 +118,29 @@
 		var result;
 
 		result = document.createElement('div');
-		result.className = 'card';
+		result.setAttribute('class', 'card');
+		//result.setAttribute('data-href', data.link);
+		result.setAttribute('data-id', data.id);
 		
 		result.innerHTML = '<h1>' + data.title + '</h1>';
 		result.innerHTML += '<p>' + data.excerpt + '</p>';
 		result.innerHTML += '<a class="button" href="' + data.link + '">Explore</a>';
 		
 		return result;
+	}
+
+
+	/**
+	 * Remove a result row HTML (card)
+	 * @param str url
+	 */
+	function removeResultCard(url) {
+		var els, i;
+		els = document.querySelectorAll('.card[data-href="' + url + '"]');
+		
+		for(i=0; i<els.length; i++) {
+			els[i].parentNode.removeChild(els[i]);
+		}
 	}
 
 
@@ -175,21 +216,22 @@
 	 * @param str raw the data from the URL (JSON as a string)
 	 */
 	function handleResponse(raw) {
-		var data, i;
+		var data, i, s;
 		data = JSON.parse(raw);
 
 		clearResults();
+		clearStatus();
 		clearTimeouts();
 
 		if(data.length == 0) {
 			noResults();
 		} else {
+			s = (data.length != 1) ? 'programs' : 'progam';
+			setStatus( '<p class="program-count">' + data.length + ' matching ' + s + '.</p>' );
 			for(i=0; i<data.length; i++) {
-			//	resultsDiv.appendChild( createResultCard(data[i]) );
-
 				(function(arg) {
 					timers.push(window.setTimeout(function() {
-						resultsDiv.appendChild( createResultCard(arg.data) )
+						resultsDiv.appendChild( createResultCard(arg.data) );
 					}, (delay*arg.i)));
 				}({'el': resultsDiv, 'data': data[i], 'i': i}));
 

@@ -65,6 +65,7 @@ function uri_program_finder_api_callback( $data ) {
 		while ( $query->have_posts() ) {
 			$query->the_post();
 			$result[] = array(
+				'id' => get_the_ID(),
 				'title' => get_the_title(),
 				'excerpt' => get_the_excerpt(),
 				'link' => get_permalink(),
