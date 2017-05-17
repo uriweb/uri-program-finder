@@ -42,10 +42,11 @@
 		selects = el.querySelectorAll('select');
 		for(var i=0; i<selects.length; i++) {
 			form.appendChild(selects[i]);
-			selects[i].addEventListener('change', function() {
-				changeListener(el)
-			}, false);
+			$(selects[i]).chosen().change( function() {
+                changeListener(el);
+            });
 		}
+
 	}
 
 
@@ -194,9 +195,11 @@
 				if (xmlhttp.status == 200) {
 					success(xmlhttp.responseText);
 				}
-	// 			else if (xmlhttp.status == 400) {
-	// 				alert('There was an error 400');
-	// 			}
+	 			else if (xmlhttp.status == 404) {
+	 				alert('There was an error 404');
+                    clearStatus();
+                    clearResults();
+	 			}
 				else {
 					console.log('something else other than 200 was returned');
 				}

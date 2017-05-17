@@ -20,21 +20,35 @@ if ( !defined('ABSPATH') )
  * Loads up the javascript
  */
 function uri_program_finder_scripts() {
-	$handle = 'uri-program-finder';
-	// Register the script like this for a plugin:
-	wp_register_script( $handle, plugins_url( '/js/program-finder.js', __FILE__ ) );
-
-	$values = array(
+    $values = array(
 		'base' => get_site_url()
 	);
-	wp_localize_script( $handle, 'URIProgramFinder', $values );
+    
+	$plugin_handle = 'uri-program-finder';
+	// Register the script like this for a plugin:
+	wp_register_script( $plugin_handle, plugins_url( '/js/program-finder.js', __FILE__ ) );
+	wp_localize_script( $plugin_handle, 'URIProgramFinder', $values );
+    
+    $chosen_handle = 'uri-program-finder-chosen-js';
+    wp_register_script( $chosen_handle, plugins_url( '/chosen/chosen.jquery.min.js', __FILE__ ) );
+	wp_localize_script( $chosen_handle, 'URIProgramFinderChosenJS', $values );
 	
 	// For either a plugin or a theme, you can then enqueue the script:
-	wp_enqueue_script( $handle );
+	wp_enqueue_script( $plugin_handle );
+    wp_enqueue_script( $chosen_handle );
 }
-add_action( 'wp_enqueue_scripts', 'uri_program_finder_scripts' );
 
 
+/**
+ * Loads up the css
+ */
+function uri_program_finder_styles() {
+    wp_register_style( 'uri-program-finder-chosen-css', plugins_url( '/chosen/chosen.min.css', __FILE__ ) );
+    wp_register_style( 'uri-program-finder-chosen-css-customize', plugins_url( '/css/chosen.customize.css', __FILE__ ) );
+    
+    wp_enqueue_style( 'uri-program-finder-chosen-css' );
+    wp_enqueue_style( 'uri-program-finder-chosen-css-customize' );
+}
 
 /**
  * Selects posts by category using AND instead of OR
@@ -98,6 +112,7 @@ add_action( 'rest_api_init', function () {
 function uri_program_finder_shortcode($attributes, $content, $shortcode) {
 
 	uri_program_finder_scripts();
+    uri_program_finder_styles();
 	// normalize attribute keys, lowercase
 	$attributes = array_change_key_case((array)$attributes, CASE_LOWER);
 	
