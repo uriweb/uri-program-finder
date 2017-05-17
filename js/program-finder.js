@@ -183,6 +183,7 @@
 	 * make the AJAX call
 	 * @param url the URL to query
 	 * @param callback function for a successful call
+     * @todo: this doesn't seem to be catching 404 errors
 	 */
 	function fetch(url, success) {
 		var xmlhttp;
@@ -212,10 +213,14 @@
 		}
 	}
     
-    function getCurrentIds() {
-        if ($('#program-results .card').length) {
+    /**
+     * Cache a list of post ids from cards currently on the page
+     * @param obj cards the array of existing cards
+     */
+    function buildCache(cards) {
+        if (cards.length) {
             var idarray = [];
-            $('#program-results .card').each(function(){
+            cards.each(function(){
                 idarray.push($(this).data('id'));
             });
             return idarray;
@@ -245,7 +250,10 @@
             s = (data.length != 1) ? 'programs' : 'progam';
 			setStatus('results', data.length + ' matching ' + s + '.' );
             
-            var cache = getCurrentIds();
+            var existingCards = $('#program-results .card'),
+                cache = buildCache(existingCards);
+            
+            console.log(existingCards);
             
             // If the cache has items, figure out what stays/goes
             if (cache.length) {
@@ -256,7 +264,7 @@
                 }
                 
                 // Remove existing cards that aren't in the new results
-                $('#program-results .card').each(function(){
+                existingCards.each(function(){
                     if ( ids.indexOf( $(this).data('id') ) == -1 ) {
                         $(this).remove();
                     }
@@ -264,34 +272,32 @@
                 
                 // Loop through new result ids, check for dups, and add cards accordingly
                 var refCard;
-                for (i=0; i<ids.length; i++) {
-                    refCard = $('#program-results .card').eq(i);
-                    if ( refCard.length ) {
-                        if ( ids[i] != refCard.data('id') ) {
-                            refCard.before( createResultCard(data[i]) );
-                        }
-                    } else {
-                        resultsDiv.appendChild( createResultCard(data[i]) );
-                    }
+                for (i=0; i<data.length; i++) {
+                    (function(arg) {
+                        timers.push(window.setTimeout(function() {
+                            refCard = $('#program-results .card').eq(arg.i);
+                            if ( refCard.length ) {
+                                if ( arg.data['id'] != refCard.data('id') ) {
+                                    refCard.before( createResultCard(arg.data) );
+                                }
+                            } else {
+                                resultsDiv.appendChild( createResultCard(arg.data) );
+                            }
+                        }, (delay*arg.i)));
+                    }({'data': data[i], 'i': i}));
                 }
             
             // Else there's nothing in the cache, add them all
             } else { 
                 for(i=0; i<data.length; i++) {
-                    resultsDiv.appendChild( createResultCard(data[i]) );
+                    (function(arg) {
+                        timers.push(window.setTimeout(function() {
+                            resultsDiv.appendChild( createResultCard(arg.data) );
+                        }, (delay*arg.i)));
+                    }({'data': data[i], 'i': i}));
                 }
             }
-            
-            /* Add with animation
-            for(i=0; i<data.length; i++) {
-                (function(arg) {
-                    timers.push(window.setTimeout(function() {
-                        resultsDiv.appendChild( createResultCard(arg.data) );
-                    }, (delay*arg.i)));
-                }({'el': resultsDiv, 'data': data[i], 'i': i}));
-            }
-            
-            */
+
         }
                 
 	}
