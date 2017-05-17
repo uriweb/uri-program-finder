@@ -4,8 +4,10 @@ Plugin Name: URI Program Finder
 Plugin URI: http://www.uri.edu
 Description: Program finder tools
 Version: 1.0
-Author: John Pennypacker
+Author: URI Web Communications
 Author URI: 
+@author: John Pennypacker <jpennypacker@uri.edu>
+@author: Brandon Fuller <bjcfuller@uri.edu>
 */
 
 // Block direct requests
