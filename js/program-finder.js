@@ -5,7 +5,6 @@
 	// @todo: this is probably the wrong scope for this variable
 	var resultsDiv, statusDiv;
 	var timers = [];
-    var cache = [];
 	var delay = 50; // set the delay between cards appearing on the page (in milliseconds)
 	window.addEventListener('load', initFinder, false);
 	
@@ -78,37 +77,41 @@
 	function clearResults() {
 		resultsDiv.innerHTML = '';
 	}
+    
+    /**
+	 * Set the status div
+     * @param str cl the class name(s) to set for the status div
+     * @param str html the html for the status div
+	 */
+	function setStatus(cl,html) {
+		//console.log(html);
+        statusDiv.className = cl;
+		statusDiv.innerHTML = html;
+	}
 
 	/**
 	 * Show the loading DIV
 	 */
 	function showLoader() {
-		setStatus( '<div class="loading"><p>Loading...</p></div>' );
+		setStatus('loading','Loading...');
 	}
-	
-	/**
-	 * Set the status div
+    
+    /**
+	 * Show the no results DIV
 	 */
-	function setStatus(html) {
-		console.log(html);
-		statusDiv.innerHTML = html;
+	function noResults() {
+		setStatus('empty','No matches found.');
 	}
 	
 	/**
 	 * Clear the status div
 	 */
 	function clearStatus() {
-		console.log('clear status');
+		//console.log('clear status');
+        statusDiv.className = '';
 		statusDiv.innerHTML = '';
 	}
-
-	/**
-	 * Show the no results DIV
-	 */
-	function noResults() {
-		setStatus( '<p class="no-results">No matches found.</p>' );
-	}
-			
+    
 
 	/**
 	 * Create a result row's HTML
@@ -150,7 +153,6 @@
 	 * @param obj el the program finder parent element
 	 */
 	function changeListener(el) {
-		// clearResults();
 		showLoader();
 		loadPrograms(el);
 	}
@@ -210,8 +212,18 @@
 		}
 	}
     
+    function getCurrentIds() {
+        if ($('#program-results .card').length) {
+            var idarray = [];
+            $('#program-results .card').each(function(){
+                idarray.push($(this).data('id'));
+            });
+            return idarray;
+        } else {
+            return [];
+        }
+    }
     
-
 	
 	/**
 	 * AJAX success callback
@@ -219,55 +231,69 @@
 	 * @param str raw the data from the URL (JSON as a string)
 	 */
 	function handleResponse(raw) {
-		var data, i, s;
-		data = JSON.parse(raw);
-                
-        var ids = [];
-        for (i in data) {
-            ids.push(data[i]['id']);
-        }
-        
-        //console.log(cache);
-        //console.log(ids);
-        
-        var idsToRemove = [];
-        for (i=0; i<cache.length; i++) {
-            if ( ids.indexOf(cache[i]) == -1 ) idsToRemove.push(cache[i]);
-        }
-            
-        var idsToAdd = [];
-        for (i=0; i<ids.length; i++) {
-            if ( cache.indexOf(ids[i]) == -1 ) idsToAdd.push(ids[i]);
-        }
-            
-        //console.log(idsToRemove);
-        //console.log(idsToAdd);
-    
-		clearStatus();
+		var data = JSON.parse(raw),
+            i,s;
+         
 		clearTimeouts();
         
         if(data.length == 0) {
             clearResults();
 			noResults();
 		} else {
+            
+            // Set the status
             s = (data.length != 1) ? 'programs' : 'progam';
-			setStatus( '<p class="program-count">' + data.length + ' matching ' + s + '.</p>' );
-            for(i=0; i<idsToRemove.length; i++) {
-                $('#program-results').find('[data-id="'+idsToRemove[i]+'"]').remove();
-            }
-            for(i=0; i<data.length; i++) {
-                if (idsToAdd.indexOf(data[i]['id']) != -1) {
-                    (function(arg) {
-                        timers.push(window.setTimeout(function() {
-                            resultsDiv.appendChild( createResultCard(arg.data) );
-                        }, (delay*arg.i)));
-                    }({'el': resultsDiv, 'data': data[i], 'i': i}));
+			setStatus('results', data.length + ' matching ' + s + '.' );
+            
+            var cache = getCurrentIds();
+            
+            // If the cache has items, figure out what stays/goes
+            if (cache.length) {
+                
+                var ids = [];
+                for (i in data) {
+                    ids.push(data[i]['id']);
+                }
+                
+                // Remove existing cards that aren't in the new results
+                $('#program-results .card').each(function(){
+                    if ( ids.indexOf( $(this).data('id') ) == -1 ) {
+                        $(this).remove();
+                    }
+                });
+                
+                // Loop through new result ids, check for dups, and add cards accordingly
+                var refCard;
+                for (i=0; i<ids.length; i++) {
+                    refCard = $('#program-results .card').eq(i);
+                    if ( refCard.length ) {
+                        if ( ids[i] != refCard.data('id') ) {
+                            refCard.before( createResultCard(data[i]) );
+                        }
+                    } else {
+                        resultsDiv.appendChild( createResultCard(data[i]) );
+                    }
+                }
+            
+            // Else there's nothing in the cache, add them all
+            } else { 
+                for(i=0; i<data.length; i++) {
+                    resultsDiv.appendChild( createResultCard(data[i]) );
                 }
             }
-        } 
-        
-        cache = ids;
-        
+            
+            /* Add with animation
+            for(i=0; i<data.length; i++) {
+                (function(arg) {
+                    timers.push(window.setTimeout(function() {
+                        resultsDiv.appendChild( createResultCard(arg.data) );
+                    }, (delay*arg.i)));
+                }({'el': resultsDiv, 'data': data[i], 'i': i}));
+            }
+            
+            */
+        }
+                
 	}
 	
 })(jQuery);
