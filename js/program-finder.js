@@ -120,16 +120,47 @@
 	 * @return obj HTML element
 	 */
 	function createResultCard(data) {
-		var result;
-
+		var result, i;
+        
 		result = document.createElement('a');
 		result.setAttribute('class', 'card');
         result.setAttribute('href', data.link);
 		//result.setAttribute('data-href', data.link);
 		result.setAttribute('data-id', data.id);
 		
+        var badge, 
+            badgeHtml = '';
+        for (i=0; i<data.program_types.length; i++) {
+            switch(data.program_types[i]['term_id']) {
+                case 19:
+                    badge = ['bs',"Bachelor's"];
+                    break;
+                case 30:
+                    badge = ['phd','Ph.D.'];
+                    break;
+                case 34:
+                    badge = ['cert','Certificate'];
+                    break;
+                case 38:
+                    badge = ['ma',"Master's"];
+                    break;
+                case 39:
+                    badge = ['ms',"Master's"];
+                    break;
+                case 40:
+                    badge = ['pro','Professional'];
+                    break;
+                defaut:
+                    badge = false;
+            }
+            if (badge !== false) {
+                badgeHtml += '<li class="' + badge[0] + '">' + badge[1] + '</li>';
+            }
+        }
+        
+        result.innerHTML = data.image;
+        result.innerHTML += '<ul class="badges">' + badgeHtml + '</ul>';
 		result.innerHTML += '<h1>' + data.title + '</h1>';
-		//result.innerHTML += '<p>' + data.excerpt + '</p>';
 		result.innerHTML += '<span class="button">Explore</span>';
                                 
 		return result;
@@ -242,7 +273,9 @@
 	 */
 	function handleResponse(raw) {
 		var data = JSON.parse(raw),
-            i,s;
+            i,s,t;
+        
+        console.log(data);
          
 		clearTimeouts();
         
@@ -252,14 +285,13 @@
 		} else {
             
             // Set the status
-            s = (data.length != 1) ? 'programs' : 'progam';
-			setStatus('results', data.length + ' matching ' + s + '.' );
+            s = (data.length != 1) ? 'these' : 'this';
+            t = (data.length != 1) ? 'programs' : 'progam';
+			setStatus('results', "Y'all's needs to check out " + s + ' ' + data.length + ' ' + t + '!' );
             
             var existingCards = $('#program-results .card'),
                 cache = buildCache(existingCards);
-            
-            console.log(existingCards);
-            
+                    
             // If the cache has items, figure out what stays/goes
             if (cache.length) {
                 
