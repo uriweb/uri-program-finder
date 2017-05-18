@@ -17,20 +17,22 @@
     height: 30px;
     line-height: 30px;
     border: 1px solid #ddd;
+    font-weight: 600;
 }
 
 .chosen-container-single.chosen-with-drop .chosen-single {
     background-image: none !important;
     box-shadow: none;
+    border-bottom: none;
 }
 
 .chosen-drop {
     box-shadow: 0 10px 20px rgba(0,0,0,.1) !important;
+    overflow: hidden;
 }
 
 .chosen-search-input {
     border: none !important;
-    border-bottom: 1px solid #ddd !important;
     background-color: #f3f3f3 !important;
     padding: 5px 20px 5px 6px !important;
 }
