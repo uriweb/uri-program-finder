@@ -122,15 +122,16 @@
 	function createResultCard(data) {
 		var result;
 
-		result = document.createElement('div');
+		result = document.createElement('a');
 		result.setAttribute('class', 'card');
+        result.setAttribute('href', data.link);
 		//result.setAttribute('data-href', data.link);
 		result.setAttribute('data-id', data.id);
 		
-		result.innerHTML = '<h1>' + data.title + '</h1>';
-		result.innerHTML += '<p>' + data.excerpt + '</p>';
-		result.innerHTML += '<a class="button" href="' + data.link + '">Explore</a>';
-		
+		result.innerHTML += '<h1>' + data.title + '</h1>';
+		//result.innerHTML += '<p>' + data.excerpt + '</p>';
+		result.innerHTML += '<span class="button">Explore</span>';
+                                
 		return result;
 	}
 
@@ -196,8 +197,9 @@
 					success(xmlhttp.responseText);
 				}
 	 			else if (xmlhttp.status == 404) {
-	 				alert('There was an error 404');
-                    clearStatus();
+	 				//alert('There was an error 404');
+                    console.log('error 404 was returned');
+                    setStatus('error','There was an error retrieving results.');
                     clearResults();
 	 			}
 				else {
