@@ -82,19 +82,24 @@ function uri_program_finder_api_callback( $data ) {
 	if ( $query->have_posts() ) {
 		while ( $query->have_posts() ) {
 			$query->the_post();
+
 			$result[] = array(
 				'id' => get_the_ID(),
 				'title' => get_the_title(),
 				'excerpt' => get_the_excerpt(),
 				'link' => get_permalink(),
-				'image' => ''
+				'categories' => uri_program_finder_get_post_categories( get_the_ID() ),
+				'image' => get_the_post_thumbnail() // accepts image size as argument
 			);
 		}
+		
 		/* Restore original Post Data */
 		wp_reset_postdata();
 	} else {
 		// no posts found
 	}
+
+	print_r($result);
 
 	return $result;
 
@@ -106,6 +111,67 @@ add_action( 'rest_api_init', function () {
     'callback' => 'uri_program_finder_api_callback',
   ) );
 } );
+
+
+/**
+ * Get the program type parent category id
+ */
+function uri_program_finder_get_program_category_id() {
+	// I don't like this function... it's not efficient, it should only run once, 
+	// but it runs once for each program, and that's no good.  
+	// so let's cheat.
+	return 14;
+	
+	// @todo: make this function efficient
+	
+	static $parent;
+	$parent = FALSE;
+	
+	if($parent !== FALSE) {
+		return $parent;
+	}
+	
+	// get top-level categories
+	$categories = uri_program_finder_get_children(0);
+	
+	foreach($categories as $c) {
+		if($c['name'] == 'Program Type') {
+			print_r($c);
+			$parent = $c['id'];
+		}
+	}
+
+	print_r($parent);
+
+	return $parent;
+
+}
+
+/**
+ * Get the program type categories for a given post
+ * @param int $id is the post id
+ */
+function uri_program_finder_get_post_categories($id) {
+
+	$args = array(
+		'parent' => uri_program_finder_get_program_category_id()
+	);
+	$cats = wp_get_post_categories(get_the_ID(), $args);
+	$categories = array();
+	foreach($cats as $c) {
+		$cat = get_term($c);
+		$categories[] = array(
+			'term_id' => $cat->term_id,
+			'name' => $cat->name,
+			'description' => $cat->description,
+			'slug' => $cat->slug
+		);
+	}
+	
+	return $categories;
+
+}
+
 
 
 /**
