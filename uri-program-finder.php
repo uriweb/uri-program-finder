@@ -88,7 +88,7 @@ function uri_program_finder_api_callback( $data ) {
 				'title' => get_the_title(),
 				'excerpt' => get_the_excerpt(),
 				'link' => get_permalink(),
-				'categories' => uri_program_finder_get_post_categories( get_the_ID() ),
+				'program_types' => uri_program_finder_get_post_categories( get_the_ID() ),
 				'image' => get_the_post_thumbnail() // accepts image size as argument
 			);
 		}
@@ -98,8 +98,6 @@ function uri_program_finder_api_callback( $data ) {
 	} else {
 		// no posts found
 	}
-
-	print_r($result);
 
 	return $result;
 
