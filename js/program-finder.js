@@ -5,6 +5,7 @@
 	// @todo: this is probably the wrong scope for this variable
 	var resultsDiv, statusDiv;
 	var timers = [];
+	var searchTimer; // used to put a delay on keyup to slow down search requests
 	var delay = 50; // set the delay between cards appearing on the page (in milliseconds)
 	window.addEventListener('load', initFinder, false);
 	
@@ -25,7 +26,7 @@
 	 * @param obj el the program finder parent element
 	 */
 	function convertForm(el) {
-		var form, els, selects
+		var form, els, selects, textSearch;
 		
 		form = document.createElement('form');
 		form.className = 'has-js';
@@ -39,13 +40,21 @@
 			els[i].style.display = 'none';
 		}
 		
+		textSearch = el.querySelectorAll('input[name="s"]');
+		$(textSearch[0]).on('keyup', function() {
+			textSearchListener(el, this);
+		});
+		form.appendChild(textSearch[0]);
+
 		selects = el.querySelectorAll('select');
 		for(var i=0; i<selects.length; i++) {
 			form.appendChild(selects[i]);
-			$(selects[i]).chosen().change( function() {
-                changeListener(el);
-            });
+			$(selects[i]).chosen().on( 'change', function() {
+				changeListener(el);
+			});
 		}
+
+		
 
 	}
 
@@ -190,13 +199,28 @@
 		loadPrograms(el);
 	}
 
+	/**
+	 * Listen for change events on the select menus
+	 * @param obj el the program finder parent element
+	 */
+	function textSearchListener(el, s) {
+		window.clearTimeout(searchTimer);
+
+		searchTimer = window.setTimeout(function() {
+			console.log(s.value);
+			showLoader();
+			loadPrograms(el);
+		}, 200);
+
+	}
+
 	
 	/**
 	 * Load programs from the REST API
 	 * @param obj el the program finder parent element
 	 */
 	function loadPrograms(el) {
-		var cats, selects, i, url;
+		var cats, selects, i, url, textSearch;
 		
 		cats = [];
 
@@ -206,7 +230,12 @@
 				cats.push(selects[i].value);
 			}
 		}
-		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category/' + cats.join(',');
+		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category?ids=' + cats.join(',');
+		
+		textSearch = el.querySelectorAll('input[name="s"]');
+		if(textSearch[0].value) {
+			url += '&s=' + textSearch[0].value;
+		}		
 
 		fetch(url, handleResponse);
 	}
@@ -229,9 +258,9 @@
 				}
 	 			else if (xmlhttp.status == 404) {
 	 				//alert('There was an error 404');
-                    console.log('error 404 was returned');
-                    setStatus('error','There was an error retrieving results.');
-                    clearResults();
+					console.log('error 404 was returned');
+					setStatus('error', 'There was an error retrieving results.');
+					clearResults();
 	 			}
 				else {
 					console.log('something else other than 200 was returned');
@@ -239,7 +268,7 @@
 			}
 		};
 		
-		xmlhttp.open("GET", url, true);
+		xmlhttp.open('GET', url, true);
 		xmlhttp.send();
 	}
 	

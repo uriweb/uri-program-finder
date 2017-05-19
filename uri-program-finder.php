@@ -13,7 +13,10 @@ Author URI:
 // Block direct requests
 if ( !defined('ABSPATH') )
 	die('-1');
-	
+
+
+include( plugin_dir_path( __FILE__ ) . 'inc/uri-program-finder-api.php');
+
 // This URL pull multiple categories (need to remove page title):
 // https://www.uri.edu/programs/?cat=24,26
 
@@ -52,79 +55,12 @@ function uri_program_finder_styles() {
     wp_enqueue_style( 'uri-program-finder-chosen-css-customize' );
 }
 
-/**
- * Selects posts by category using AND instead of OR
- *
- * @param array $data Options for the function.
- * @return string|null Post title for the latest,  * or null if none.
- */
-function uri_program_finder_api_callback( $data ) {
-
-	$search = ( isset ( $data['search'] ) ) ? sanitize_title ( $data['search'] ) : '';
-
-	$args = array(
-		'post_type' => 'post',
-		's' => $search,
-		'orderby' => 'title',
-		'order' => 'ASC',
-		'nopaging' => TRUE,
-		'tax_query' => array(
-			'relation' => 'AND',
-			array(
-				'taxonomy' => 'category',
-				'field'    => 'term_id',
-				'terms'    => explode(',', $data['id']),
-				'operator' => 'AND',
-			),
-		),
-	);
-	$query = new WP_Query( $args );
-		
-	$result = array();
-	// The Loop
-	if ( $query->have_posts() ) {
-		while ( $query->have_posts() ) {
-			$query->the_post();
-
-			$result[] = array(
-				'id' => get_the_ID(),
-				'title' => get_the_title(),
-				'excerpt' => get_the_excerpt(),
-				'link' => get_permalink(),
-				'program_types' => uri_program_finder_get_post_categories( get_the_ID() ),
-				'image' => get_the_post_thumbnail() // accepts image size as argument
-			);
-		}
-		
-		/* Restore original Post Data */
-		wp_reset_postdata();
-	} else {
-		// no posts found
-	}
-
-	return $result;
-
-}
-
-/**
- * Register the URL for the custom API calls
- */
-function uri_program_finder_register_api() {
-	// accept category IDs and allow commas to delinieate multiple integers
-  register_rest_route( 'uri-programs/v1', '/category/(?P<id>[\d,]+)', array(
-    'methods' => 'GET',
-    'callback' => 'uri_program_finder_api_callback',
-  ) );
-
-}
-add_action( 'rest_api_init', 'uri_program_finder_register_api' );
-
-
 
 /**
  * Get the program type parent category id
+ * @param str the name of the category
  */
-function uri_program_finder_get_program_category_id() {
+function uri_program_finder_get_program_category_id( $needle='Program Type' ) {
 	// I don't like this function... it's not efficient, it should only run once, 
 	// but it runs once for each program, and that's no good.  
 	// so let's cheat.
@@ -143,7 +79,7 @@ function uri_program_finder_get_program_category_id() {
 	$categories = uri_program_finder_get_children(0);
 	
 	foreach($categories as $c) {
-		if($c['name'] == 'Program Type') {
+		if($c['name'] == $needle) {
 			print_r($c);
 			$parent = $c['id'];
 		}
@@ -214,6 +150,15 @@ function uri_program_finder_shortcode($attributes, $content, $shortcode) {
 	
 	echo '<div class="program-finder">';
 	$categories = uri_program_finder_get_children(0);
+
+	echo '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
+	echo '<fieldset>';
+	echo '<legend>' . __('Search programs by keyword', 'uri') . '</legend>';
+	echo '<input type="search" name="s" placeholder="Search Programs" />';
+	echo '<input type="submit" value="Go" />';
+	echo '</fieldset>';
+	echo '</form>';
+
 	foreach($categories as $c) {
 		echo '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
 		echo '<fieldset>';
