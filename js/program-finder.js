@@ -46,6 +46,7 @@
 				textSearchListener(el);
 			}, false);
 			form.appendChild(textSearch);
+            textSearch.focus();
 		}
 
 		selects = el.querySelectorAll('select');

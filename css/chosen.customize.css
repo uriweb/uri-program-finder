@@ -30,17 +30,21 @@
     line-height: 30px;
     border: 1px solid #ddd;
     font-weight: 600;
+    border-radius: 2px;
 }
 
 .chosen-container-single.chosen-with-drop .chosen-single {
     background-image: none !important;
     box-shadow: none;
     border-bottom: none;
+    border-color: #ddd !important;
 }
 
 .chosen-drop {
     box-shadow: 0 10px 20px rgba(0,0,0,.1) !important;
     overflow: hidden;
+    border-radius: 0 0 2px 2px !important;
+    border-color: #ddd !important;
 }
 
 .chosen-search-input {
