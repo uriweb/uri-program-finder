@@ -85,7 +85,7 @@ function uri_program_finder_get_program_category_id( $needle='Program Type' ) {
 		}
 	}
 
-	print_r($parent);
+	//print_r($parent);
 
 	return $parent;
 
@@ -158,6 +158,23 @@ function uri_program_finder_shortcode($attributes, $content, $shortcode) {
 	echo '<input type="submit" value="Go" />';
 	echo '</fieldset>';
 	echo '</form>';
+
+    // get top-level categories and sort 'em
+    $categories = uri_program_finder_get_children(0);
+    $catorder = array(
+        'program-type',
+        'interest-area',
+        'college',
+        'location'
+    );
+    usort($categories, function ($a, $b) use ($catorder) {
+        $pos_a = array_search($a['slug'], $catorder);
+        $pos_b = array_search($b['slug'], $catorder);
+        return $pos_a - $pos_b;
+    });
+    
+    // build the form
+    echo '<div class="program-finder">';
 
 	foreach($categories as $c) {
 		echo '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
