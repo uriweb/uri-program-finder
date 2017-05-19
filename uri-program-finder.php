@@ -60,8 +60,11 @@ function uri_program_finder_styles() {
  */
 function uri_program_finder_api_callback( $data ) {
 
+	$search = ( isset ( $data['search'] ) ) ? sanitize_title ( $data['search'] ) : '';
+
 	$args = array(
 		'post_type' => 'post',
+		's' => $search,
 		'orderby' => 'title',
 		'order' => 'ASC',
 		'nopaging' => TRUE,
@@ -76,7 +79,7 @@ function uri_program_finder_api_callback( $data ) {
 		),
 	);
 	$query = new WP_Query( $args );
-	
+		
 	$result = array();
 	// The Loop
 	if ( $query->have_posts() ) {
@@ -103,12 +106,19 @@ function uri_program_finder_api_callback( $data ) {
 
 }
 
-add_action( 'rest_api_init', function () {
+/**
+ * Register the URL for the custom API calls
+ */
+function uri_program_finder_register_api() {
+	// accept category IDs and allow commas to delinieate multiple integers
   register_rest_route( 'uri-programs/v1', '/category/(?P<id>[\d,]+)', array(
     'methods' => 'GET',
     'callback' => 'uri_program_finder_api_callback',
   ) );
-} );
+
+}
+add_action( 'rest_api_init', 'uri_program_finder_register_api' );
+
 
 
 /**
