@@ -143,6 +143,9 @@
             badgeHtml = '';
         for (i=0; i<data.program_types.length; i++) {
             switch(data.program_types[i]['term_id']) {
+                case 18:
+                    badge = ['ba',"Bachelor's"];
+                    break;
                 case 19:
                     badge = ['bs',"Bachelor's"];
                     break;
