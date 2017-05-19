@@ -161,10 +161,10 @@
                 case 40:
                     badge = ['pro','Professional'];
                     break;
-                defaut:
-                    badge = false;
+                default:
+                    badge = [];
             }
-            if (badge !== false) {
+            if (badge.length) {
                 badgeHtml += '<li class="' + badge[0] + '">' + badge[1] + '</li>';
             }
         }
