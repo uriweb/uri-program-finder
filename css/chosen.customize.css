@@ -1,21 +1,23 @@
 /* CUSTOM STYLES FOR CHOSEN */
 
-.chosen-container {
-    display: block;
+
+.chosen-container.chosen-container-single {
+    width: 49% !important;
+    display: inline-block;
     margin-bottom: 10px;
     font-size: .8rem;
 }
 
-.chosen-container.chosen-container-single {
-    width: 400px !important;
+.chosen-container.chosen-container-single:nth-of-type(odd) {
+    margin-right: 2%;
 }
 
 .chosen-container-single .chosen-single {
     background: #fff;
-    border-radius: 0;
+    border-radius: 3px;
     box-shadow: none;
-    height: 30px;
-    line-height: 30px;
+    height: 40px;
+    line-height: 40px;
     border: 1px solid #ddd;
     font-weight: 600;
 }
