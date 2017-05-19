@@ -17,7 +17,7 @@ if ( !defined('ABSPATH') )
 function uri_program_finder_api_callback( $data ) {
 
 	$search = ( isset ( $data['s'] ) ) ? sanitize_title ( $data['s'] ) : '';
-	$ids = ( preg_match('/[\d,]*/', $data['ids']) == 1 ) ? $data['ids'] : NULL;
+	$ids = ( preg_match('/[\d,]+/', $data['ids']) == 1 ) ? $data['ids'] : FALSE;
 	
 	$args = array(
 		'post_type' => 'post',
@@ -25,7 +25,9 @@ function uri_program_finder_api_callback( $data ) {
 		'orderby' => 'title',
 		'order' => 'ASC',
 		'nopaging' => TRUE,
-		'tax_query' => array(
+	);
+	if($ids !== FALSE) {
+		$args['tax_query'] = array(
 			'relation' => 'AND',
 			array(
 				'taxonomy' => 'category',
@@ -33,8 +35,9 @@ function uri_program_finder_api_callback( $data ) {
 				'terms'    => explode(',', $ids),
 				'operator' => 'AND',
 			),
-		),
-	);
+		);
+	}
+	
 	$query = new WP_Query( $args );
 		
 	$result = array();
