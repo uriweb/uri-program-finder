@@ -183,7 +183,7 @@ function uri_program_finder_shortcode($attributes, $content, $shortcode) {
 	echo '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
 	echo '<fieldset>';
 	echo '<legend>' . __('Search programs by keyword', 'uri') . '</legend>';
-	echo '<input type="search" name="s" placeholder="Search Programs" />';
+	echo '<input type="text" name="s" placeholder="Search Programs" />';
 	echo '<input type="submit" value="Go" />';
 	echo '</fieldset>';
 	echo '</form>';

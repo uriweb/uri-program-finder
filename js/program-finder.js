@@ -105,7 +105,7 @@
 	 * Show the loading DIV
 	 */
 	function showLoader() {
-		setStatus('loading','Loading...');
+		setStatus('loading','<span>Loading...</span>');
 	}
     
     /**
