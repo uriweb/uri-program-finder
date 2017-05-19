@@ -36,7 +36,6 @@ function uri_program_finder_scripts() {
     
     $chosen_handle = 'uri-program-finder-chosen-js';
     wp_register_script( $chosen_handle, plugins_url( '/chosen/chosen.jquery.min.js', __FILE__ ) );
-	wp_localize_script( $chosen_handle, 'URIProgramFinderChosenJS', $values );
 	
 	// For either a plugin or a theme, you can then enqueue the script:
 	wp_enqueue_script( $plugin_handle );
@@ -146,16 +145,28 @@ function uri_program_finder_shortcode($attributes, $content, $shortcode) {
 		'after_title' => '</h2>'
 	);
 
-
-
-	// get top-level categories and sort 'em
-	$categories = uri_program_finder_get_children(0);
+    $categories = uri_program_finder_get_children(0);
+    
+    // specify what categories to remove, by slug
+    $removecats = array(
+        'college'
+    );
+    
+    // specify how the remaining categories should be sorted, by slug
 	$catorder = array(
-			'program-type',
-			'interest-area',
-			'college',
-			'location'
+        'program-type',
+        'interest-area',
+        'location'
 	);
+    
+    // perform remove and sort
+    foreach($categories as $i => $cat) {
+        foreach($removecats as $r) {
+            if ($cat['slug'] == $r) {
+                unset($categories[$i]);
+            }
+        }
+    }
 	usort($categories, function ($a, $b) use ($catorder) {
 			$pos_a = array_search($a['slug'], $catorder);
 			$pos_b = array_search($b['slug'], $catorder);
@@ -163,6 +174,8 @@ function uri_program_finder_shortcode($attributes, $content, $shortcode) {
 	});
 
 
+    // build the form
+    
 	ob_start();
 	
 	echo '<div class="program-finder">';

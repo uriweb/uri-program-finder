@@ -265,7 +265,7 @@
 					clearResults();
 	 			}
 				else {
-					console.log('something else other than 200 was returned');
+					console.log('something else other than 200 or 404 was returned');
 				}
 			}
 		};
@@ -316,9 +316,9 @@
 		} else {
             
             // Set the status
-            s = (data.length != 1) ? 'these' : 'this';
+            s = (data.length != 1) ? 'these ' + data.length : 'this';
             t = (data.length != 1) ? 'programs' : 'progam';
-			setStatus('results', "Y'all's needs to check out " + s + ' ' + data.length + ' ' + t + '!' );
+			setStatus('results', "Y'all's needs to check out " + s + ' exquisite ' + t + '!' );
             
             var existingCards = $('#program-results .card'),
                 cache = buildCache(existingCards);
