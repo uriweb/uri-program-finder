@@ -40,11 +40,13 @@
 			els[i].style.display = 'none';
 		}
 		
-		textSearch = el.querySelectorAll('input[name="s"]');
-		$(textSearch[0]).on('keyup', function() {
-			textSearchListener(el, this);
-		});
-		form.appendChild(textSearch[0]);
+		textSearch = el.querySelector('input[name="s"]');
+		if(textSearch) {
+			textSearch.addEventListener('keyup', function() {
+				textSearchListener(el);
+			}, false);
+			form.appendChild(textSearch);
+		}
 
 		selects = el.querySelectorAll('select');
 		for(var i=0; i<selects.length; i++) {
@@ -203,11 +205,11 @@
 	 * Listen for change events on the select menus
 	 * @param obj el the program finder parent element
 	 */
-	function textSearchListener(el, s) {
+	function textSearchListener(el) {
 		window.clearTimeout(searchTimer);
 
 		searchTimer = window.setTimeout(function() {
-			console.log(s.value);
+			console.log(this.value);
 			showLoader();
 			loadPrograms(el);
 		}, 200);
