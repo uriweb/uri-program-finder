@@ -139,30 +139,24 @@
         result.setAttribute('href', data.link);
 		//result.setAttribute('data-href', data.link);
 		result.setAttribute('data-id', data.id);
-		
+		//console.log(data);
         var badge, 
             badgeHtml = '';
         for (i=0; i<data.program_types.length; i++) {
-            switch(data.program_types[i]['term_id']) {
-                case 18:
+            switch(data.program_types[i]['slug']) {
+                case 'bachelors':
                     badge = ['ba',"Bachelor's"];
                     break;
-                case 19:
-                    badge = ['bs',"Bachelor's"];
-                    break;
-                case 30:
+                case 'ph-d':
                     badge = ['phd','Ph.D.'];
                     break;
-                case 34:
+                case 'graduate-certificate':
                     badge = ['cert','Certificate'];
                     break;
-                case 38:
+                case 'masters':
                     badge = ['ma',"Master's"];
                     break;
-                case 39:
-                    badge = ['ms',"Master's"];
-                    break;
-                case 40:
+                case 'professional-degree':
                     badge = ['pro','Professional'];
                     break;
                 default:
@@ -310,7 +304,7 @@
 		var data = JSON.parse(raw),
             i,s,t;
         
-        console.log(data);
+        //console.log(data);
          
 		clearTimeouts();
         
@@ -320,9 +314,8 @@
 		} else {
             
             // Set the status
-            s = (data.length != 1) ? 'these ' + data.length : 'this';
-            t = (data.length != 1) ? 'programs' : 'progam';
-			setStatus('results', "Y'all's needs to check out " + s + ' exquisite ' + t + '!' );
+            t = (data.length != 1) ? 'programs match' : 'program matches';
+			setStatus('results', data.length + ' ' + t + ' your search.' );
             
             var existingCards = $('#program-results .card'),
                 cache = buildCache(existingCards);

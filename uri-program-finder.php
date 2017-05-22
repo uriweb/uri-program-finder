@@ -63,7 +63,7 @@ function uri_program_finder_get_program_category_id( $needle='Program Type' ) {
 	// I don't like this function... it's not efficient, it should only run once, 
 	// but it runs once for each program, and that's no good.  
 	// so let's cheat.
-	return 14;
+	return 136; //14 on local
 	
 	// @todo: make this function efficient
 	
