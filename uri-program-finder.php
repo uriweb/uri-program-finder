@@ -84,7 +84,7 @@ function uri_program_finder_get_program_category_id( $needle='Program Type' ) {
 		}
 	}
 
-	//print_r($parent);
+	print_r($parent);
 
 	return $parent;
 
@@ -173,9 +173,13 @@ function uri_program_finder_shortcode($attributes, $content, $shortcode) {
 			return $pos_a - $pos_b;
 	});
 
+	// get the search string value from the url
+	$query_value = '';
+	if( isset($_GET['q'])) {
+		$query_value = sanitize_title ( $_GET['q'] );
+	}
 
-    // build the form
-    
+  // build the form
 	ob_start();
 	
 	echo '<div class="program-finder">';
@@ -183,7 +187,7 @@ function uri_program_finder_shortcode($attributes, $content, $shortcode) {
 	echo '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
 	echo '<fieldset>';
 	echo '<legend>' . __('Search programs by keyword', 'uri') . '</legend>';
-	echo '<input type="text" name="s" placeholder="Search Programs" />';
+	echo '<input type="text" name="s" value="' . $query_value . '" placeholder="Search Programs" />';
 	echo '<input type="submit" value="Go" />';
 	echo '</fieldset>';
 	echo '</form>';
@@ -218,11 +222,26 @@ add_shortcode( 'programs-categories', 'uri_program_finder_shortcode' );
 function uri_program_finder_make_select($items) {
 	$output = '<select name="cat">';
 	foreach($items as $item) {
-		$output .= '<option value="' . $item['id'] . '">' . $item['name'] . '</option>';
+		$selected = (uri_program_finder_is_selected($item['id'])) ? ' selected="selected"' : '';
+		$output .= '<option value="' . $item['id'] . '"' . $selected . '>' . $item['name'] . '</option>';
 	}
 	$output .= '</select>';
 	return $output;
 }
+
+
+/**
+ * Checks if an id number is in the querystring under ids
+ * return bool
+ */
+function uri_program_finder_is_selected($id) {
+	$ids = array();
+	if( isset($_GET['ids']) && preg_match('/[\d,]*/', $_GET['ids']) ) {
+		$ids = explode( ',', $_GET['ids'] );
+	}
+	return in_array($id, $ids);
+}
+
 
 
 /**
