@@ -43,7 +43,7 @@
 		textSearch = el.querySelector('input[name="s"]');
 		if(textSearch) {
 			textSearch.addEventListener('keyup', function() {
-				textSearchListener(el);
+				textSearchListener(el, this);
 			}, false);
 			form.appendChild(textSearch);
             textSearch.focus();
@@ -53,7 +53,7 @@
 		for(var i=0; i<selects.length; i++) {
 			form.appendChild(selects[i]);
 			$(selects[i]).chosen().on( 'change', function() {
-				changeListener(el);
+				changeListener(el, this);
 			});
 		}
 
@@ -193,35 +193,70 @@
 	/**
 	 * Listen for change events on the select menus
 	 * @param obj el the program finder parent element
+	 * @param obj select the select element (what you'd expect to be "this")
 	 */
-	function changeListener(el) {
+	function changeListener(el, select) {
 		showLoader();
+		updateQueryString('ids', getSelectedCategoryIds(el).join(','));
 		loadPrograms(el);
 	}
 
 	/**
 	 * Listen for change events on the select menus
 	 * @param obj el the program finder parent element
+	 * @param obj input the input text element (what you'd expect to be "this")
 	 */
-	function textSearchListener(el) {
+	function textSearchListener(el, input) {
 		window.clearTimeout(searchTimer);
+		
+		updateQueryString('q', input.value);
 
 		searchTimer = window.setTimeout(function() {
-			console.log(this.value);
+			//console.log(this.value);
 			showLoader();
 			loadPrograms(el);
 		}, 200);
 
 	}
 
-	
 	/**
-	 * Load programs from the REST API
-	 * @param obj el the program finder parent element
+	 * Update the browser URL, and add the selection to the browser's history
+	 * @param str key is the querystring key
+	 * @param str value is the querystring value
 	 */
-	function loadPrograms(el) {
-		var cats, selects, i, url, textSearch;
+	function updateQueryString(key, value) {
+		var url, regex, separator, newURL;
 		
+		url = window.location.toString();
+		regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+		separator = url.indexOf('?') !== -1 ? "&" : "?";
+		
+		if(key == 'ids') {
+			// for the ids, we want the value to be all of the ids.
+			console.log('ids');
+		}
+
+		
+		if (url.match(regex)) {
+			newURL = url.replace(regex, '$1' + key + "=" + value + '$2');
+		}
+		else {
+			newURL = url + separator + key + "=" + value;
+		}
+
+		if (history.pushState) {
+			window.history.pushState({path:newURL}, '', newURL);
+		}
+		
+	}
+
+	/**
+	 * get the category ids from the select menus
+	 * @param obj el the program finder parent element
+	 * @return arr
+	 */
+	function getSelectedCategoryIds(el) {
+		var cats, selects, i;
 		cats = [];
 
 		selects = el.querySelectorAll('select');
@@ -230,6 +265,19 @@
 				cats.push(selects[i].value);
 			}
 		}
+		
+		return cats;
+	}
+	
+	/**
+	 * Load programs from the REST API
+	 * @param obj el the program finder parent element
+	 */
+	function loadPrograms(el) {
+		var cats, url, textSearch;
+		
+		cats = getSelectedCategoryIds(el);
+		
 		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category?ids=' + cats.join(',');
 		
 		textSearch = el.querySelectorAll('input[name="s"]');

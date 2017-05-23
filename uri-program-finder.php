@@ -76,8 +76,6 @@ function uri_program_finder_get_program_category_id( $needle='Program Type' ) {
 		}
 	}
 
-	print_r($parent);
-
 	return $parent;
 
 }
