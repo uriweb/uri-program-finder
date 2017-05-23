@@ -60,15 +60,8 @@ function uri_program_finder_styles() {
  * @param str the name of the category
  */
 function uri_program_finder_get_program_category_id( $needle='Program Type' ) {
-	// I don't like this function... it's not efficient, it should only run once, 
-	// but it runs once for each program, and that's no good.  
-	// so let's cheat.
-	return 136; //14 on local
-	
-	// @todo: make this function efficient
-	
-	static $parent;
-	$parent = FALSE;
+	// return 136; //14 on local
+	static $parent = FALSE;
 	
 	if($parent !== FALSE) {
 		return $parent;
@@ -79,7 +72,6 @@ function uri_program_finder_get_program_category_id( $needle='Program Type' ) {
 	
 	foreach($categories as $c) {
 		if($c['name'] == $needle) {
-			print_r($c);
 			$parent = $c['id'];
 		}
 	}
