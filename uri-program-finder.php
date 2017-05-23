@@ -25,8 +25,8 @@ include( plugin_dir_path( __FILE__ ) . 'inc/uri-program-finder-api.php');
  * Loads up the javascript
  */
 function uri_program_finder_scripts() {
-    $values = array(
-		'base' => get_site_url()
+	$values = array(
+		'base' => get_site_url(),
 	);
     
 	$plugin_handle = 'uri-program-finder';
@@ -56,7 +56,7 @@ function uri_program_finder_styles() {
 
 
 /**
- * Get the program type parent category id
+ * Get a top-level category id by name
  * @param str the name of the category
  */
 function uri_program_finder_get_program_category_id( $needle='Program Type' ) {
