@@ -18,6 +18,7 @@
 		for(var i=0; i<els.length; i++) {
 			convertForm(els[i]);			
 		}
+		loadPrograms(els[i]);
 	}
 
 
@@ -231,12 +232,6 @@
 		regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
 		separator = url.indexOf('?') !== -1 ? "&" : "?";
 		
-		if(key == 'ids') {
-			// for the ids, we want the value to be all of the ids.
-			console.log('ids');
-		}
-
-		
 		if (url.match(regex)) {
 			newURL = url.replace(regex, '$1' + key + "=" + value + '$2');
 		}
@@ -269,20 +264,36 @@
 		return cats;
 	}
 	
+
+	/**
+	 * Parses the current query string and returns it as an object
+	 * @return obj
+	 */
+	function getQueryString() {
+		var qs, obj, p;
+		qs = location.search.substring(1);
+		obj = qs.split("&").reduce(function(prev, curr, i, arr) {
+			p = curr.split("=");
+			prev[decodeURIComponent(p[0])] = decodeURIComponent(p[1]);
+			return prev;
+		}, {});
+		return obj;
+	}
+
+
 	/**
 	 * Load programs from the REST API
 	 * @param obj el the program finder parent element
 	 */
 	function loadPrograms(el) {
-		var cats, url, textSearch;
+		var queryString, url, text;
+
+		queryString = getQueryString();
 		
-		cats = getSelectedCategoryIds(el);
+		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category?ids=' + queryString.ids;	
 		
-		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category?ids=' + cats.join(',');
-		
-		textSearch = el.querySelectorAll('input[name="s"]');
-		if(textSearch[0].value) {
-			url += '&s=' + textSearch[0].value;
+		if(queryString.q) {
+			url += '&s=' + queryString.q;
 		}		
 
 		fetch(url, handleResponse);
