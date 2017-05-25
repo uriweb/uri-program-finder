@@ -27,7 +27,7 @@
 	 * @param obj el the program finder parent element
 	 */
 	function convertForm(el) {
-		var form, els, selects, textSearch;
+		var form, els, selects, textSearch, firstopt;
 		
 		form = document.createElement('form');
 		form.className = 'has-js';
@@ -53,9 +53,14 @@
 		selects = el.querySelectorAll('select');
 		for(var i=0; i<selects.length; i++) {
 			form.appendChild(selects[i]);
-			$(selects[i]).chosen().on( 'change', function() {
-				changeListener(el, this);
-			});
+            firstopt = $(selects[i]).find('option:eq(0)');
+            $(selects[i]).before('<legend>' + $(firstopt).html() + '</legend>');
+            $(firstopt).html('').removeAttr('selected');
+			$(selects[i]).attr('data-placeholder','Choose...')
+                .chosen()
+                .on( 'change', function() {
+				    changeListener(el, this);
+			     });
 		}
 
 		
@@ -256,8 +261,8 @@
 
 		selects = el.querySelectorAll('select');
 		for(i=0; i<selects.length; i++) {
-			if(selects[i].value) {
-				cats.push(selects[i].value);
+			if($(selects[i]).val() != null ) {
+				cats.push($(selects[i]).val());
 			}
 		}
 		
@@ -304,7 +309,6 @@
 	 * make the AJAX call
 	 * @param url the URL to query
 	 * @param callback function for a successful call
-     * @todo: this doesn't seem to be catching 404 errors
 	 */
 	function fetch(url, success) {
 		var xmlhttp;

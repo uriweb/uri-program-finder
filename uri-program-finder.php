@@ -210,7 +210,7 @@ add_shortcode( 'programs-categories', 'uri_program_finder_shortcode' );
  * return str
  */
 function uri_program_finder_make_select($items) {
-	$output = '<select name="cat">';
+	$output = '<select name="cat" multiple>';
 	foreach($items as $item) {
 		$selected = (uri_program_finder_is_selected($item['id'])) ? ' selected="selected"' : '';
 		$output .= '<option value="' . $item['id'] . '"' . $selected . '>' . $item['name'] . '</option>';

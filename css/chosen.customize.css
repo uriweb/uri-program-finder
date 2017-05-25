@@ -1,39 +1,52 @@
 /* CUSTOM STYLES FOR CHOSEN */
 
 
-.chosen-container.chosen-container-single {
+.chosen-container.chosen-container-single,
+.chosen-container.chosen-container-multi {
     width: 32.66% !important;
     display: inline-block;
     margin-bottom: 5px;
     font-size: .7rem;
 }
 
-.chosen-container.chosen-container-single:not(:last-of-type) {
+.chosen-container.chosen-container-single:not(:last-of-type),
+.chosen-container.chosen-container-multi:not(:last-of-type) {
     margin-right: 1%;
 }
 
 @media screen and (max-width: 600px) {
-    .chosen-container.chosen-container-single {
+    .chosen-container.chosen-container-single,
+    .chosen-container.chosen-container-multi {
         width: 100% !important;
         display: block;
     }
-    .chosen-container.chosen-container-single:not(:last-of-type) {
+    .chosen-container.chosen-container-single:not(:last-of-type),
+    .chosen-container.chosen-container-multi:not(:last-of-type) {
         margin-right: 0 !important;
     }
 }
 
-.chosen-container-single .chosen-single {
+.chosen-container-single .chosen-single,
+.chosen-container-multi .chosen-choices {
     background: #fff;
     border-radius: 0;
     box-shadow: none;
-    height: 30px;
-    line-height: 30px;
+    
     border: 1px solid #ddd;
     font-weight: 600;
     border-radius: 2px;
 }
+.chosen-container-single .chosen-single {
+    height: 30px;
+    line-height: 30px;
+}
 
-.chosen-container-single.chosen-with-drop .chosen-single {
+.chosen-container-multi .chosen-choices {
+    padding: 5px !important;
+}
+
+.chosen-container-single.chosen-with-drop .chosen-single
+.chosen-container-multi.chosen-with-drop .chosen-choices {
     background-image: none !important;
     box-shadow: none;
     border-bottom: none;
@@ -53,8 +66,33 @@
     padding: 5px 20px 5px 6px !important;
 }
 
-.chosen-container-single ul {
+.chosen-container-single ul,
+.chosen-container-multi ul {
     font-size: .7rem !important;
+}
+
+.chosen-container-multi ul {
+    margin: 0 !important;
+}
+
+.chosen-container-multi .chosen-choices .search-choice {
+    height: auto !important;
+    line-height: normal;
+    background-color: #d9ecfa !important;
+    background-image: none !important;
+    border: none !important;
+    color: #333 !important;
+    box-shadow: none !important;
+    border-radius: 10px !important;
+    margin-bottom: 3px !important;
+    margin-right: 3px !important;
+    padding: 1px 23px 1px 10px !important;
+}
+
+.chosen-container-multi .search-choice-close {
+    border-bottom: none !important;
+    right: 5px !important;
+    top: 5px !important;
 }
 
 .chosen-results {
