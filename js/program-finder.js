@@ -54,18 +54,29 @@
 		for(var i=0; i<selects.length; i++) {
 			form.appendChild(selects[i]);
             firstopt = $(selects[i]).find('option:eq(0)');
-            $(selects[i]).before('<legend>' + $(firstopt).html() + '</legend>');
+            $(selects[i]).before('<label>' + $(firstopt).html() + '</label>');
             $(firstopt).html('').removeAttr('selected');
 			$(selects[i]).attr('data-placeholder','Choose...')
-                .chosen()
-                .on( 'change', function() {
-				    changeListener(el, this);
-			     });
-		}
-
-		
+                .prop('multiple','multiple');
+		}	
+        
+        initChosen(el,selects);
 
 	}
+    
+    
+    /**
+	 * Initiate Chosen on all selects
+     * @param obj el the program finder parent element
+	 * @param obj selects the select menus
+	 */
+    function initChosen(el,selects) {
+        for(var i=0; i<selects.length; i++) {
+            $(selects[i]).chosen().on( 'change', function() {
+				changeListener(el, this);
+			 });
+        }  
+    }
 
 
 	/**
@@ -202,9 +213,15 @@
 	 * @param obj select the select element (what you'd expect to be "this")
 	 */
 	function changeListener(el, select) {
+        var selected, i, x;
 		showLoader();
-		updateQueryString('ids', getSelectedCategoryIds(el).join(','));
-		loadPrograms(el);
+        
+        selected = getSelectedCategoryIds(el);
+        //console.log(selected);
+        for (x in selected) { 
+          updateQueryString(x,selected[x]);
+        }
+        loadPrograms(el);
 	}
 
 	/**
@@ -232,7 +249,7 @@
 	 */
 	function updateQueryString(key, value) {
 		var url, regex, separator, newURL;
-		
+		//console.log(value);
 		url = window.location.toString();
 		regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
 		separator = url.indexOf('?') !== -1 ? "&" : "?";
@@ -256,15 +273,23 @@
 	 * @return arr
 	 */
 	function getSelectedCategoryIds(el) {
-		var cats, selects, i;
-		cats = [];
+		var cats, selects, vals, i;
+		cats = {};
 
 		selects = el.querySelectorAll('select');
+        
 		for(i=0; i<selects.length; i++) {
-			if($(selects[i]).val() != null ) {
-				cats.push($(selects[i]).val());
-			}
+            vals = $(selects[i]).val();
+            vals.shift();
+            //console.log(vals);
+			if( vals.length ) {
+				cats[$(selects[i]).attr('name')] = vals;
+			} else {
+                cats[$(selects[i]).attr('name')] = '';
+            }
 		}
+        
+        //console.log(cats);
 		
 		return cats;
 	}
@@ -291,11 +316,18 @@
 	 * @param obj el the program finder parent element
 	 */
 	function loadPrograms(el) {
-		var queryString, url, text;
+		var queryString, url, text, s, x;
 
 		queryString = getQueryString();
+        
+        console.log('query string: ', queryString);
 		
-		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category?ids=' + queryString.ids;	
+		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category';	
+        
+        for(x in queryString) {
+            s = url.indexOf('?') !== -1 ? "&" : "?";
+            url += s + x + '=' + queryString[x];
+        }
 		
 		if(queryString.q) {
 			url += '&s=' + queryString.q;
