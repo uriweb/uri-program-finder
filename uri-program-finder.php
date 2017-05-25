@@ -237,7 +237,6 @@ function uri_program_finder_is_selected($id, $category_slug) {
 }
 
 
-
 /**
  * Get children categories of a given category
  * @param int id the parent id to return
