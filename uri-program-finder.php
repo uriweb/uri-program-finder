@@ -216,7 +216,7 @@ function uri_program_finder_make_form($categories) {
 function uri_program_finder_make_select($cat, $items) {
 	$output = '<label><span>' . $cat['name'] . '</span><select name="' . $cat['slug'] . '">';
 	foreach($items as $item) {
-		$selected = (uri_program_finder_is_selected($item['id'])) ? ' selected="selected"' : '';
+		$selected = (uri_program_finder_is_selected($item['id'], $cat['slug'])) ? ' selected="selected"' : '';
 		$output .= '<option value="' . $item['id'] . '"' . $selected . '>' . $item['name'] . '</option>';
 	}
 	$output .= '</select></label>';
@@ -228,10 +228,10 @@ function uri_program_finder_make_select($cat, $items) {
  * Checks if an id number is in the querystring under ids
  * @return bool
  */
-function uri_program_finder_is_selected($id) {
+function uri_program_finder_is_selected($id, $category_slug) {
 	$ids = array();
-	if( isset($_GET['ids']) && preg_match('/[\d,]*/', $_GET['ids']) ) {
-		$ids = explode( ',', $_GET['ids'] );
+	if( isset($_GET[$category_slug]) && preg_match('/[\d,]*/', $_GET[$category_slug]) ) {
+		$ids = explode( ',', $_GET[$category_slug] );
 	}
 	return in_array($id, $ids);
 }
