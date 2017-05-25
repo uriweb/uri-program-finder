@@ -189,7 +189,7 @@ function uri_program_finder_shortcode($attributes, $content, $shortcode) {
 		echo '<legend>' . $c['name'] . '</legend>';
 		$subcats = uri_program_finder_get_children($c['id']);
 		array_unshift( $subcats, array('id'=>'', 'name' => $c['name']) );
-		echo uri_program_finder_make_select( $subcats );
+		echo uri_program_finder_make_select( $c['name'], $subcats );
 		echo '<input type="submit" value="Go" />';
 		echo '</fieldset>';
 		echo '</form>';
@@ -209,8 +209,10 @@ add_shortcode( 'programs-categories', 'uri_program_finder_shortcode' );
  * Turn an array into a select element
  * return str
  */
-function uri_program_finder_make_select($items) {
-	$output = '<select name="cat" multiple>';
+function uri_program_finder_make_select($name,$items) {
+    $name = strtolower($name);
+    $name = str_replace(' ', '-', $name);
+	$output = '<select name="' . $name . '">';
 	foreach($items as $item) {
 		$selected = (uri_program_finder_is_selected($item['id'])) ? ' selected="selected"' : '';
 		$output .= '<option value="' . $item['id'] . '"' . $selected . '>' . $item['name'] . '</option>';
