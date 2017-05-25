@@ -17,7 +17,11 @@ if ( !defined('ABSPATH') )
 function uri_program_finder_api_callback( $data ) {
 
 	$search = ( isset ( $data['s'] ) ) ? sanitize_title ( $data['s'] ) : '';
-	$ids = ( preg_match('/[\d,]+/', $data['ids']) == 1 ) ? $data['ids'] : FALSE;
+	$ids = uri_program_sanitize_ids( $data['ids'] );
+
+	$program_type = uri_program_sanitize_ids($data['program-type']);
+	$interest_area = uri_program_sanitize_ids($data['interest-area']);
+	$location = uri_program_sanitize_ids($data['location']);
 	
 	$args = array(
 		'post_type' => 'post',
@@ -26,7 +30,10 @@ function uri_program_finder_api_callback( $data ) {
 		'order' => 'ASC',
 		'nopaging' => TRUE,
 	);
+	
+	// https://codex.wordpress.org/Class_Reference/WP_Query#Taxonomy_Parameters
 	if($ids !== FALSE) {
+		// if ids is passed, then select using ids across all categories
 		$args['tax_query'] = array(
 			'relation' => 'AND',
 			array(
@@ -36,7 +43,39 @@ function uri_program_finder_api_callback( $data ) {
 				'operator' => 'AND',
 			),
 		);
+	} else {
+		// if not ids, then test for other categories and search for those
+		if(!empty($program_type) || !empty($interest) || !empty($location)) {
+			$args['tax_query'] = array(
+				'relation' => 'AND',
+			);
+			if(!empty($program_type)) {
+				$args['tax_query'][] = array(
+					'taxonomy' => 'category',
+					'field' => 'term_id',
+					'terms' => explode( ',', $program_type ),
+					'operator' => 'IN',
+				);
+			}
+			if(!empty($interest_area)) {
+				$args['tax_query'][] = array(
+					'taxonomy' => 'category',
+					'field' => 'term_id',
+					'terms' => explode( ',', $interest_area ),
+					'operator' => 'IN',
+				);
+			}
+			if(!empty($location)) {
+				$args['tax_query'][] = array(
+					'taxonomy' => 'category',
+					'field' => 'term_id',
+					'terms' => explode( ',', $location ),
+					'operator' => 'IN',
+				);
+			}
+		}
 	}
+
 	
 	$query = new WP_Query( $args );
 		
@@ -64,6 +103,15 @@ function uri_program_finder_api_callback( $data ) {
 
 	return $result;
 
+}
+
+/**
+ * much like is_int, but allows commas too.
+ * @param str $str is a GET param
+ * @return str or bool false
+ */
+function uri_program_sanitize_ids($str) {
+	return ( preg_match('/[\d,]+/', $str) == 1 ) ? $str : FALSE;
 }
 
 /**
