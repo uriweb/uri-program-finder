@@ -243,7 +243,7 @@ function uri_program_finder_is_selected($id, $category_slug) {
  * @param mixed $exclude (term ids to skip -- either an int or array of ints)
  * @return arr
  */
-function uri_program_finder_get_children($id, $exclude) {
+function uri_program_finder_get_children($id, $exclude=array()) {
 
 	$args = array(
 		'hierarchical' => TRUE,
