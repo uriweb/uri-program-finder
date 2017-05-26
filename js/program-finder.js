@@ -11,14 +11,12 @@
 	
 	
 	/**
-	 * Find program finders and set them up to be awesome.
+	 * Find program finder and set it up to be awesome.
 	 */
 	function initFinder() {
-		var els = document.querySelectorAll('.program-finder');
-		for(var i=0; i<els.length; i++) {
-			convertForm(els[i]);			
-		}
-		loadPrograms(els[i]);
+		var el = document.getElementById('program-finder');
+        convertForm(el);			
+		loadPrograms(el);
 	}
 
 
@@ -27,11 +25,7 @@
 	 * @param obj el the program finder parent element
 	 */
 	function convertForm(el) {
-		var form, els, selects, textSearch;
-		
-		form = document.createElement('form');
-		form.className = 'has-js';
-		el.appendChild(form);
+		var form, els, selects, textSearch, firstopt;
 		
 		initResultsDiv(el);
 		initStatusDiv(el);
@@ -40,27 +34,43 @@
 		for(var i=0; i<els.length; i++) {
 			els[i].style.display = 'none';
 		}
+        
+        form = el.querySelector('.has-js');
+        $(form).css('display','block');
+        
 		
-		textSearch = el.querySelector('input[name="s"]');
+		textSearch = form.querySelector('input[name="s"]');
 		if(textSearch) {
 			textSearch.addEventListener('keyup', function() {
-				textSearchListener(el, this);
+				textSearchListener(this);
 			}, false);
-			form.appendChild(textSearch);
             textSearch.focus();
 		}
 
-		selects = el.querySelectorAll('select');
-		for(var i=0; i<selects.length; i++) {
-			form.appendChild(selects[i]);
-			$(selects[i]).chosen().on( 'change', function() {
-				changeListener(el, this);
-			});
-		}
+		selects = form.querySelectorAll('select');
 
-		
+		for(var i=0; i<selects.length; i++) {
+            firstopt = $(selects[i]).find('option:eq(0)');
+            $(firstopt).html('').removeAttr('selected');
+		}	
+        
+        initChosen(form, selects);
 
 	}
+    
+    
+    /**
+	 * Initiate Chosen on all selects and binds listener
+     * @param obj form the js form parent element
+	 * @param obj selects the select menus
+	 */
+    function initChosen(form, selects) {
+        for(var i=0; i<selects.length; i++) {
+            $(selects[i]).chosen().on( 'change', function() {
+				changeListener(form, this);
+			 });
+        }  
+    }
 
 
 	/**
@@ -98,7 +108,6 @@
      * @param str html the html for the status div
 	 */
 	function setStatus(cl,html) {
-		//console.log(html);
         statusDiv.className = cl;
 		statusDiv.innerHTML = html;
 	}
@@ -121,7 +130,6 @@
 	 * Clear the status div
 	 */
 	function clearStatus() {
-		//console.log('clear status');
         statusDiv.className = '';
 		statusDiv.innerHTML = '';
 	}
@@ -140,7 +148,6 @@
         result.setAttribute('href', data.link);
 		//result.setAttribute('data-href', data.link);
 		result.setAttribute('data-id', data.id);
-		//console.log(data);
         var badge, 
             badgeHtml = '';
         for (i=0; i<data.program_types.length; i++) {
@@ -193,29 +200,32 @@
 
 	/**
 	 * Listen for change events on the select menus
-	 * @param obj el the program finder parent element
+	 * @param obj form the js form parent element
 	 * @param obj select the select element (what you'd expect to be "this")
 	 */
-	function changeListener(el, select) {
+	function changeListener(form, select) {
+        var selected, x;
 		showLoader();
-		updateQueryString('ids', getSelectedCategoryIds(el).join(','));
-		loadPrograms(el);
+        
+        selected = getSelectedCategoryIds(form);
+        for (x in selected) { 
+          updateQueryString(x,selected[x]);
+        }
+        loadPrograms();
 	}
 
 	/**
 	 * Listen for change events on the select menus
-	 * @param obj el the program finder parent element
 	 * @param obj input the input text element (what you'd expect to be "this")
 	 */
-	function textSearchListener(el, input) {
+	function textSearchListener(input) {
 		window.clearTimeout(searchTimer);
 		
 		updateQueryString('q', input.value);
 
 		searchTimer = window.setTimeout(function() {
-			//console.log(this.value);
 			showLoader();
-			loadPrograms(el);
+			loadPrograms();
 		}, 200);
 
 	}
@@ -227,17 +237,16 @@
 	 */
 	function updateQueryString(key, value) {
 		var url, regex, separator, newURL;
-		
 		url = window.location.toString();
 		regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
 		separator = url.indexOf('?') !== -1 ? "&" : "?";
-		
+		        
 		if (url.match(regex)) {
-			newURL = url.replace(regex, '$1' + key + "=" + value + '$2');
+            newURL = url.replace(regex, '$1' + key + "=" + value + '$2');
 		}
 		else {
 			newURL = url + separator + key + "=" + value;
-		}
+		} 
 
 		if (history.pushState) {
 			window.history.pushState({path:newURL}, '', newURL);
@@ -247,20 +256,25 @@
 
 	/**
 	 * get the category ids from the select menus
-	 * @param obj el the program finder parent element
+	 * @param obj form the js form parent element
 	 * @return arr
 	 */
-	function getSelectedCategoryIds(el) {
-		var cats, selects, i;
-		cats = [];
+	function getSelectedCategoryIds(form) {
+		var cats, selects, vals, i;
+		cats = {};
 
-		selects = el.querySelectorAll('select');
+		selects = form.querySelectorAll('select');
+        
 		for(i=0; i<selects.length; i++) {
-			if(selects[i].value) {
-				cats.push(selects[i].value);
-			}
+            vals = $(selects[i]).val();
+            
+			if( vals != null ) {
+				cats[$(selects[i]).attr('name')] = vals;
+			} else {
+                cats[$(selects[i]).attr('name')] = 'all';
+            }
 		}
-		
+        		
 		return cats;
 	}
 	
@@ -283,14 +297,20 @@
 
 	/**
 	 * Load programs from the REST API
-	 * @param obj el the program finder parent element
 	 */
-	function loadPrograms(el) {
-		var queryString, url, text;
+	function loadPrograms() {
+		var queryString, url, text, s, x;
 
 		queryString = getQueryString();
+        
+        //console.log('query string: ', queryString);
 		
-		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category?ids=' + queryString.ids;	
+		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category';	
+        
+        for(x in queryString) {
+            s = url.indexOf('?') !== -1 ? "&" : "?";
+            url += s + x + '=' + queryString[x];
+        }
 		
 		if(queryString.q) {
 			url += '&s=' + queryString.q;
@@ -304,7 +324,6 @@
 	 * make the AJAX call
 	 * @param url the URL to query
 	 * @param callback function for a successful call
-     * @todo: this doesn't seem to be catching 404 errors
 	 */
 	function fetch(url, success) {
 		var xmlhttp;
@@ -316,7 +335,6 @@
 					success(xmlhttp.responseText);
 				}
 	 			else if (xmlhttp.status == 404) {
-	 				//alert('There was an error 404');
 					console.log('error 404 was returned');
 					setStatus('error', 'There was an error retrieving results.');
 					clearResults();
@@ -362,9 +380,7 @@
 	function handleResponse(raw) {
 		var data = JSON.parse(raw),
             i,s,t;
-        
-        //console.log(data);
-         
+                 
 		clearTimeouts();
         
         if(data.length == 0) {

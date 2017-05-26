@@ -61,6 +61,7 @@ function uri_program_finder_styles() {
  */
 function uri_program_finder_get_program_category_id( $needle='Program Type' ) {
 	// return 136; //14 on local
+
 	static $parent = FALSE;
 	
 	if($parent !== FALSE) {
@@ -134,115 +135,137 @@ function uri_program_finder_shortcode($attributes, $content, $shortcode) {
 		'before_title' => '<h2 class="widget-title">',
 		'after_title' => '</h2>'
 	);
+	
+	// specify what categories to remove, by slug
+	$removecats = array(
+			'college'
+	);
+	$exclude = array();
+	foreach($removecats as $r) {
+		$exclude[] = get_term_by('slug', $r, 'category')->term_id;
+	}
+	$categories = uri_program_finder_get_children(0, $exclude);
+	
 
-    $categories = uri_program_finder_get_children(0);
-    
-    // specify what categories to remove, by slug
-    $removecats = array(
-        'college'
-    );
-    
-    // specify how the remaining categories should be sorted, by slug
+	
+	// specify how the remaining categories should be sorted, by slug
 	$catorder = array(
         'program-type',
         'interest-area',
         'location'
 	);
-    
-    // perform remove and sort
-    foreach($categories as $i => $cat) {
-        foreach($removecats as $r) {
-            if ($cat['slug'] == $r) {
-                unset($categories[$i]);
-            }
-        }
-    }
 	usort($categories, function ($a, $b) use ($catorder) {
 			$pos_a = array_search($a['slug'], $catorder);
 			$pos_b = array_search($b['slug'], $catorder);
 			return $pos_a - $pos_b;
 	});
-
-	// get the search string value from the url
-	$query_value = '';
-	if( isset($_GET['q'])) {
-		$query_value = sanitize_title ( $_GET['q'] );
-	}
+	
 
   // build the form
-	ob_start();
-	
-	echo '<div class="program-finder">';
-
-	echo '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
-	echo '<fieldset>';
-	echo '<legend>' . __('Search programs by keyword', 'uri') . '</legend>';
-	echo '<input type="text" name="s" value="' . $query_value . '" placeholder="Search Programs" />';
-	echo '<input type="submit" value="Go" />';
-	echo '</fieldset>';
-	echo '</form>';
-
-
-	foreach($categories as $c) {
-		echo '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
-		echo '<fieldset>';
-		echo '<legend>' . $c['name'] . '</legend>';
-		$subcats = uri_program_finder_get_children($c['id']);
-		array_unshift( $subcats, array('id'=>'', 'name' => $c['name']) );
-		echo uri_program_finder_make_select( $subcats );
-		echo '<input type="submit" value="Go" />';
-		echo '</fieldset>';
-		echo '</form>';
-	}
-	echo '</div>';
-	
-	//echo '<pre>', print_r($categories, TRUE), '</pre>';
-	
-	$output = ob_get_clean();
-	return $output;
+	return uri_program_finder_make_form( $categories );
 		
 }
 add_shortcode( 'programs-categories', 'uri_program_finder_shortcode' );
 
 
 /**
- * Turn an array into a select element
- * return str
+ * Create the HTML for the form
+ * @param arr $categories arrays used to build select menus
+ * @return str
  */
-function uri_program_finder_make_select($items) {
-	$output = '<select name="cat">';
+function uri_program_finder_make_form($categories) {
+
+	// get the search string value from the url
+	$query_value = '';
+	if( isset($_GET['q'])) {
+		$query_value = sanitize_title ( $_GET['q'] );
+	}
+    
+    $text_input = '<input type="text" id="search-programs" name="s" value="' . $query_value . '" placeholder="Search Programs" />';
+
+	$output = '<div id="program-finder">';
+
+	$output .= '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
+	$output .= '<fieldset>';
+	$output .= '<label for="search-programs">' . __('Search programs by keyword', 'uri') . '</label>';
+	$output .= $text_input;
+	$output .= '<input type="submit" value="Go" />';
+	$output .= '</fieldset>';
+	$output .= '</form>';
+
+
+	foreach($categories as $c) {
+		$subcats = uri_program_finder_get_children($c['id']);
+		array_unshift( $subcats, array('id'=>'', 'name' => $c['name']) );
+
+		$output .= '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
+		$output .= '<fieldset>';
+		$output .= uri_program_finder_make_select( $c, $subcats, false );
+		$output .= '<input type="submit" value="Go" />';
+		$output .= '</fieldset>';
+		$output .= '</form>';
+	}
+    
+    
+    // now create the js form
+    $output .= '<form class="has-js" style="display: none;">';
+    $output .= $text_input;
+    foreach($categories as $c) {
+        $subcats = uri_program_finder_get_children($c['id']);
+        array_unshift( $subcats, array('id'=>'', 'name' => $c['name']) );
+        $output .= uri_program_finder_make_select( $c, $subcats, true );
+    }
+    $output .= '</form';
+    
+    
+	$output .= '</div>';
+	
+	return $output;
+}
+
+
+/**
+ * Turn an array into a select element
+ * @return str
+ */
+function uri_program_finder_make_select($cat, $items, $is_js_form) {
+    $m = ($is_js_form) ? 'multiple' : '';
+    $n = ($is_js_form) ? $cat['slug'] : 'cat';
+	$output = '<label><span>' . $cat['name'] . '</span><select name="' . $n . '" data-placeholder="Choose ' . $cat['name'] . 's" ' . $m . '>';
 	foreach($items as $item) {
-		$selected = (uri_program_finder_is_selected($item['id'])) ? ' selected="selected"' : '';
+		$selected = (uri_program_finder_is_selected($item['id'], $cat['slug'])) ? ' selected="selected"' : '';
 		$output .= '<option value="' . $item['id'] . '"' . $selected . '>' . $item['name'] . '</option>';
 	}
-	$output .= '</select>';
+	$output .= '</select></label>';
 	return $output;
 }
 
 
 /**
  * Checks if an id number is in the querystring under ids
- * return bool
+ * @return bool
  */
-function uri_program_finder_is_selected($id) {
+function uri_program_finder_is_selected($id, $category_slug) {
 	$ids = array();
-	if( isset($_GET['ids']) && preg_match('/[\d,]*/', $_GET['ids']) ) {
-		$ids = explode( ',', $_GET['ids'] );
+	if( isset($_GET[$category_slug]) && preg_match('/[\d,]*/', $_GET[$category_slug]) ) {
+		$ids = explode( ',', $_GET[$category_slug] );
 	}
 	return in_array($id, $ids);
 }
 
 
-
 /**
  * Get children categories of a given category
- * return arr
+ * @param int id the parent id to return
+ * @param mixed $exclude (term ids to skip -- either an int or array of ints)
+ * @return arr
  */
-function uri_program_finder_get_children($id) {
+function uri_program_finder_get_children($id, $exclude=array()) {
 
 	$args = array(
 		'hierarchical' => TRUE,
-		'parent' => $id
+		'parent' => $id,
+		'exclude_tree' => $exclude
 	);
 	$categories = get_categories($args);
 	$cats = array();
