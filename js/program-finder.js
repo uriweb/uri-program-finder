@@ -29,10 +29,6 @@
 	function convertForm(el) {
 		var form, els, selects, textSearch, firstopt;
 		
-		form = document.createElement('form');
-		form.className = 'has-js';
-		el.appendChild(form);
-		
 		initResultsDiv(el);
 		initStatusDiv(el);
 		
@@ -40,40 +36,41 @@
 		for(var i=0; i<els.length; i++) {
 			els[i].style.display = 'none';
 		}
+        
+        form = el.querySelector('.has-js');
+        $(form).css('display','block');
+        
 		
-		textSearch = el.querySelector('input[name="s"]');
+		textSearch = form.querySelector('input[name="s"]');
 		if(textSearch) {
 			textSearch.addEventListener('keyup', function() {
-				textSearchListener(el, this);
+				textSearchListener(this);
 			}, false);
-			form.appendChild(textSearch);
             textSearch.focus();
 		}
 
-		selects = el.querySelectorAll('select');
+		selects = form.querySelectorAll('select');
+                console.log(selects);
+
 		for(var i=0; i<selects.length; i++) {
-			form.appendChild(selects[i]);
             firstopt = $(selects[i]).find('option:eq(0)');
-            $(selects[i]).before('<label>' + $(firstopt).html() + '</label>');
             $(firstopt).html('').removeAttr('selected');
-			$(selects[i]).attr('data-placeholder','Choose...')
-                .prop('multiple','multiple');
 		}	
         
-        initChosen(el,selects);
+        initChosen(form, selects);
 
 	}
     
     
     /**
-	 * Initiate Chosen on all selects
-     * @param obj el the program finder parent element
+	 * Initiate Chosen on all selects and binds listener
+     * @param obj form the js form parent element
 	 * @param obj selects the select menus
 	 */
-    function initChosen(el,selects) {
+    function initChosen(form, selects) {
         for(var i=0; i<selects.length; i++) {
             $(selects[i]).chosen().on( 'change', function() {
-				changeListener(el, this);
+				changeListener(form, this);
 			 });
         }  
     }
@@ -212,16 +209,16 @@
 	 * @param obj el the program finder parent element
 	 * @param obj select the select element (what you'd expect to be "this")
 	 */
-	function changeListener(el, select) {
+	function changeListener(form, select) {
         var selected, i, x;
 		showLoader();
         
-        selected = getSelectedCategoryIds(el);
+        selected = getSelectedCategoryIds(form);
         //console.log(selected);
         for (x in selected) { 
           updateQueryString(x,selected[x]);
         }
-        loadPrograms(el);
+        loadPrograms();
 	}
 
 	/**
@@ -229,7 +226,7 @@
 	 * @param obj el the program finder parent element
 	 * @param obj input the input text element (what you'd expect to be "this")
 	 */
-	function textSearchListener(el, input) {
+	function textSearchListener(input) {
 		window.clearTimeout(searchTimer);
 		
 		updateQueryString('q', input.value);
@@ -237,7 +234,7 @@
 		searchTimer = window.setTimeout(function() {
 			//console.log(this.value);
 			showLoader();
-			loadPrograms(el);
+			loadPrograms();
 		}, 200);
 
 	}
@@ -272,17 +269,17 @@
 	 * @param obj el the program finder parent element
 	 * @return arr
 	 */
-	function getSelectedCategoryIds(el) {
+	function getSelectedCategoryIds(form) {
 		var cats, selects, vals, i;
 		cats = {};
 
-		selects = el.querySelectorAll('select');
+		selects = form.querySelectorAll('select');
         
 		for(i=0; i<selects.length; i++) {
             vals = $(selects[i]).val();
-            vals.shift();
-            //console.log(vals);
-			if( vals.length ) {
+            console.log(vals);
+            
+			if( vals != null ) {
 				cats[$(selects[i]).attr('name')] = vals;
 			} else {
                 cats[$(selects[i]).attr('name')] = '';
@@ -315,7 +312,7 @@
 	 * Load programs from the REST API
 	 * @param obj el the program finder parent element
 	 */
-	function loadPrograms(el) {
+	function loadPrograms() {
 		var queryString, url, text, s, x;
 
 		queryString = getQueryString();

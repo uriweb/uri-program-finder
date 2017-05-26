@@ -180,13 +180,15 @@ function uri_program_finder_make_form($categories) {
 	if( isset($_GET['q'])) {
 		$query_value = sanitize_title ( $_GET['q'] );
 	}
+    
+    $text_input = '<input type="text" id="search-programs" name="s" value="' . $query_value . '" placeholder="Search Programs" />';
 
 	$output = '<div class="program-finder">';
 
 	$output .= '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
 	$output .= '<fieldset>';
 	$output .= '<label for="search-programs">' . __('Search programs by keyword', 'uri') . '</label>';
-	$output .= '<input type="text" id="search-programs" name="s" value="' . $query_value . '" placeholder="Search Programs" />';
+	$output .= $text_input;
 	$output .= '<input type="submit" value="Go" />';
 	$output .= '</fieldset>';
 	$output .= '</form>';
@@ -198,11 +200,24 @@ function uri_program_finder_make_form($categories) {
 
 		$output .= '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
 		$output .= '<fieldset>';
-		$output .= uri_program_finder_make_select( $c, $subcats );
+		$output .= uri_program_finder_make_select( $c, $subcats, false );
 		$output .= '<input type="submit" value="Go" />';
 		$output .= '</fieldset>';
 		$output .= '</form>';
 	}
+    
+    
+    // now create the js form
+    $output .= '<form class="has-js" style="display: none;">';
+    $output .= $text_input;
+    foreach($categories as $c) {
+        $subcats = uri_program_finder_get_children($c['id']);
+        array_unshift( $subcats, array('id'=>'', 'name' => $c['name']) );
+        $output .= uri_program_finder_make_select( $c, $subcats, true );
+    }
+    $output .= '</form';
+    
+    
 	$output .= '</div>';
 	
 	return $output;
@@ -213,8 +228,9 @@ function uri_program_finder_make_form($categories) {
  * Turn an array into a select element
  * @return str
  */
-function uri_program_finder_make_select($cat, $items) {
-	$output = '<label><span>' . $cat['name'] . '</span><select name="' . $cat['slug'] . '">';
+function uri_program_finder_make_select($cat, $items, $is_multiple) {
+    $m = ($is_multiple) ? 'multiple' : '';
+	$output = '<label><span>' . $cat['name'] . '</span><select name="' . $cat['slug'] . '"' . $m . '>';
 	foreach($items as $item) {
 		$selected = (uri_program_finder_is_selected($item['id'], $cat['slug'])) ? ' selected="selected"' : '';
 		$output .= '<option value="' . $item['id'] . '"' . $selected . '>' . $item['name'] . '</option>';
