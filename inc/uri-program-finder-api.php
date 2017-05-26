@@ -45,7 +45,8 @@ function uri_program_finder_api_callback( $data ) {
 		);
 	} else {
 		// if not ids, then test for other categories and search for those
-		if(!empty($program_type) || !empty($interest) || !empty($location)) {
+
+		if(!empty($program_type) || !empty($interest_area) || !empty($location)) {
 			$args['tax_query'] = array(
 				'relation' => 'AND',
 			);
