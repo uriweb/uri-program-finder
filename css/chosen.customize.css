@@ -1,6 +1,6 @@
 /* CUSTOM STYLES FOR CHOSEN */
 
-
+/*
 .chosen-container.chosen-container-single,
 .chosen-container.chosen-container-multi {
     width: 32.66% !important;
@@ -25,6 +25,13 @@
         margin-right: 0 !important;
     }
 }
+*/
+
+.chosen-container.chosen-container-single,
+.chosen-container.chosen-container-multi {
+    width: 100% !important;
+    display: block;
+}
 
 .chosen-container-single .chosen-single,
 .chosen-container-multi .chosen-choices {
@@ -43,6 +50,20 @@
 
 .chosen-container-multi .chosen-choices {
     padding: 5px !important;
+    cursor: pointer;
+}
+
+.chosen-container-multi .chosen-choices .search-field {
+    width: 100%;
+}
+
+.chosen-container-multi .chosen-choices input {
+    font-size: .7rem !important;
+    font-weight: 400;
+    color: #aaa !important;
+    font-family: "Lucida Grande", sans-serif !important;
+    cursor: pointer;
+    width: 100%;
 }
 
 .chosen-container-single.chosen-with-drop .chosen-single
@@ -78,10 +99,11 @@
 .chosen-container-multi .chosen-choices .search-choice {
     height: auto !important;
     line-height: normal;
-    background-color: #d9ecfa !important;
+    background-color: #002147 !important;
     background-image: none !important;
     border: none !important;
-    color: #333 !important;
+    color: #fff !important;
+    font-weight: 400;
     box-shadow: none !important;
     border-radius: 10px !important;
     margin-bottom: 3px !important;

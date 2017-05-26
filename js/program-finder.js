@@ -11,14 +11,12 @@
 	
 	
 	/**
-	 * Find program finders and set them up to be awesome.
+	 * Find program finder and set it up to be awesome.
 	 */
 	function initFinder() {
-		var els = document.querySelectorAll('.program-finder');
-		for(var i=0; i<els.length; i++) {
-			convertForm(els[i]);			
-		}
-		loadPrograms(els[i]);
+		var el = document.getElementById('program-finder');
+        convertForm(el);			
+		loadPrograms(el);
 	}
 
 
@@ -50,7 +48,6 @@
 		}
 
 		selects = form.querySelectorAll('select');
-                console.log(selects);
 
 		for(var i=0; i<selects.length; i++) {
             firstopt = $(selects[i]).find('option:eq(0)');
@@ -111,7 +108,6 @@
      * @param str html the html for the status div
 	 */
 	function setStatus(cl,html) {
-		//console.log(html);
         statusDiv.className = cl;
 		statusDiv.innerHTML = html;
 	}
@@ -134,7 +130,6 @@
 	 * Clear the status div
 	 */
 	function clearStatus() {
-		//console.log('clear status');
         statusDiv.className = '';
 		statusDiv.innerHTML = '';
 	}
@@ -153,7 +148,6 @@
         result.setAttribute('href', data.link);
 		//result.setAttribute('data-href', data.link);
 		result.setAttribute('data-id', data.id);
-		//console.log(data);
         var badge, 
             badgeHtml = '';
         for (i=0; i<data.program_types.length; i++) {
@@ -206,15 +200,14 @@
 
 	/**
 	 * Listen for change events on the select menus
-	 * @param obj el the program finder parent element
+	 * @param obj form the js form parent element
 	 * @param obj select the select element (what you'd expect to be "this")
 	 */
 	function changeListener(form, select) {
-        var selected, i, x;
+        var selected, x;
 		showLoader();
         
         selected = getSelectedCategoryIds(form);
-        //console.log(selected);
         for (x in selected) { 
           updateQueryString(x,selected[x]);
         }
@@ -223,7 +216,6 @@
 
 	/**
 	 * Listen for change events on the select menus
-	 * @param obj el the program finder parent element
 	 * @param obj input the input text element (what you'd expect to be "this")
 	 */
 	function textSearchListener(input) {
@@ -232,7 +224,6 @@
 		updateQueryString('q', input.value);
 
 		searchTimer = window.setTimeout(function() {
-			//console.log(this.value);
 			showLoader();
 			loadPrograms();
 		}, 200);
@@ -246,17 +237,16 @@
 	 */
 	function updateQueryString(key, value) {
 		var url, regex, separator, newURL;
-		//console.log(value);
 		url = window.location.toString();
 		regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
 		separator = url.indexOf('?') !== -1 ? "&" : "?";
-		
+		        
 		if (url.match(regex)) {
-			newURL = url.replace(regex, '$1' + key + "=" + value + '$2');
+            newURL = url.replace(regex, '$1' + key + "=" + value + '$2');
 		}
 		else {
 			newURL = url + separator + key + "=" + value;
-		}
+		} 
 
 		if (history.pushState) {
 			window.history.pushState({path:newURL}, '', newURL);
@@ -266,7 +256,7 @@
 
 	/**
 	 * get the category ids from the select menus
-	 * @param obj el the program finder parent element
+	 * @param obj form the js form parent element
 	 * @return arr
 	 */
 	function getSelectedCategoryIds(form) {
@@ -277,17 +267,14 @@
         
 		for(i=0; i<selects.length; i++) {
             vals = $(selects[i]).val();
-            console.log(vals);
             
 			if( vals != null ) {
 				cats[$(selects[i]).attr('name')] = vals;
 			} else {
-                cats[$(selects[i]).attr('name')] = '';
+                cats[$(selects[i]).attr('name')] = 'all';
             }
 		}
-        
-        //console.log(cats);
-		
+        		
 		return cats;
 	}
 	
@@ -310,14 +297,13 @@
 
 	/**
 	 * Load programs from the REST API
-	 * @param obj el the program finder parent element
 	 */
 	function loadPrograms() {
 		var queryString, url, text, s, x;
 
 		queryString = getQueryString();
         
-        console.log('query string: ', queryString);
+        //console.log('query string: ', queryString);
 		
 		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category';	
         
@@ -349,7 +335,6 @@
 					success(xmlhttp.responseText);
 				}
 	 			else if (xmlhttp.status == 404) {
-	 				//alert('There was an error 404');
 					console.log('error 404 was returned');
 					setStatus('error', 'There was an error retrieving results.');
 					clearResults();
@@ -395,9 +380,7 @@
 	function handleResponse(raw) {
 		var data = JSON.parse(raw),
             i,s,t;
-        
-        //console.log(data);
-         
+                 
 		clearTimeouts();
         
         if(data.length == 0) {

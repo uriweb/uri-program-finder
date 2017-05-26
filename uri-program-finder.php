@@ -183,7 +183,7 @@ function uri_program_finder_make_form($categories) {
     
     $text_input = '<input type="text" id="search-programs" name="s" value="' . $query_value . '" placeholder="Search Programs" />';
 
-	$output = '<div class="program-finder">';
+	$output = '<div id="program-finder">';
 
 	$output .= '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
 	$output .= '<fieldset>';
@@ -230,7 +230,7 @@ function uri_program_finder_make_form($categories) {
  */
 function uri_program_finder_make_select($cat, $items, $is_multiple) {
     $m = ($is_multiple) ? 'multiple' : '';
-	$output = '<label><span>' . $cat['name'] . '</span><select name="' . $cat['slug'] . '"' . $m . '>';
+	$output = '<label><span>' . $cat['name'] . '</span><select name="' . $cat['slug'] . '" data-placeholder="Choose ' . $cat['name'] . 's" ' . $m . '>';
 	foreach($items as $item) {
 		$selected = (uri_program_finder_is_selected($item['id'], $cat['slug'])) ? ' selected="selected"' : '';
 		$output .= '<option value="' . $item['id'] . '"' . $selected . '>' . $item['name'] . '</option>';
