@@ -228,9 +228,10 @@ function uri_program_finder_make_form($categories) {
  * Turn an array into a select element
  * @return str
  */
-function uri_program_finder_make_select($cat, $items, $is_multiple) {
-    $m = ($is_multiple) ? 'multiple' : '';
-	$output = '<label><span>' . $cat['name'] . '</span><select name="' . $cat['slug'] . '" data-placeholder="Choose ' . $cat['name'] . 's" ' . $m . '>';
+function uri_program_finder_make_select($cat, $items, $is_js_form) {
+    $m = ($is_js_form) ? 'multiple' : '';
+    $n = ($is_js_form) ? $cat['slug'] : 'cat';
+	$output = '<label><span>' . $cat['name'] . '</span><select name="' . $n . '" data-placeholder="Choose ' . $cat['name'] . 's" ' . $m . '>';
 	foreach($items as $item) {
 		$selected = (uri_program_finder_is_selected($item['id'], $cat['slug'])) ? ' selected="selected"' : '';
 		$output .= '<option value="' . $item['id'] . '"' . $selected . '>' . $item['name'] . '</option>';
