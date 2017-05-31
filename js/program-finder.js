@@ -153,6 +153,7 @@
         for (i=0; i<data.program_types.length; i++) {
             switch(data.program_types[i]['slug']) {
                 case 'bachelors':
+                    // args: [css class, badge text]
                     badge = ['ba',"Bachelor's"];
                     break;
                 case 'ph-d':
@@ -166,6 +167,9 @@
                     break;
                 case 'professional-degree':
                     badge = ['pro','Professional'];
+                    break;
+                case 'undeclaredwanting':
+                    badge = ['uw','Undeclared/Wanting'];
                     break;
                 default:
                     badge = [];
