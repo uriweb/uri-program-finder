@@ -3,7 +3,7 @@
 	'use strict';
 
 	// @todo: this is probably the wrong scope for this variable
-	var resultsDiv, statusDiv;
+	var resultsDiv, statusDiv, xmlhttp, lasturl;
 	var timers = [];
 	var searchTimer; // used to put a delay on keyup to slow down search requests
 	var delay = 50; // set the delay between cards appearing on the page (in milliseconds)
@@ -15,8 +15,10 @@
 	 */
 	function initFinder() {
 		var el = document.getElementById('program-finder');
-        convertForm(el);			
-		loadPrograms(el);
+        convertForm(el);		
+		searchTimer = window.setTimeout(function() {
+			loadPrograms(el);
+		}, 200);
 	}
 
 
@@ -153,7 +155,6 @@
         for (i=0; i<data.program_types.length; i++) {
             switch(data.program_types[i]['slug']) {
                 case 'bachelors':
-                    // args: [css class, badge text]
                     badge = ['ba',"Bachelor's"];
                     break;
                 case 'ph-d':
@@ -167,9 +168,6 @@
                     break;
                 case 'professional-degree':
                     badge = ['pro','Professional'];
-                    break;
-                case 'undeclaredwanting':
-                    badge = ['uw','Undeclared/Wanting'];
                     break;
                 default:
                     badge = [];
@@ -209,7 +207,6 @@
 	 */
 	function changeListener(form, select) {
         var selected, x;
-		showLoader();
         
         selected = getSelectedCategoryIds(form);
         for (x in selected) { 
@@ -225,10 +222,8 @@
 	function textSearchListener(input) {
 		window.clearTimeout(searchTimer);
 		
-		updateQueryString('q', input.value);
-
 		searchTimer = window.setTimeout(function() {
-			showLoader();
+			updateQueryString('q', input.value);
 			loadPrograms();
 		}, 200);
 
@@ -320,7 +315,13 @@
 			url += '&s=' + queryString.q;
 		}		
 
-		fetch(url, handleResponse);
+        if(url !== lasturl) {
+            showLoader();
+            lasturl = url;
+            fetch(url, handleResponse);
+        } else {
+            console.log('same request!');
+        }
 	}
 
 
@@ -330,12 +331,12 @@
 	 * @param callback function for a successful call
 	 */
 	function fetch(url, success) {
-		var xmlhttp;
-		
+		console.log('start ' + url);
 		xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
 				if (xmlhttp.status == 200) {
+                    console.log('done ' + url);
 					success(xmlhttp.responseText);
 				}
 	 			else if (xmlhttp.status == 404) {
