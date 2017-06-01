@@ -210,14 +210,14 @@ function uri_program_finder_make_form($categories) {
     // now create the js form
     $output .= '<form class="has-js" style="display: none;">';
     $output .= $text_input;
+    $output .= '<button type="button" id="js-form-reset">Show All</button>';
+    
     foreach($categories as $c) {
         $subcats = uri_program_finder_get_children($c['id']);
         array_unshift( $subcats, array('id'=>'', 'name' => $c['name']) );
         $output .= uri_program_finder_make_select( $c, $subcats, true );
     }
     $output .= '</form';
-    
-    
 	$output .= '</div>';
 	
 	return $output;

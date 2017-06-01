@@ -63,6 +63,10 @@
 		}	
         
         initChosen(form, selects);
+        
+        form.querySelector('#js-form-reset').addEventListener('click', function () {
+            resetForm(form,textSearch,selects);
+        });
 
 	}
     
@@ -224,6 +228,29 @@
         }
 
 	}
+        
+
+    /**
+     * Clear the search form and load all programs
+     * @param obj form the js form parent element
+     * @param obj input the text search input
+     * @param obj selects the select menus
+     */
+    function resetForm(form, input, selects) {
+        input.value = '';        
+        updateQueryString('q', input.value);
+        
+        $(selects).each(function() {
+            this.selectedIndex = -1;
+            $(this).trigger('chosen:updated');
+            updateQueryString($(this).attr('name'),'any');
+        });
+        
+        $('#js-form-reset').html('Clear');
+        
+        loadPrograms();
+        
+    }
 
 	/**
 	 * Update the browser URL, and add the selection to the browser's history
@@ -242,10 +269,11 @@
 		else {
 			newURL = url + separator + key + "=" + value;
 		} 
-
+        
 		if (history.pushState) {
 			window.history.pushState({path:newURL}, '', newURL);
 		}
+        
 		
 	}
 
@@ -299,9 +327,7 @@
 		var queryString, url, text, s, x;
 
 		queryString = getQueryString();
-        
-        console.log('query string: ', queryString);
-		
+        		
 		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category';	
         
         for(x in queryString) {
