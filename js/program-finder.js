@@ -6,7 +6,7 @@
 	var resultsDiv, statusDiv, xmlhttp, lasturl;
 	var timers = [];
 	var searchTimer; // used to put a delay on keyup to slow down search requests
-	var delay = 50; // set the delay between cards appearing on the page (in milliseconds)
+	var delay = 20; // set the delay between cards appearing on the page (in milliseconds)
 	window.addEventListener('load', initFinder, false);
 	
 	
@@ -15,10 +15,13 @@
 	 */
 	function initFinder() {
 		var el = document.getElementById('program-finder');
-        convertForm(el);		
-		searchTimer = window.setTimeout(function() {
-			loadPrograms(el);
-		}, 200);
+        convertForm(el);
+        
+        // Only load programs on startup if a URL query string exists
+        var querystring = getQueryString();
+        if (querystring !== undefined) {
+            loadPrograms();
+        }
 	}
 
 
@@ -44,6 +47,9 @@
 		textSearch = form.querySelector('input[name="s"]');
 		if(textSearch) {
 			textSearch.addEventListener('keyup', function() {
+				textSearchListener(this);
+			}, false);
+            textSearch.addEventListener('blur', function() {
 				textSearchListener(this);
 			}, false);
             textSearch.focus();
@@ -187,20 +193,6 @@
 
 
 	/**
-	 * Remove a result row HTML (card)
-	 * @param str url
-	 */
-	function removeResultCard(url) {
-		var els, i;
-		els = document.querySelectorAll('.card[data-href="' + url + '"]');
-		
-		for(i=0; i<els.length; i++) {
-			els[i].parentNode.removeChild(els[i]);
-		}
-	}
-
-
-	/**
 	 * Listen for change events on the select menus
 	 * @param obj form the js form parent element
 	 * @param obj select the select element (what you'd expect to be "this")
@@ -221,11 +213,15 @@
 	 */
 	function textSearchListener(input) {
 		window.clearTimeout(searchTimer);
+        
+        if ($(input).is(':focus') == false || input.value != '') {
 		
-		searchTimer = window.setTimeout(function() {
-			updateQueryString('q', input.value);
-			loadPrograms();
-		}, 200);
+            searchTimer = window.setTimeout(function() {
+                updateQueryString('q', input.value);
+                loadPrograms();
+            }, 300);
+            
+        }
 
 	}
 
@@ -285,11 +281,13 @@
 	function getQueryString() {
 		var qs, obj, p;
 		qs = location.search.substring(1);
-		obj = qs.split("&").reduce(function(prev, curr, i, arr) {
-			p = curr.split("=");
-			prev[decodeURIComponent(p[0])] = decodeURIComponent(p[1]);
-			return prev;
-		}, {});
+        if (qs != '') {
+            obj = qs.split("&").reduce(function(prev, curr, i, arr) {
+                p = curr.split("=");
+                prev[decodeURIComponent(p[0])] = decodeURIComponent(p[1]);
+                return prev;
+            }, {});
+        }
 		return obj;
 	}
 
@@ -302,7 +300,7 @@
 
 		queryString = getQueryString();
         
-        //console.log('query string: ', queryString);
+        console.log('query string: ', queryString);
 		
 		url = URIProgramFinder.base + '/wp-json/uri-programs/v1/category';	
         
@@ -360,22 +358,6 @@
 		}
 	}
     
-    /**
-     * Cache a list of post ids from cards currently on the page
-     * @param obj cards the array of existing cards
-     */
-    function buildCache(cards) {
-        if (cards.length) {
-            var idarray = [];
-            cards.each(function(){
-                idarray.push($(this).data('id'));
-            });
-            return idarray;
-        } else {
-            return [];
-        }
-    }
-    
 	
 	/**
 	 * AJAX success callback
@@ -384,25 +366,25 @@
 	 */
 	function handleResponse(raw) {
 		var data = JSON.parse(raw),
+            dataL = data.length,
             i,s,t;
                  
 		clearTimeouts();
-        
-        if(data.length == 0) {
+                
+        if(dataL == 0) {
             clearResults();
 			noResults();
 		} else {
             
             // Set the status
-            t = (data.length != 1) ? 'programs match' : 'program matches';
-			setStatus('results', data.length + ' ' + t + ' your search.' );
+            t = (dataL != 1) ? 'programs match' : 'program matches';
+			setStatus('results', dataL + ' ' + t + ' your search.' );
             
-            var existingCards = $('#program-results .card'),
-                cache = buildCache(existingCards);
-                    
-            // If the cache has items, figure out what stays/goes
-            if (cache.length) {
-                
+            var existingCards = $('#program-results .card');
+                        
+            // If there are existing cards, figure out what stays/goes
+            if (existingCards.length) {
+                                
                 var ids = [];
                 for (i in data) {
                     ids.push(data[i]['id']);
@@ -417,7 +399,7 @@
                 
                 // Loop through new result ids, check for dups, and add cards accordingly
                 var refCard;
-                for (i=0; i<data.length; i++) {
+                for (i=0; i<dataL; i++) {
                     (function(arg) {
                         timers.push(window.setTimeout(function() {
                             refCard = $('#program-results .card').eq(arg.i);
@@ -432,9 +414,9 @@
                     }({'data': data[i], 'i': i}));
                 }
             
-            // Else there's nothing in the cache, add them all
+            // Else there's nothing in the program results, add them all
             } else { 
-                for(i=0; i<data.length; i++) {
+                for(i=0; i<dataL; i++) {
                     (function(arg) {
                         timers.push(window.setTimeout(function() {
                             resultsDiv.appendChild( createResultCard(arg.data) );
