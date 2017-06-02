@@ -41,7 +41,15 @@
     border: 1px solid #ddd;
     font-weight: 600;
     border-radius: 2px;
+    transition: border .1s ease-in-out;
 }
+
+.chosen-container-multi .chosen-choices:hover,
+.chosen-container-multi.chosen-with-drop .chosen-choices {
+    border: 1px solid #4798ea;
+}
+
+
 .chosen-container-single .chosen-single {
     height: 30px;
     line-height: 30px;
@@ -84,6 +92,7 @@
     border: none !important;
     background-color: #f3f3f3 !important;
     padding: 5px 20px 5px 6px !important;
+    width: 100% !important;
 }
 
 .chosen-container-single ul,

@@ -30,7 +30,7 @@
 	 * @param obj el the program finder parent element
 	 */
 	function convertForm(el) {
-		var form, els, selects, textSearch, firstopt;
+		var form, els, selects, textSearch, firstopt, blurs = 0;
 		
 		initResultsDiv(el);
 		initStatusDiv(el);
@@ -47,10 +47,11 @@
 		textSearch = form.querySelector('input[name="s"]');
 		if(textSearch) {
 			textSearch.addEventListener('keyup', function() {
-				textSearchListener(this);
+				textSearchListener(this, blurs);
 			}, false);
             textSearch.addEventListener('blur', function() {
-				textSearchListener(this);
+                blurs++;
+				textSearchListener(this, blurs);
 			}, false);
             textSearch.focus();
 		}
@@ -214,11 +215,12 @@
 	/**
 	 * Listen for change events on the select menus
 	 * @param obj input the input text element (what you'd expect to be "this")
+     * @param num blurs the number of input blur events
 	 */
-	function textSearchListener(input) {
+	function textSearchListener(input, blurs) {
 		window.clearTimeout(searchTimer);
         
-        if ($(input).is(':focus') == false || input.value != '') {
+        if ($(input).is(':focus') == false && blurs > 1 || input.value != '') {
 		
             searchTimer = window.setTimeout(function() {
                 updateQueryString('q', input.value);
@@ -343,8 +345,6 @@
             showLoader();
             lasturl = url;
             fetch(url, handleResponse);
-        } else {
-            console.log('same request!');
         }
 	}
 
@@ -355,12 +355,10 @@
 	 * @param callback function for a successful call
 	 */
 	function fetch(url, success) {
-		console.log('start ' + url);
 		xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
 				if (xmlhttp.status == 200) {
-                    console.log('done ' + url);
 					success(xmlhttp.responseText);
 				}
 	 			else if (xmlhttp.status == 404) {
