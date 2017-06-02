@@ -129,7 +129,7 @@
 	 * Show the loading DIV
 	 */
 	function showLoader() {
-		setStatus('loading','<span>Loading...</span>');
+		setStatus('loading','<span class="spinner"><span></span></span><div>Loading...</div>');
 	}
     
     /**
