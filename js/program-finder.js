@@ -157,7 +157,7 @@
 		var result, i;
         
 		result = document.createElement('a');
-		result.setAttribute('class', 'card');
+		result.setAttribute('class', 'cl-card');
         result.setAttribute('href', data.link);
 		//result.setAttribute('data-href', data.link);
 		result.setAttribute('data-id', data.id);
@@ -404,7 +404,7 @@
             t = (dataL != 1) ? 'programs match' : 'program matches';
 			setStatus('results', dataL + ' ' + t + ' your search.' );
             
-            var existingCards = $('#program-results .card');
+            var existingCards = $('#program-results .cl-card');
                         
             // If there are existing cards, figure out what stays/goes
             if (existingCards.length) {
@@ -426,7 +426,7 @@
                 for (i=0; i<dataL; i++) {
                     (function(arg) {
                         timers.push(window.setTimeout(function() {
-                            refCard = $('#program-results .card').eq(arg.i);
+                            refCard = $('#program-results .cl-card').eq(arg.i);
                             if ( refCard.length ) {
                                 if ( arg.data['id'] != refCard.data('id') ) {
                                     refCard.before( createResultCard(arg.data) );
