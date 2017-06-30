@@ -191,7 +191,7 @@
         result.innerHTML = data.image;
         result.innerHTML += '<ul class="badges">' + badgeHtml + '</ul>';
 		result.innerHTML += '<h1>' + data.title + '</h1>';
-		result.innerHTML += '<span class="button">Explore</span>';
+		result.innerHTML += '<span class="cl-button">Explore</span>';
                                 
 		return result;
 	}
