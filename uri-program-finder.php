@@ -177,8 +177,8 @@ function uri_program_finder_make_form($categories) {
 
 	// get the search string value from the url
 	$query_value = '';
-	if( isset($_GET['q'])) {
-		$query_value = sanitize_title ( $_GET['q'] );
+	if( isset($_GET['terms'])) {
+		$query_value = sanitize_title ( $_GET['terms'] );
 	}
     
     $text_input = '<input type="text" id="search-programs" name="s" value="' . $query_value . '" placeholder="Search Programs" />';

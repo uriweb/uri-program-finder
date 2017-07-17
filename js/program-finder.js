@@ -223,7 +223,7 @@
         if ($(input).is(':focus') == false && blurs > 1 || input.value != '') {
 		
             searchTimer = window.setTimeout(function() {
-                updateQueryString('q', input.value);
+                updateQueryString('terms', input.value);
                 loadPrograms();
             }, 300);
             
@@ -240,7 +240,7 @@
      */
     function resetForm(form, input, selects) {
         input.value = '';        
-        updateQueryString('q', input.value);
+        updateQueryString('terms', input.value);
         
         $(selects).each(function() {
             this.selectedIndex = -1;
@@ -318,6 +318,7 @@
                 return prev;
             }, {});
         }
+        console.log(obj);
 		return obj;
 	}
 
@@ -337,8 +338,8 @@
             url += s + x + '=' + queryString[x];
         }
 		
-		if(queryString.q) {
-			url += '&s=' + queryString.q;
+		if(queryString.terms) {
+			url += '&s=' + queryString.terms;
 		}		
 
         if(url !== lasturl) {
