@@ -318,7 +318,6 @@
                 return prev;
             }, {});
         }
-        console.log(obj);
 		return obj;
 	}
 
