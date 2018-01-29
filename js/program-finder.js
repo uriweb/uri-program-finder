@@ -190,9 +190,9 @@
         
         result.innerHTML = data.image;
         result.innerHTML += '<ul class="badges">' + badgeHtml + '</ul>';
-		result.innerHTML += '<h1>' + data.title + '</h1>';
-		result.innerHTML += '<span class="cl-button">Explore</span>';
-                                
+        result.innerHTML += '<div class="cl-card-text"><h3>' + data.title + '</h3></div>';
+        result.innerHTML += '<div class="cl-button">Explore</div>';
+                                        
 		return result;
 	}
 
