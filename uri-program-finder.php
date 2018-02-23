@@ -418,7 +418,7 @@ function uri_program_finder_post_type_maker() {
 		'query_var' => true,
 		'has_archive' => true,
 		'exclude_from_search' => false,
-		'supports' => array('title','thumbnail','revisions','author'), // perhaps 'editor', 'excerpt'
+		'supports' => array('title','editor','excerpt','thumbnail','revisions','author'), // perhaps 'editor', 'excerpt'
 		'labels' => array (
 			'name' => 'Program',
 			'singular_name' => 'Programs',
