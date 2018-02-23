@@ -3,7 +3,7 @@
 Plugin Name: URI Program Finder
 Plugin URI: http://www.uri.edu
 Description: Program finder tools
-Version: 1.0
+Version: 1.1.0
 Author: URI Web Communications
 Author URI: 
 @author: John Pennypacker <jpennypacker@uri.edu>
