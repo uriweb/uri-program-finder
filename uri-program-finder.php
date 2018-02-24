@@ -42,12 +42,12 @@ function uri_program_finder_scripts() {
 	wp_register_script( $plugin_handle, plugins_url( '/js/program-finder.js', __FILE__ ) );
 	wp_localize_script( $plugin_handle, 'URIProgramFinder', $values );
     
-    $chosen_handle = 'uri-program-finder-chosen-js';
-    wp_register_script( $chosen_handle, plugins_url( '/chosen/chosen.jquery.min.js', __FILE__ ) );
+	$chosen_handle = 'uri-program-finder-chosen-js';
+	wp_register_script( $chosen_handle, plugins_url( '/chosen/chosen.jquery.min.js', __FILE__ ) );
 	
 	// For either a plugin or a theme, you can then enqueue the script:
 	wp_enqueue_script( $plugin_handle );
-    wp_enqueue_script( $chosen_handle );
+	wp_enqueue_script( $chosen_handle );
 }
 
 
@@ -55,11 +55,11 @@ function uri_program_finder_scripts() {
  * Loads up the css
  */
 function uri_program_finder_styles() {
-    wp_register_style( 'uri-program-finder-chosen-css', plugins_url( '/chosen/chosen.min.css', __FILE__ ) );
-    wp_register_style( 'uri-program-finder-chosen-css-customize', plugins_url( '/css/chosen.customize.css', __FILE__ ) );
-    
-    wp_enqueue_style( 'uri-program-finder-chosen-css' );
-    wp_enqueue_style( 'uri-program-finder-chosen-css-customize' );
+	wp_register_style( 'uri-program-finder-chosen-css', plugins_url( '/chosen/chosen.min.css', __FILE__ ) );
+	wp_register_style( 'uri-program-finder-chosen-css-customize', plugins_url( '/css/chosen.customize.css', __FILE__ ) );
+
+	wp_enqueue_style( 'uri-program-finder-chosen-css' );
+	wp_enqueue_style( 'uri-program-finder-chosen-css-customize' );
 }
 
 

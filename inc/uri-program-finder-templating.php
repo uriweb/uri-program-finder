@@ -1,6 +1,7 @@
 <?php
 /**
  * Code to find the appropriate template
+ * This allows templates to be included with the plugin, but overridden by a theme.
  */
 
 // Block direct requests

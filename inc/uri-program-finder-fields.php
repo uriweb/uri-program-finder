@@ -155,8 +155,8 @@ if(function_exists("register_field_group"))
 				'name' => 'apply',
 				'type' => 'select',
 				'choices' => array (
-					'undergraduate' => 'Undergraduate',
-					'graduate' => 'Graduate',
+					'https://apply.commonapp.org/Login?ma=376&tref=program-finder' => 'Undergraduate',
+					'https://web.uri.edu/graduate-school/admission/' => 'Graduate',
 				),
 				'default_value' => 'undergraduate',
 				'allow_null' => 0,

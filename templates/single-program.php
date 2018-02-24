@@ -1,10 +1,10 @@
 <?php
 /**
- * The template for displaying all single posts
+ * The template for displaying single programs
+ * If you'd like to customize this file, copy it to your theme, and make changes in your theme.
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
  *
- * @package uri-modern
  */
 
 get_header();
@@ -40,10 +40,58 @@ get_header();
 								'after'  => '</div>',
 							) );
 						?>
-						
-					<?php if(get_field('department_website')) { ?>
-						<a href="<?php the_field('department_website'); ?>">Department Website</a>
+
+					<?php if( $time_to_completion = get_field('time_to_completion') ) { ?>
+						<div class="time-to-completion">
+							<h3>Time to Completion</h3>
+							<?php print $time_to_completion; ?>
+						</div>
 					<?php } ?>
+
+					<?php if( $application_deadline = get_field('application_deadline') ) { ?>
+						<div class="application-deadline">
+							<h3>Application Deadline</h3>
+							<?php print $application_deadline; ?>
+						</div>
+					<?php } ?>
+
+						
+					<?php if( $department_website = get_field('department_website') ) { ?>
+						<div class="department-website">
+							<a href="<?php print $department_website; ?>">Department Website</a>
+						</div>
+					<?php } ?>
+
+					<?php if( $catalog_info = get_field('catalog_info') ) { ?>
+						<div class="catalog-info">
+							<a href="<?php print $catalog_info; ?>">Catalog Information</a>
+						</div>
+					<?php } ?>
+
+					<?php if( $course_descriptions = get_field('course_descriptions') ) { ?>
+						<div class="course-descriptions">
+							<a href="<?php print $course_descriptions; ?>">Course Descriptions</a>
+						</div>
+					<?php } ?>
+
+					<?php if( $course_schedule = get_field('course_schedule') ) { ?>
+						<div class="course-schedule">
+							<a href="<?php print $course_schedule; ?>">Course Schedule</a>
+						</div>
+					<?php } ?>
+
+					<?php if( $admission_info = get_field('admission_info') ) { ?>
+						<div class="admission-info">
+							<a href="<?php print $admission_info; ?>">Admission Information</a>
+						</div>
+					<?php } ?>
+
+					<?php if( $apply = get_field('apply') ) { ?>
+						<div class="apply">
+							<a href="<?php print $apply; ?>">Apply</a>
+						</div>
+					<?php } ?>
+
 
 					</div><!-- .entry-content -->
 
