@@ -25,6 +25,22 @@ get_header();
 						?>
 					</header><!-- .entry-header -->
 
+
+					<div class="featured-image">
+						<figure>
+
+							<?php
+								$width = ( is_single() ) ? 1200 : 300 ;
+								the_post_thumbnail( array( $width, NULL ) );
+
+								$figcaption = get_the_post_thumbnail_caption();
+								if ( ( is_single() || is_page() ) && !empty( $figcaption ) ):
+							?>
+							<figcaption class="wp-caption"><?php print $figcaption; ?></figcpation>
+							<?php endif; ?>
+						</figure>
+					</div>
+
 		
 					<div class="entry-content">
 						<?php
