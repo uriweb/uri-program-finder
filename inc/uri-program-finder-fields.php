@@ -3,12 +3,16 @@
  * Define the custom post type, its taxonomy, and its fields.
  */
 
+// Block direct requests
+if ( !defined('ABSPATH') )
+	die('-1');
+
 
 /**
  * Declare the custom post type
  */
 
-function uri_program_finder_post_type_maker() {
+function uri_program_finder_create_program_post_type() {
 
 	register_post_type('program', array(
 		'label' => 'Program',
@@ -43,8 +47,16 @@ function uri_program_finder_post_type_maker() {
 		'menu_icon'   => 'dashicons-welcome-learn-more',
 	));
 
+	uri_program_finder_create_taxonomy();
+
+}
+add_action('init', 'uri_program_finder_create_program_post_type');
 
 
+/**
+ * Create a custom career taxonomy for programs
+ */
+function uri_program_finder_create_taxonomy() {
 	$taxonomy_args = array(
 		'hierarchical' => false,
 		'labels' => array(
@@ -73,10 +85,7 @@ function uri_program_finder_post_type_maker() {
 	);
 	
 	register_taxonomy('careers', array( 'program' ), $taxonomy_args);
-
-
 }
-add_action('init', 'uri_program_finder_post_type_maker');
 
 
 

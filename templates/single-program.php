@@ -10,14 +10,9 @@
 get_header();
 ?>
 
-    <main id="main" class="site-main" role="main">
+	<main id="main" class="site-main" role="main">
         
-
-
-        <?php
-        while ( have_posts() ) : the_post();
-        ?>
-
+		<?php while ( have_posts() ) : the_post(); ?>
 
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 					<header class="entry-header">
@@ -27,15 +22,6 @@ get_header();
 						else :
 							the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
 						endif;
-						?>
-						<?php
-						/*
-						<?php if ( 'post' === get_post_type() ) : ?>
-						<div class="entry-meta">
-							<?php uri_modern_posted_on(); ?>
-						</div><!-- .entry-meta -->
-						<?php endif; ?>
-						*/
 						?>
 					</header><!-- .entry-header -->
 
@@ -54,30 +40,26 @@ get_header();
 								'after'  => '</div>',
 							) );
 						?>
-
-					<?php if(get_field('department_website')) { ?>
-
-						<a href="<?php the_field('department_website'); ?>">Department Website</a>
 						
+					<?php if(get_field('department_website')) { ?>
+						<a href="<?php the_field('department_website'); ?>">Department Website</a>
 					<?php } ?>
 
 					</div><!-- .entry-content -->
 
 
 					<?php
-
-
             the_post_navigation();
 
             // If comments are open or we have at least one comment, load up the comment template.
             if ( comments_open() || get_comments_number() ) :
                 comments_template();
             endif;
+          ?>
+          
+		<?php endwhile; // End of the loop. ?>
 
-        endwhile; // End of the loop.
-        ?>
-
-    </main><!-- #main -->
+	</main><!-- #main -->
 
 <?php
 get_footer();
