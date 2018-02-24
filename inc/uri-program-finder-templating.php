@@ -27,7 +27,6 @@ function uri_program_finder_template_loader( $template ) {
 	if ( is_single() && get_post_type() === 'program' ) {
 	
 		// if it's a people page, then override $template with the custom one
-		// use "people" instead of "person" for backwards compatability.
 		$file = 'single-program.php';
 
 		if ( file_exists( uri_program_finder_locate_template( $file ) ) ) {
@@ -50,7 +49,7 @@ add_filter( 'template_include', 'uri_program_finder_template_loader', 99 );
  * Search Order:
  * 1. /themes/theme/templates/$template_name
  * 2. /themes/theme/$template_name
- * 3. /plugins/uri-people-tool/templates/$template_name.
+ * 3. /plugins/uri-program-finder/templates/$template_name.
  *
  * http://jeroensormani.com/how-to-add-template-files-in-your-plugin/
  *
