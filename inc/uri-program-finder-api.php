@@ -24,7 +24,7 @@ function uri_program_finder_api_callback( $data ) {
 	$location = uri_program_sanitize_ids($data['location']);
 	
 	$args = array(
-		'post_type' => 'post',
+		'post_type' => 'program',
 		's' => $search,
 		'orderby' => 'title',
 		'order' => 'ASC',
