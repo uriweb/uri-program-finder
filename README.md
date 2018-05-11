@@ -1,4 +1,4 @@
-# URI AutoUpdater
+# URI Program Finder
 
 Add [programs-categories] to a page and a form magically appears.
 
