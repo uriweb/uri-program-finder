@@ -16,7 +16,7 @@ if ( !defined('ABSPATH') )
  *
  * The template loader will check if WP is loading a template
  * for a specific Post Type and will try to load the template
- * from out 'templates' directory.
+ * from out 'template-parts' directory.
  *
  *
  * @param	string	$template	Template file that is being loaded.
@@ -47,9 +47,9 @@ add_filter( 'template_include', 'uri_program_finder_template_loader', 99 );
  *
  * Locate the called template.
  * Search Order:
- * 1. /themes/theme/templates/$template_name
+ * 1. /themes/theme/template-parts/$template_name
  * 2. /themes/theme/$template_name
- * 3. /plugins/uri-program-finder/templates/$template_name.
+ * 3. /plugins/uri-program-finder/template-parts/$template_name.
  *
  * http://jeroensormani.com/how-to-add-template-files-in-your-plugin/
  *
@@ -66,12 +66,12 @@ function uri_program_finder_locate_template( $template_name, $template_path = ''
 
 	// Set variable to search in woocommerce-plugin-templates folder of theme.
 	if ( ! $template_path ) :
-		$template_path = 'templates/';
+		$template_path = 'template-parts/';
 	endif;
 
 	// Set default plugin templates path.
 	if ( ! $default_path ) :
-		$default_path = URI_PROGRAM_FINDER_PATH . 'templates/'; // Path to the template folder
+		$default_path = URI_PROGRAM_FINDER_PATH . 'template-parts/'; // Path to the template folder
 	endif;
 
 	// Search template file in theme folder.
