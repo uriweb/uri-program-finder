@@ -1,56 +1,60 @@
 <?php
 /**
  * Define the custom post type, its taxonomy, and its fields.
+ *
+ * @package uri-program-finder
  */
 
 // Block direct requests
-if ( !defined('ABSPATH') )
-	die('-1');
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 
 /**
  * Declare the custom post type
  */
-
 function uri_program_finder_create_program_post_type() {
 
-	register_post_type('program', array(
-		'label' => 'Program',
-		'description' => 'Majors, etc.',
-		'public' => true,
-		'show_ui' => true,
-		'show_in_menu' => true,
-		'capability_type' => 'post',
-		'hierarchical' => true,
-		'rewrite' => array('slug' => 'program'),
-		'query_var' => true,
-		'has_archive' => true,
-		'exclude_from_search' => false,
-		'supports' => array('title','editor','excerpt','thumbnail','revisions','author'),
-		'taxonomies' => array('post_tag', 'category', 'careers' ),
-		'labels' => array (
-			'name' => 'Program',
-			'singular_name' => 'Programs',
-			'menu_name' => 'Programs',
-			'add_new' => 'Add Program',
-			'add_new_item' => 'Add New Program',
-			'edit' => 'Edit',
-			'edit_item' => 'Edit Program',
-			'new_item' => 'New Program',
-			'view' => 'View Program',
-			'view_item' => 'View Program',
-			'search_items' => 'Search Program',
-			'not_found' => 'No Programs Found',
-			'not_found_in_trash' => 'No Programs Found in Trash',
-			'parent' => 'Parent Program',
-		),
-		'menu_icon'   => 'dashicons-welcome-learn-more',
-	));
+	register_post_type(
+		'program', array(
+			'label' => 'Program',
+			'description' => 'Majors, etc.',
+			'public' => true,
+			'show_ui' => true,
+			'show_in_menu' => true,
+			'capability_type' => 'post',
+			'hierarchical' => true,
+			'rewrite' => array( 'slug' => 'program' ),
+			'query_var' => true,
+			'has_archive' => true,
+			'exclude_from_search' => false,
+			'supports' => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'author' ),
+			'taxonomies' => array( 'post_tag', 'category', 'careers' ),
+			'labels' => array(
+				'name' => 'Program',
+				'singular_name' => 'Programs',
+				'menu_name' => 'Programs',
+				'add_new' => 'Add Program',
+				'add_new_item' => 'Add New Program',
+				'edit' => 'Edit',
+				'edit_item' => 'Edit Program',
+				'new_item' => 'New Program',
+				'view' => 'View Program',
+				'view_item' => 'View Program',
+				'search_items' => 'Search Program',
+				'not_found' => 'No Programs Found',
+				'not_found_in_trash' => 'No Programs Found in Trash',
+				'parent' => 'Parent Program',
+			),
+			'menu_icon'   => 'dashicons-welcome-learn-more',
+		)
+		);
 
 	uri_program_finder_create_taxonomy();
 
 }
-add_action('init', 'uri_program_finder_create_program_post_type');
+add_action( 'init', 'uri_program_finder_create_program_post_type' );
 
 
 /**
@@ -80,11 +84,11 @@ function uri_program_finder_create_taxonomy() {
 		'show_ui' => true,
 		'show_admin_column' => true,
 		'query_var' => true,
-		'rewrite' => array('slug' => 'career'),
-		'singular_label' => 'Career'
+		'rewrite' => array( 'slug' => 'career' ),
+		'singular_label' => 'Career',
 	);
-	
-	register_taxonomy('careers', array( 'program' ), $taxonomy_args);
+
+	register_taxonomy( 'careers', array( 'program' ), $taxonomy_args );
 }
 
 
@@ -93,124 +97,124 @@ function uri_program_finder_create_taxonomy() {
  * Define the custom fields
  */
 
-if(function_exists("register_field_group"))
-{
-	register_field_group(array (
-		'id' => 'acf_program-fields',
-		'title' => 'Program Fields',
-		'fields' => array (
-			array (
-				'key' => 'field_5a907505aed60',
-				'label' => 'Department Website',
-				'name' => 'department_website',
-				'type' => 'text',
-				'default_value' => '',
-				'placeholder' => 'https://uri.edu/department',
-				'prepend' => '',
-				'append' => '',
-				'formatting' => 'none',
-				'maxlength' => '',
-			),
-			array (
-				'key' => 'field_5a90756aaed61',
-				'label' => 'Catalog Info',
-				'name' => 'catalog_info',
-				'type' => 'text',
-				'instructions' => 'Enter the URL of the corresponding catalog page.',
-				'default_value' => '',
-				'placeholder' => 'https://web.uri.edu/catalog/music/',
-				'prepend' => '',
-				'append' => '',
-				'formatting' => 'html',
-				'maxlength' => '',
-			),
-			array (
-				'key' => 'field_5a9076e700469',
-				'label' => 'Course Descriptions',
-				'name' => 'course_descriptions',
-				'type' => 'text',
-				'default_value' => '',
-				'placeholder' => '',
-				'prepend' => '',
-				'append' => '',
-				'formatting' => 'html',
-				'maxlength' => '',
-			),
-			array (
-				'key' => 'field_5a907649020b1',
-				'label' => 'Admission Info',
-				'name' => 'admission_info',
-				'type' => 'text',
-				'instructions' => 'URL to admission information',
-				'default_value' => 'https://uri.edu/admission',
-				'placeholder' => '',
-				'prepend' => '',
-				'append' => '',
-				'formatting' => 'html',
-				'maxlength' => '',
-			),
-			array (
-				'key' => 'field_5a907670020b2',
-				'label' => 'Apply',
-				'name' => 'apply',
-				'type' => 'select',
-				'choices' => array (
-					'https://apply.commonapp.org/Login?ma=376&tref=program-finder' => 'Undergraduate',
-					'https://web.uri.edu/graduate-school/admission/' => 'Graduate',
+if ( function_exists( 'register_field_group' ) ) {
+	register_field_group(
+		array(
+			'id' => 'acf_program-fields',
+			'title' => 'Program Fields',
+			'fields' => array(
+				array(
+					'key' => 'field_5a907505aed60',
+					'label' => 'Department Website',
+					'name' => 'department_website',
+					'type' => 'text',
+					'default_value' => '',
+					'placeholder' => 'https://uri.edu/department',
+					'prepend' => '',
+					'append' => '',
+					'formatting' => 'none',
+					'maxlength' => '',
 				),
-				'default_value' => 'undergraduate',
-				'allow_null' => 0,
-				'multiple' => 0,
-			),
-			array (
-				'key' => 'field_5a9077420046a',
-				'label' => 'Course Schedule',
-				'name' => 'course_schedule',
-				'type' => 'text',
-				'instructions' => 'I\'m sorry.',
-				'default_value' => 'https://uri.edu/course-schedule',
-				'placeholder' => '',
-				'prepend' => '',
-				'append' => '',
-				'formatting' => 'html',
-				'maxlength' => '',
-			),
-			array (
-				'key' => 'field_5a9078363b98f',
-				'label' => 'Time to Completion',
-				'name' => 'time_to_completion',
-				'type' => 'wysiwyg',
-				'default_value' => '',
-				'toolbar' => 'full',
-				'media_upload' => 'no',
-			),
-			array (
-				'key' => 'field_5a90787f3b990',
-				'label' => 'Application Deadline',
-				'name' => 'application_deadline',
-				'type' => 'wysiwyg',
-				'default_value' => '',
-				'toolbar' => 'full',
-				'media_upload' => 'no',
-			),
-		),
-		'location' => array (
-			array (
-				array (
-					'param' => 'post_type',
-					'operator' => '==',
-					'value' => 'program',
-					'order_no' => 0,
-					'group_no' => 0,
+				array(
+					'key' => 'field_5a90756aaed61',
+					'label' => 'Catalog Info',
+					'name' => 'catalog_info',
+					'type' => 'text',
+					'instructions' => 'Enter the URL of the corresponding catalog page.',
+					'default_value' => '',
+					'placeholder' => 'https://web.uri.edu/catalog/music/',
+					'prepend' => '',
+					'append' => '',
+					'formatting' => 'html',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5a9076e700469',
+					'label' => 'Course Descriptions',
+					'name' => 'course_descriptions',
+					'type' => 'text',
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'formatting' => 'html',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5a907649020b1',
+					'label' => 'Admission Info',
+					'name' => 'admission_info',
+					'type' => 'text',
+					'instructions' => 'URL to admission information',
+					'default_value' => 'https://uri.edu/admission',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'formatting' => 'html',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5a907670020b2',
+					'label' => 'Apply',
+					'name' => 'apply',
+					'type' => 'select',
+					'choices' => array(
+						'https://apply.commonapp.org/Login?ma=376&tref=program-finder' => 'Undergraduate',
+						'https://web.uri.edu/graduate-school/admission/' => 'Graduate',
+					),
+					'default_value' => 'undergraduate',
+					'allow_null' => 0,
+					'multiple' => 0,
+				),
+				array(
+					'key' => 'field_5a9077420046a',
+					'label' => 'Course Schedule',
+					'name' => 'course_schedule',
+					'type' => 'text',
+					'instructions' => 'I\'m sorry.',
+					'default_value' => 'https://uri.edu/course-schedule',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'formatting' => 'html',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5a9078363b98f',
+					'label' => 'Time to Completion',
+					'name' => 'time_to_completion',
+					'type' => 'wysiwyg',
+					'default_value' => '',
+					'toolbar' => 'full',
+					'media_upload' => 'no',
+				),
+				array(
+					'key' => 'field_5a90787f3b990',
+					'label' => 'Application Deadline',
+					'name' => 'application_deadline',
+					'type' => 'wysiwyg',
+					'default_value' => '',
+					'toolbar' => 'full',
+					'media_upload' => 'no',
 				),
 			),
-		),
-		'options' => array (
-			'position' => 'normal',
-			'layout' => 'default',
-			'hide_on_screen' => array (
+			'location' => array(
+				array(
+					array(
+						'param' => 'post_type',
+						'operator' => '==',
+						'value' => 'program',
+						'order_no' => 0,
+						'group_no' => 0,
+					),
+				),
 			),
-		),
-		'menu_order' => 0,
-	));
+			'options' => array(
+				'position' => 'normal',
+				'layout' => 'default',
+				'hide_on_screen' => array(),
+			),
+			'menu_order' => 0,
+		)
+		);
 }

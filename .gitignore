@@ -1,0 +1,4 @@
+.DS_Store
+.jshintignore
+node_modules
+work_files
