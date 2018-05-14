@@ -221,7 +221,7 @@ function uri_program_finder_make_form( $categories ) {
 	// now create the js form
 	$output .= '<form class="has-js" style="display: none;">';
 	$output .= $text_input;
-	$output .= '<button type="button" id="js-form-reset">Show All</button>';
+	$output .= '<button type="button" id="js-form-reset">Clear</button>';
 
 	foreach ( $categories as $c ) {
 		$subcats = uri_program_finder_get_children( $c['id'] );

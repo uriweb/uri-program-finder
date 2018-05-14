@@ -18,11 +18,10 @@
 		el = document.getElementById( 'program-finder' );
 		convertForm( el );
 
-		// Only load programs on startup if a URL query string exists
-		querystring = getQueryString();
-		if ( undefined != querystring ) {
-			loadPrograms();
-		}
+		// Load up the programs.
+		updateQueryString( 'terms', '' );
+		loadPrograms();
+
 	}
 
 	/**
@@ -260,8 +259,6 @@
 				updateQueryString( $( this ).attr( 'name' ), 'any' );
 			}
 			);
-
-		$( '#js-form-reset' ).html( 'Clear' );
 
 		loadPrograms();
 
