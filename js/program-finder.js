@@ -13,7 +13,7 @@
 	 * Find program finder and set it up to be awesome.
 	 */
 	function initFinder() {
-		var el, querystring;
+		var el;
 
 		el = document.getElementById( 'program-finder' );
 		convertForm( el );
@@ -87,7 +87,7 @@
 		for ( i = 0; i < selects.length; i++ ) {
 			$( selects[i] ).chosen().on(
 				 'change', function() {
-					changeListener( form, this );
+					changeListener( form );
 				 }
 				);
 		}
@@ -149,14 +149,6 @@
 	}
 
 	/**
-	 * Clear the status div
-	 */
-	function clearStatus() {
-		statusDiv.className = '';
-		statusDiv.innerHTML = '';
-	}
-
-	/**
 	 * Create a result row's HTML
 	 *
 	 * @param obj data
@@ -207,9 +199,8 @@
 	 * Listen for change events on the select menus
 	 *
 	 * @param obj form the js form parent element
-	 * @param obj select the select element (what you'd expect to be "this")
 	 */
-	function changeListener( form, select ) {
+	function changeListener( form ) {
 		var selected, x;
 
 		selected = getSelectedCategoryIds( form );
@@ -326,7 +317,7 @@
 
 		if ( '' != qs ) {
 			obj = qs.split( '&' ).reduce(
-				function( prev, curr, i, arr ) {
+				function( prev, curr, i ) {
 					p = curr.split( '=' );
 					prev[decodeURIComponent( p[0] )] = decodeURIComponent( p[1] );
 					return prev;
@@ -340,7 +331,7 @@
 	 * Load programs from the REST API
 	 */
 	function loadPrograms() {
-		var queryString, url, text, s, x;
+		var queryString, url, s, x;
 
 		queryString = getQueryString();
 
@@ -405,7 +396,7 @@
 	function handleResponse( raw ) {
 		var data = JSON.parse( raw ),
 			dataL = data.length,
-			existingCards, refCard, ids, i, s, t;
+			existingCards, refCard, ids, i, t;
 
 		clearTimeouts();
 
