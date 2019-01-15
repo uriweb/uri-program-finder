@@ -90,34 +90,3 @@ function uri_program_finder_locate_template( $template_name, $template_path = ''
 	return apply_filters( 'uri_program_finder_locate_template', $template, $template_name, $template_path, $default_path );
 
 }
-
-/**
- * Get template.
- *
- * Search for the template and include the file.
- *
- * @since 1.0.0
- *
- * @see wcpt_locate_template()
- *
- * @param string $template_name          Template to load.
- * @param array  $args                   Args passed for the template file.
- * @param string $template_path          Path to templates.
- * @param string $default_path           Default path to template files.
- */
-function uri_program_finder_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
-
-	if ( is_array( $args ) && isset( $args ) ) :
-		extract( $args );
-	endif;
-
-	$template_file = uri_program_finder_locate_template( $template_name, $template_path, $default_path );
-
-	if ( ! file_exists( $template_file ) ) :
-		_doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template_file ), '1.0.0' );
-		return;
-	endif;
-
-	include $template_file;
-}
-
