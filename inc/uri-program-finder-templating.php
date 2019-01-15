@@ -119,6 +119,5 @@ function uri_program_finder_get_template( $template_name, $args = array(), $temp
 	endif;
 
 	include $template_file;
-
 }
 

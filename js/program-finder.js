@@ -46,15 +46,19 @@
 		textSearch = form.querySelector( 'input[name="s"]' );
 		if ( textSearch ) {
 			textSearch.addEventListener(
-				'keyup', function() {
+				'keyup',
+				function() {
 					textSearchListener( this, blurs );
-				}, false
+				},
+				false
 				);
 			textSearch.addEventListener(
-				'blur', function() {
+				'blur',
+				function() {
 					blurs++;
 					textSearchListener( this, blurs );
-				}, false
+				},
+				false
 				);
 			textSearch.focus();
 		}
@@ -69,7 +73,8 @@
 		initChosen( form, selects );
 
 		form.querySelector( '#js-form-reset' ).addEventListener(
-			'click', function() {
+			'click',
+			function() {
 				resetForm( form, textSearch, selects );
 			}
 			);
@@ -86,7 +91,8 @@
 		var i;
 		for ( i = 0; i < selects.length; i++ ) {
 			$( selects[i] ).chosen().on(
-				 'change', function() {
+				 'change',
+				function() {
 					changeListener( form );
 				 }
 				);
@@ -225,7 +231,8 @@
 				function() {
 					updateQueryString( 'terms', input.value );
 					loadPrograms();
-				}, 300
+				},
+				300
 				);
 
 		}
@@ -321,7 +328,8 @@
 					p = curr.split( '=' );
 					prev[decodeURIComponent( p[0] )] = decodeURIComponent( p[1] );
 					return prev;
-				}, {}
+				},
+				{}
 				);
 		}
 		return obj;
@@ -442,7 +450,8 @@
 								} else {
 									resultsDiv.appendChild( createResultCard( arg.data ) );
 								}
-							}, ( delay * arg.i )
+							},
+								( delay * arg.i )
 							)
 							);
 					}({ 'data': data[i], 'i': i }) );
@@ -456,7 +465,8 @@
 							window.setTimeout(
 							function() {
 								resultsDiv.appendChild( createResultCard( arg.data ) );
-							}, ( delay * arg.i )
+							},
+								( delay * arg.i )
 							)
 							);
 					}({ 'data': data[i], 'i': i }) );

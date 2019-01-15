@@ -17,7 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function uri_program_finder_create_program_post_type() {
 
 	register_post_type(
-		'program', array(
+		'program',
+		array(
 			'label' => 'Program',
 			'description' => 'Majors, etc.',
 			'public' => true,
