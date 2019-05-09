@@ -12,24 +12,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-
-
 /**
  * Template loader.
  *
  * The template loader will check if WP is loading a template
  * for a specific Post Type and will try to load the template
- * from out 'template-parts' directory.
+ * from out 'templates' directory.
  *
  * @param   string $template    Template file that is being loaded.
  * @return  string              Template file that should be loaded.
  */
 function uri_program_finder_template_loader( $template ) {
-
+	
 	if ( is_single() && get_post_type() === 'program' ) {
-
+	
 		// if it's a people page, then override $template with the custom one
-		$file = 'single-program.php';
+		if( is_embed() ) {
+			$file = 'embed-program.php';
+		} else {
+			$file = 'single-program.php';
+		}
 
 		if ( file_exists( uri_program_finder_locate_template( $file ) ) ) {
 			$template = uri_program_finder_locate_template( $file );
