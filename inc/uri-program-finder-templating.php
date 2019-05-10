@@ -26,7 +26,7 @@ function uri_program_finder_template_loader( $template ) {
 	
 	if ( is_single() && get_post_type() === 'program' ) {
 	
-		// if it's a people page, then override $template with the custom one
+		// if it's a program page, then override $template with the custom one
 		if( is_embed() ) {
 			$file = 'embed-program.php';
 		} else {
