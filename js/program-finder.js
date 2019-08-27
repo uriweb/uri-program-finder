@@ -161,7 +161,7 @@
 	 * @return obj HTML element
 	 */
 	function createResultCard( data ) {
-		var result, i, badge, badgeHtml = '';
+		var result, i, badge, badgeHtml = '', html;
 
 		result = document.createElement( 'a' );
 		result.setAttribute( 'class', 'cl-card' );
@@ -193,10 +193,12 @@
 			}
 		}
 
-		result.innerHTML = data.image;
-		result.innerHTML += '<ul class="badges">' + badgeHtml + '</ul>';
-		result.innerHTML += '<div class="cl-card-text"><h3>' + data.title + '</h3></div>';
-		result.innerHTML += '<div class="cl-button">Explore</div>';
+		html = data.image;
+		html += '<ul class="badges">' + badgeHtml + '</ul>';
+		html += '<div class="cl-card-text"><h3>' + data.title + '</h3></div>';
+		html += '<div class="cl-button">Explore</div>';
+
+		result.innerHTML = html;
 
 		return result;
 	}
