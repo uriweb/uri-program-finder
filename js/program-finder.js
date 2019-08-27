@@ -63,6 +63,14 @@
 			textSearch.focus();
 		}
 
+		form.addEventListener( 'keydown', function( e ) {
+			var k = e.keyCode || e.which || 0;
+			if ( 13 == k ) {
+				e.preventDefault();
+				textSearch.blur();
+			}
+		});
+
 		selects = form.querySelectorAll( 'select' );
 
 		for ( i = 0; i < selects.length; i++ ) {
