@@ -19,8 +19,9 @@
 		convertForm( el );
 
 		// Load up the programs.
-		updateQueryString( 'terms', '' );
-		loadPrograms();
+		if ( getQueryString().terms == null ) {
+			updateQueryString( 'terms', '' );
+		}
 
 	}
 
