@@ -126,10 +126,12 @@ function uri_program_finder_register_api() {
 	// accept category IDs and allow commas to delinieate multiple integers
 	// register_rest_route( 'uri-programs/v1', '/category/(?P<id>[\d,]+)', array(
 	register_rest_route(
-	   'uri-programs/v1', '/category', array(
-		   'methods' => 'GET',
-		   'callback' => 'uri_program_finder_api_callback',
-	   )
+	   'uri-programs/v1',
+		'/category',
+		array(
+			'methods' => 'GET',
+			'callback' => 'uri_program_finder_api_callback',
+		)
 	  );
 
 }

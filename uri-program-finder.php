@@ -3,7 +3,7 @@
  * Plugin Name: URI Program Finder
  * Plugin URI: http://www.uri.edu
  * Description: Program finder tools
- * Version: 1.2.1
+ * Version: 1.3.0
  * Author: URI Web Communications
  * Author URI:
  *
@@ -134,7 +134,9 @@ function uri_program_finder_shortcode( $attributes, $content, $shortcode ) {
 			'quote' => '',
 			'citation' => '',
 			'photo_id' => '',
-		), $attributes, $shortcode
+		),
+		$attributes,
+		$shortcode
 		);
 
 	$args = array(
@@ -161,7 +163,8 @@ function uri_program_finder_shortcode( $attributes, $content, $shortcode ) {
 		'location',
 	);
 	usort(
-		$categories, function ( $a, $b ) use ( $catorder ) {
+		$categories,
+		function ( $a, $b ) use ( $catorder ) {
 			$pos_a = array_search( $a['slug'], $catorder );
 			$pos_b = array_search( $b['slug'], $catorder );
 			return $pos_a - $pos_b;
@@ -204,10 +207,11 @@ function uri_program_finder_make_form( $categories ) {
 	foreach ( $categories as $c ) {
 		$subcats = uri_program_finder_get_children( $c['id'] );
 		array_unshift(
-			 $subcats, array(
-				 'id' => '',
-				 'name' => $c['name'],
-			 )
+			 $subcats,
+			array(
+				'id' => '',
+				'name' => $c['name'],
+			)
 			);
 
 		$output .= '<form action="' . get_site_url() . '" method="GET" class="program-finder-nojs">';
@@ -226,10 +230,11 @@ function uri_program_finder_make_form( $categories ) {
 	foreach ( $categories as $c ) {
 		$subcats = uri_program_finder_get_children( $c['id'] );
 		array_unshift(
-			 $subcats, array(
-				 'id' => '',
-				 'name' => $c['name'],
-			 )
+			 $subcats,
+			array(
+				'id' => '',
+				'name' => $c['name'],
+			)
 			);
 		$output .= uri_program_finder_make_select( $c, $subcats, true );
 	}
@@ -303,4 +308,3 @@ function uri_program_finder_get_children( $id, $exclude = array() ) {
 	return $cats;
 
 }
-

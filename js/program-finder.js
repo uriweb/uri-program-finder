@@ -19,8 +19,9 @@
 		convertForm( el );
 
 		// Load up the programs.
-		updateQueryString( 'terms', '' );
-		loadPrograms();
+		if ( getQueryString().terms == null ) {
+			updateQueryString( 'terms', '' );
+		}
 
 	}
 
@@ -46,18 +47,31 @@
 		textSearch = form.querySelector( 'input[name="s"]' );
 		if ( textSearch ) {
 			textSearch.addEventListener(
-				'keyup', function() {
+				'keyup',
+				function() {
 					textSearchListener( this, blurs );
-				}, false
+				},
+				false
 				);
 			textSearch.addEventListener(
-				'blur', function() {
+				'blur',
+				function() {
 					blurs++;
 					textSearchListener( this, blurs );
-				}, false
+				},
+				false
 				);
+			textSearch.value = textSearch.value.replace( /-/g, ' ');
 			textSearch.focus();
 		}
+
+		form.addEventListener( 'keydown', function( e ) {
+			var k = e.keyCode || e.which || 0;
+			if ( 13 == k ) {
+				e.preventDefault();
+				textSearch.blur();
+			}
+		});
 
 		selects = form.querySelectorAll( 'select' );
 
@@ -69,10 +83,13 @@
 		initChosen( form, selects );
 
 		form.querySelector( '#js-form-reset' ).addEventListener(
-			'click', function() {
+			'click',
+			function() {
 				resetForm( form, textSearch, selects );
 			}
 			);
+
+		loadPrograms();
 
 	}
 
@@ -86,7 +103,8 @@
 		var i;
 		for ( i = 0; i < selects.length; i++ ) {
 			$( selects[i] ).chosen().on(
-				 'change', function() {
+				 'change',
+				function() {
 					changeListener( form );
 				 }
 				);
@@ -155,7 +173,7 @@
 	 * @return obj HTML element
 	 */
 	function createResultCard( data ) {
-		var result, i, badge, badgeHtml = '';
+		var result, i, badge, badgeHtml = '', html;
 
 		result = document.createElement( 'a' );
 		result.setAttribute( 'class', 'cl-card' );
@@ -187,10 +205,12 @@
 			}
 		}
 
-		result.innerHTML = data.image;
-		result.innerHTML += '<ul class="badges">' + badgeHtml + '</ul>';
-		result.innerHTML += '<div class="cl-card-text"><h3>' + data.title + '</h3></div>';
-		result.innerHTML += '<div class="cl-button">Explore</div>';
+		html = data.image;
+		html += '<ul class="badges">' + badgeHtml + '</ul>';
+		html += '<div class="cl-card-text"><h3>' + data.title + '</h3></div>';
+		html += '<div class="cl-button">Explore</div>';
+
+		result.innerHTML = html;
 
 		return result;
 	}
@@ -225,7 +245,8 @@
 				function() {
 					updateQueryString( 'terms', input.value );
 					loadPrograms();
-				}, 300
+				},
+				300
 				);
 
 		}
@@ -313,6 +334,8 @@
 	function getQueryString() {
 		var qs, obj, p;
 
+		obj = {};
+
 		qs = location.search.substring( 1 );
 
 		if ( '' != qs ) {
@@ -321,7 +344,8 @@
 					p = curr.split( '=' );
 					prev[decodeURIComponent( p[0] )] = decodeURIComponent( p[1] );
 					return prev;
-				}, {}
+				},
+				{}
 				);
 		}
 		return obj;
@@ -442,7 +466,8 @@
 								} else {
 									resultsDiv.appendChild( createResultCard( arg.data ) );
 								}
-							}, ( delay * arg.i )
+							},
+								( delay * arg.i )
 							)
 							);
 					}({ 'data': data[i], 'i': i }) );
@@ -456,7 +481,8 @@
 							window.setTimeout(
 							function() {
 								resultsDiv.appendChild( createResultCard( arg.data ) );
-							}, ( delay * arg.i )
+							},
+								( delay * arg.i )
 							)
 							);
 					}({ 'data': data[i], 'i': i }) );

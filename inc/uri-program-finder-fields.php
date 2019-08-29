@@ -17,7 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function uri_program_finder_create_program_post_type() {
 
 	register_post_type(
-		'program', array(
+		'program',
+		array(
 			'label' => 'Program',
 			'description' => 'Majors, etc.',
 			'public' => true,
@@ -147,6 +148,19 @@ if ( function_exists( 'register_field_group' ) ) {
 					'type' => 'text',
 					'instructions' => 'URL to admission information',
 					'default_value' => 'https://uri.edu/admission',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'formatting' => 'html',
+					'maxlength' => '',
+				),
+				array(
+					'key' => 'field_5a907649020b3',
+					'label' => 'Curriculum Sheets',
+					'name' => 'curriculum_sheets',
+					'type' => 'text',
+					'instructions' => 'URL to Curriculum Sheets; default: https://web.uri.edu/advising/curriculum-sheets-all/',
+					'default_value' => 'https://web.uri.edu/advising/curriculum-sheets-all/',
 					'placeholder' => '',
 					'prepend' => '',
 					'append' => '',

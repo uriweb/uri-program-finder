@@ -109,6 +109,21 @@ get_header();
 						</div>
 						<?php } ?>
 
+						<?php
+							$curriculum_sheets = get_field( 'curriculum_sheets' );
+							if ( null !== $curriculum_sheets || has_category( 'bachelors' ) ) {
+							?>
+							<div class="curriculum-sheets">
+							<?php
+							if ( null !== $curriculum_sheets ) {
+								echo do_shortcode( '[cl-button link="' . $curriculum_sheets . '" text="Curriculum Sheets"]' );
+								} else if ( has_category( 'bachelors' ) ) {
+								echo do_shortcode( '[cl-button link="https://web.uri.edu/advising/curriculum-sheets-all/" text="Curriculum Sheets"]' );
+								}
+							?>
+							</div>
+						<?php } ?>
+
 						<?php if ( $apply = get_field( 'apply' ) ) { ?>
 						<div class="apply">
 							<a href="<?php print $apply; ?>">Apply</a>
