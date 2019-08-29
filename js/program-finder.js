@@ -60,6 +60,7 @@
 				},
 				false
 				);
+			textSearch.value = textSearch.value.replace( /-/g, ' ');
 			textSearch.focus();
 		}
 
@@ -86,6 +87,8 @@
 				resetForm( form, textSearch, selects );
 			}
 			);
+
+		loadPrograms();
 
 	}
 
@@ -329,6 +332,8 @@
 	 */
 	function getQueryString() {
 		var qs, obj, p;
+
+		obj = {};
 
 		qs = location.search.substring( 1 );
 
