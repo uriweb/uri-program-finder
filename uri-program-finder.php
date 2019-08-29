@@ -3,7 +3,7 @@
  * Plugin Name: URI Program Finder
  * Plugin URI: http://www.uri.edu
  * Description: Program finder tools
- * Version: 1.2.1
+ * Version: 1.3.0
  * Author: URI Web Communications
  * Author URI:
  *
@@ -308,4 +308,3 @@ function uri_program_finder_get_children( $id, $exclude = array() ) {
 	return $cats;
 
 }
-
