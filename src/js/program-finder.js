@@ -345,7 +345,7 @@
 
 		if ( '' !== qs ) {
 			obj = qs.split( '&' ).reduce(
-				function( prev, curr, i ) {
+				function( prev, curr ) {
 					p = curr.split( '=' );
 					prev[ decodeURIComponent( p[ 0 ] ) ] = decodeURIComponent( p[ 1 ] );
 					return prev;

@@ -16,6 +16,7 @@
   "ignorePatterns": [
     "node_modules/",
     "chosen/",
-    "gulpfile.js"
+    "gulpfile.js",
+    "js/programs.built.js"
   ]
 }
