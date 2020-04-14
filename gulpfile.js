@@ -2,10 +2,37 @@ var gulp = require('gulp');
 var pkg = require('./package.json');
 
 // include plug-ins
+var autoprefixer = require('autoprefixer');
 var concat = require('gulp-concat');
 var eslint = require('gulp-eslint');
+var postcss = require('gulp-postcss');
+var sass = require('gulp-sass');
 var shell = require('gulp-shell');
+var sourcemaps = require('gulp-sourcemaps');
 var terser = require('gulp-terser');
+
+// options
+var sassOptions = {
+  errLogToConsole: true,
+  outputStyle: 'compressed' //expanded, nested, compact, compressed
+};
+
+// CSS concat, auto-prefix and minify
+gulp.task('styles', styles);
+
+function styles(done) {
+
+	gulp.src('./src/sass/*.scss')
+		.pipe(sourcemaps.init())
+		.pipe(sass(sassOptions).on('error', sass.logError))
+		.pipe(concat('programs.built.css'))
+    .pipe(postcss([ autoprefixer() ]))
+		.pipe(sourcemaps.write('./map'))
+		.pipe(gulp.dest('./css/'));
+
+  done();
+  //console.log('styles ran');
+}
 
 // JS code checking
 gulp.task('scripts', scripts);
@@ -44,7 +71,10 @@ gulp.task('watcher', watcher);
 
 function watcher(done) {
 
-    // watch for Theme JS changes
+  // watch for CSS changes
+  gulp.watch('./src/sass/*.scss', styles);
+
+    // watch for JS changes
 	gulp.watch('./src/js/*.js', scripts);
 
     // watch for PHP change
@@ -54,7 +84,7 @@ function watcher(done) {
 }
 
 gulp.task( 'default',
-	gulp.parallel('scripts', 'sniffs', 'watcher', function(done){
+	gulp.parallel('styles', 'scripts', 'sniffs', 'watcher', function(done){
 		done();
 	})
 );

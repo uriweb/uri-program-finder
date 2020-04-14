@@ -55,24 +55,6 @@
     line-height: 30px;
 }
 
-.chosen-container-multi .chosen-choices {
-    padding: 5px !important;
-    cursor: pointer;
-}
-
-.chosen-container-multi .chosen-choices .search-field {
-    width: 100%;
-}
-
-.chosen-container-multi .chosen-choices input {
-    font-size: .7rem !important;
-    font-weight: 400;
-    color: #aaa !important;
-    font-family: "Lucida Grande", sans-serif !important;
-    cursor: pointer;
-    width: 100%;
-}
-
 .chosen-container-single.chosen-with-drop .chosen-single
 .chosen-container-multi.chosen-with-drop .chosen-choices {
     background-image: none !important;
@@ -100,11 +82,33 @@
     font-size: .7rem !important;
 }
 
-.chosen-container-multi ul {
-    margin: 0 !important;
-}
+.chosen-container-multi {
 
-.chosen-container-multi .chosen-choices .search-choice {
+  .chosen-choices {
+
+      padding: 5px !important;
+      cursor: pointer;
+
+      .search-field {
+          width: 100%;
+      }
+
+      input {
+          font-size: .7rem !important;
+          font-weight: 400;
+          color: #aaa !important;
+          font-family: "Lucida Grande", sans-serif !important;
+          cursor: pointer;
+          width: 100%;
+      }
+
+  }
+
+  ul {
+    margin: 0 !important;
+  }
+
+  .chosen-choices .search-choice {
     height: auto !important;
     line-height: normal;
     background-color: #002147 !important;
@@ -117,25 +121,31 @@
     margin-bottom: 3px !important;
     margin-right: 3px !important;
     padding: 1px 23px 1px 10px !important;
-}
+  }
 
-.chosen-container-multi .search-choice-close {
+  .search-choice-close {
     border-bottom: none !important;
     right: 5px !important;
     top: 5px !important;
+  }
+
 }
 
 .chosen-results {
+
     margin-left: 0 !important;
     margin-bottom: 0 !important;
-}
 
-.chosen-results li {
-    padding: 5px 15px !important;
-    margin-bottom: 0 !important;
-}
+    li {
 
-.chosen-results li.highlighted {
-    background-image: none !important;
-    color: #fff !important;
+        padding: 5px 15px !important;
+        margin-bottom: 0 !important;
+
+        .highlighted {
+            background-image: none !important;
+            color: #fff !important;
+        }
+
+    }
+
 }

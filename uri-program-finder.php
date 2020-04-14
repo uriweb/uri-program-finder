@@ -54,11 +54,11 @@ function uri_program_finder_scripts() {
  * Loads up the css
  */
 function uri_program_finder_styles() {
+	wp_register_style( 'uri-program-finder', plugins_url( '/css/programs.built.css', __FILE__ ) );
 	wp_register_style( 'uri-program-finder-chosen-css', plugins_url( '/chosen/chosen.min.css', __FILE__ ) );
-	wp_register_style( 'uri-program-finder-chosen-css-customize', plugins_url( '/css/chosen.customize.css', __FILE__ ) );
 
+	wp_enqueue_style( 'uri-program-finder' );
 	wp_enqueue_style( 'uri-program-finder-chosen-css' );
-	wp_enqueue_style( 'uri-program-finder-chosen-css-customize' );
 }
 
 
