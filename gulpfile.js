@@ -2,23 +2,19 @@ var gulp = require('gulp');
 var pkg = require('./package.json');
 
 // include plug-ins
-var jshint = require('gulp-jshint');
-var jscs = require('gulp-jscs');
+var eslint = require('gulp-eslint');
 var shell = require('gulp-shell');
 
 // JS code checking
 gulp.task('scripts', scripts);
 
 function scripts(done) {
-    
-    gulp.src('./js/*.js')
-        .pipe(jshint(done))
-        .pipe(jshint.reporter('default'));
-    
-    gulp.src('./js/*.js')
-        .pipe(jscs(done))
-        .pipe(jscs.reporter());
-    
+
+  // Run eslint for src js
+  gulp.src('./js/*.js')
+    .pipe(eslint(done))
+    .pipe(eslint.format());
+
 	done();
  // console.log('scripts ran');
 }
@@ -27,10 +23,10 @@ function scripts(done) {
 gulp.task('sniffs', sniffs);
 
 function sniffs(done) {
-    
+
     return gulp.src('.', {read:false})
         .pipe(shell(['./.sniff']));
-    
+
     done();
     //console.log('sniffs ran');
 }
@@ -39,10 +35,10 @@ function sniffs(done) {
 gulp.task('watcher', watcher);
 
 function watcher(done) {
-    
+
     // watch for Theme JS changes
 	gulp.watch('./js/*.js', scripts);
-    
+
     // watch for PHP change
     gulp.watch('./**/*.php', sniffs);
 

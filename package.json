@@ -14,11 +14,10 @@
   "license": "GPL-3.0",
   "licenseURI": "http://www.gnu.org/licenses/gpl.html",
   "devDependencies": {
+    "@wordpress/eslint-plugin": "^4.1.0",
     "gulp": "^4.0.0",
-    "gulp-jscs": "^4.1.0",
-    "gulp-jshint": "^2.0.4",
-    "gulp-shell": "^0.6.5",
-    "jshint": "^2.9.4"
+    "gulp-eslint": "^6.0.0",
+    "gulp-shell": "^0.6.5"
   },
   "browserslist": {
     "production": [
