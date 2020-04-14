@@ -14,11 +14,16 @@
   "license": "GPL-3.0",
   "licenseURI": "http://www.gnu.org/licenses/gpl.html",
   "devDependencies": {
-    "gulp": "^4.0.0",
-    "gulp-jscs": "^4.1.0",
-    "gulp-jshint": "^2.0.4",
-    "gulp-shell": "^0.6.5",
-    "jshint": "^2.9.4"
+    "@wordpress/eslint-plugin": "^4.1.0",
+    "autoprefixer": "^9.7.6",
+    "gulp": "^4.0.2",
+    "gulp-concat": ">=2.6.1",
+    "gulp-eslint": "^6.0.0",
+    "gulp-postcss": "^8.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-shell": "^0.8.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-terser": ">=1.1.7"
   },
   "browserslist": {
     "production": [
