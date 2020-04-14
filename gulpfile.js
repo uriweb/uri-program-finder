@@ -6,6 +6,7 @@ var autoprefixer = require('autoprefixer');
 var concat = require('gulp-concat');
 var eslint = require('gulp-eslint');
 var postcss = require('gulp-postcss');
+var replace = require('gulp-replace-task');
 var sass = require('gulp-sass');
 var shell = require('gulp-shell');
 var sourcemaps = require('gulp-sourcemaps');
@@ -66,6 +67,22 @@ function sniffs(done) {
     //console.log('sniffs ran');
 }
 
+// Update plugin version
+gulp.task('version', version);
+
+function version(done) {
+
+	gulp.src('./uri-program-finder.php')
+		.pipe(replace({
+			patterns: [{
+				match: /Version:\s([^\n\r]*)/,
+				replace: 'Version: ' + pkg.version
+			}]
+		}))
+		.pipe(gulp.dest('./'));
+
+}
+
 // watch
 gulp.task('watcher', watcher);
 
@@ -84,7 +101,7 @@ function watcher(done) {
 }
 
 gulp.task( 'default',
-	gulp.parallel('styles', 'scripts', 'sniffs', 'watcher', function(done){
+	gulp.parallel('styles', 'scripts', 'sniffs', 'version', 'watcher', function(done){
 		done();
 	})
 );
