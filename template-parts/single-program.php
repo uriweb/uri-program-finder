@@ -15,7 +15,7 @@ get_header();
 		<?php
 		while ( have_posts() ) :
 			the_post();
-		?>
+			?>
 
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 					<header class="entry-header">
@@ -38,7 +38,7 @@ get_header();
 
 							$figcaption = get_the_post_thumbnail_caption();
 							if ( ( is_single() || is_page() ) && ! empty( $figcaption ) ) :
-							?>
+								?>
 							<figcaption class="wp-caption"><?php print $figcaption; ?></figcpation>
 							<?php endif; ?>
 						</figure>
@@ -111,15 +111,15 @@ get_header();
 
 						<?php
 							$curriculum_sheets = get_field( 'curriculum_sheets' );
-							if ( null !== $curriculum_sheets || has_category( 'bachelors' ) ) {
+						if ( null !== $curriculum_sheets || has_category( 'bachelors' ) ) {
 							?>
 							<div class="curriculum-sheets">
 							<?php
 							if ( null !== $curriculum_sheets ) {
 								echo do_shortcode( '[cl-button link="' . $curriculum_sheets . '" text="Curriculum Sheets"]' );
-								} else if ( has_category( 'bachelors' ) ) {
+							} else if ( has_category( 'bachelors' ) ) {
 								echo do_shortcode( '[cl-button link="https://web.uri.edu/advising/curriculum-sheets-all/" text="Curriculum Sheets"]' );
-								}
+							}
 							?>
 							</div>
 						<?php } ?>
