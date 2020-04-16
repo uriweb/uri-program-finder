@@ -15,7 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function uri_program_finder_shortcode( $attributes, $content, $shortcode ) {
 
-	uri_program_finder_enqueues();
+	// enqueue scripts and Select2
+	uri_program_finder_enqueue_scripts();
+	uri_program_finder_enqueue_select2();
 
 	// normalize attribute keys, lowercase
 	$attributes = array_change_key_case( (array) $attributes, CASE_LOWER );

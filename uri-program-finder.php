@@ -38,10 +38,20 @@ function uri_program_finder_cache_buster() {
 
 
 /**
- * Include js and css
+ * Include css
+ */
+function uri_program_finder_enqueue_styles() {
+	wp_register_style( 'uri-program-finder', plugins_url( '/css/programs.built.css', __FILE__ ), array(), uri_program_finder_cache_buster(), 'all' );
+	wp_enqueue_style( 'uri-program-finder' );
+}
+add_action( 'wp_enqueue_scripts', 'uri_program_finder_enqueue_styles' );
+
+
+/**
+ * Include js
  * These are enqueued only when the shortcode is run
  */
-function uri_program_finder_enqueues() {
+function uri_program_finder_enqueue_scripts() {
 	$values = array(
 		'base' => get_site_url(),
 	);
@@ -51,15 +61,19 @@ function uri_program_finder_enqueues() {
 	wp_localize_script( $plugin_handle, 'URIProgramFinder', $values );
 	wp_enqueue_script( $plugin_handle );
 
+}
+
+/**
+ * Include Select2
+ */
+function uri_program_finder_enqueue_select2() {
 	wp_register_script( 'uri-program-finder-select2-js', plugins_url( '/select2/select2.min.js', __FILE__ ), array(), uri_program_finder_cache_buster(), true );
 	wp_enqueue_script( 'uri-program-finder-select2-js' );
 
 	wp_register_style( 'uri-program-finder-select2-css', plugins_url( '/select2/select2.min.css', __FILE__ ), array(), uri_program_finder_cache_buster(), 'all' );
 	wp_enqueue_style( 'uri-program-finder-select2-css' );
-
-	wp_register_style( 'uri-program-finder', plugins_url( '/css/programs.built.css', __FILE__ ), array(), uri_program_finder_cache_buster(), 'all' );
-	wp_enqueue_style( 'uri-program-finder' );
 }
+
 
 // Include API
 include( URI_PROGRAM_FINDER_PATH . 'inc/uri-program-finder-api.php' );
