@@ -69,4 +69,4 @@ function uri_program_finder_shortcode( $attributes, $content, $shortcode ) {
 	return uri_program_finder_make_form( $categories );
 
 }
-add_shortcode( 'programs-categories', 'uri_program_finder_shortcode' );
+add_shortcode( 'uri-program-finder', 'uri_program_finder_shortcode' );
