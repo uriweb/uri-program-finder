@@ -51,14 +51,14 @@ function uri_program_finder_enqueues() {
 	wp_localize_script( $plugin_handle, 'URIProgramFinder', $values );
 	wp_enqueue_script( $plugin_handle );
 
-	wp_register_script( 'uri-program-finder-chosen-js', plugins_url( '/chosen/chosen.jquery.min.js', __FILE__ ), array(), uri_program_finder_cache_buster(), true );
-	wp_enqueue_script( 'uri-program-finder-chosen-js' );
+	wp_register_script( 'uri-program-finder-select2-js', plugins_url( '/select2/select2.min.js', __FILE__ ), array(), uri_program_finder_cache_buster(), true );
+	wp_enqueue_script( 'uri-program-finder-select2-js' );
+
+	wp_register_style( 'uri-program-finder-select2-css', plugins_url( '/select2/select2.min.css', __FILE__ ), array(), uri_program_finder_cache_buster(), 'all' );
+	wp_enqueue_style( 'uri-program-finder-select2-css' );
 
 	wp_register_style( 'uri-program-finder', plugins_url( '/css/programs.built.css', __FILE__ ), array(), uri_program_finder_cache_buster(), 'all' );
 	wp_enqueue_style( 'uri-program-finder' );
-
-	wp_register_style( 'uri-program-finder-chosen-css', plugins_url( '/chosen/chosen.min.css', __FILE__ ), array(), uri_program_finder_cache_buster(), 'all' );
-	wp_enqueue_style( 'uri-program-finder-chosen-css' );
 }
 
 // Include API
