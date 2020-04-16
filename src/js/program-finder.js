@@ -24,8 +24,7 @@
 	/**
 	 * Convert the exiting non-js form to something a little slicker
 	 *
-	 * @param el
-	 * @param obj el the program finder parent element
+	 * @param {Object} el
 	 */
 	function convertForm( el ) {
 		let i, firstopt,
@@ -93,9 +92,8 @@
 	/**
 	 * Initiate Select2 on all selects and binds listener
 	 *
-	 * @param obj form the js form parent element
-	 * @param form
-	 * @param selects
+	 * @param {Object} form
+	 * @param {Object} selects
 	 */
 	function initSelect2( form, selects ) {
 		let i;
@@ -114,8 +112,7 @@
 	/**
 	 * Create the status DIV
 	 *
-	 * @param el
-	 * @param obj el the program finder parent element
+	 * @param {Object} el
 	 */
 	function initStatusDiv( el ) {
 		statusDiv = document.createElement( 'div' );
@@ -126,8 +123,7 @@
 	/**
 	 * Create the results DIV
 	 *
-	 * @param el
-	 * @param obj el the program finder parent element
+	 * @param {Object} el
 	 */
 	function initResultsDiv( el ) {
 		resultsDiv = document.createElement( 'div' );
@@ -146,9 +142,8 @@
 	/**
 	 * Set the status div
 	 *
-	 * @param cl
-	 * @param html
-	 * @param str cl the class name(s) to set for the status div
+	 * @param {string} cl
+	 * @param {string} html
 	 */
 	function setStatus( cl, html ) {
 		statusDiv.className = cl;
@@ -172,9 +167,7 @@
 	/**
 	 * Create a result row's HTML
 	 *
-	 * @param data
-	 * @param obj data
-	 * @return obj HTML element
+	 * @param {Object} data
 	 */
 	function createResultCard( data ) {
 		let i, badge,
@@ -227,8 +220,7 @@
 	/**
 	 * Listen for change events on the select menus
 	 *
-	 * @param form
-	 * @param obj form the js form parent element
+	 * @param {Object} form
 	 */
 	function changeListener( form ) {
 		let x;
@@ -243,10 +235,8 @@
 	/**
 	 * Listen for change events on the select menus
 	 *
-	 * @param obj input the input text element (what you'd expect to be "this")
-	 * @param input
-	 * @param blurs
-	 * @param num blurs the number of input blur events
+	 * @param {Object} input
+	 * @param {number} blurs
 	 */
 	function textSearchListener( input, blurs ) {
 		window.clearTimeout( searchTimer );
@@ -265,10 +255,9 @@
 	/**
 	 * Clear the search form and load all programs
 	 *
-	 * @param obj form the js form parent element
-	 * @param form
-	 * @param input
-	 * @param selects
+	 * @param {Object} form
+	 * @param {Object} input
+	 * @param {Object} selects
 	 */
 	function resetForm( form, input, selects ) {
 		input.value = '';
@@ -288,9 +277,8 @@
 	/**
 	 * Update the browser URL, and add the selection to the browser's history
 	 *
-	 * @param str key is the querystring key
-	 * @param key
-	 * @param value
+	 * @param {string} key
+	 * @param {string} value
 	 */
 	function updateQueryString( key, value ) {
 		let newURL;
@@ -313,9 +301,8 @@
 	/**
 	 * Get the category ids from the select menus
 	 *
-	 * @param form
-	 * @param obj form the js form parent element
-	 * @return arr
+	 * @param {Object} form
+	 * @return {Array} cats
 	 */
 	function getSelectedCategoryIds( form ) {
 		let vals, i;
@@ -339,7 +326,7 @@
 	/**
 	 * Parses the current query string and returns it as an object
 	 *
-	 * @return obj
+	 * @return {Object} obj
 	 */
 	function getQueryString() {
 		let obj, p;
@@ -390,9 +377,8 @@
 	/**
 	 * Make the AJAX call
 	 *
-	 * @param url the URL to query
-	 * @param success
-	 * @param callback function for a successful call
+	 * @param {string} url the URL to query
+	 * @param {Function} success
 	 */
 	function fetch( url, success ) {
 		xmlhttp = new XMLHttpRequest();
@@ -424,10 +410,9 @@
 
 	/**
 	 * AJAX success callback
-parses the response, puts the data into the results div
+	 * parses the response, puts the data into the results div
 	 *
-	 * @param raw
-	 * @param str raw the data from the URL (JSON as a string)
+	 * @param {JSON} raw
 	 */
 	function handleResponse( raw ) {
 		let existingCards, refCard, ids, i, t;
