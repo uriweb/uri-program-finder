@@ -78,7 +78,7 @@
 			$( firstopt ).html( '' ).removeAttr( 'selected' );
 		}
 
-		initChosen( form, selects );
+		initSelect2( form, selects );
 
 		form.querySelector( '#js-form-reset' ).addEventListener(
 			'click',
@@ -91,16 +91,18 @@
 	}
 
 	/**
-	 * Initiate Chosen on all selects and binds listener
+	 * Initiate Select2 on all selects and binds listener
 	 *
 	 * @param obj form the js form parent element
 	 * @param form
 	 * @param selects
 	 */
-	function initChosen( form, selects ) {
+	function initSelect2( form, selects ) {
 		let i;
 		for ( i = 0; i < selects.length; i++ ) {
-			$( selects[ i ] ).chosen().on(
+			$( selects[ i ] ).select2( {
+				width: '100%',
+			} ).on(
 				'change',
 				function() {
 					changeListener( form );
@@ -201,6 +203,9 @@
 				case 'professional-degree':
 					badge = [ 'pro', 'Professional' ];
 					break;
+				case 'minor':
+					badge = [ 'min', 'Minor' ];
+					break;
 				default:
 					badge = [];
 			}
@@ -272,7 +277,7 @@
 		$( selects ).each(
 			function() {
 				this.selectedIndex = -1;
-				$( this ).trigger( 'chosen:updated' );
+				$( this ).trigger( 'select2:updated' );
 				updateQueryString( $( this ).attr( 'name' ), 'any' );
 			}
 		);

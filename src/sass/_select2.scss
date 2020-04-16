@@ -1,0 +1,45 @@
+/* CUSTOM STYLES FOR SELECT2 */
+
+.select2-container--default  {
+
+  .select2-selection--multiple {
+
+    border: 1px solid #ddd;
+    border-radius: 2px;
+
+    li {
+      margin-bottom: 0;
+    }
+
+    .select2-selection__choice {
+      background: #eee;
+      border-radius: 2px;
+      border: none;
+      padding: 2px 5px 1px;
+    }
+
+    .select2-selection__choice__remove {
+      margin-right: 5px;
+    }
+  }
+
+  &.select2-container--focus {
+
+    .select2-selection--multiple {
+      border: 1px solid #057fd4;
+    }
+
+  }
+
+}
+
+.select2-dropdown {
+
+  border: 1px solid #ddd;
+  font-size: .9rem;
+
+  li {
+    margin-bottom: 0;
+  }
+  
+}
