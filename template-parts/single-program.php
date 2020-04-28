@@ -11,7 +11,7 @@ get_header();
 ?>
 
 	<main id="main" class="site-main" role="main">
-		
+
 		<?php
 		while ( have_posts() ) :
 			the_post();
@@ -44,7 +44,7 @@ get_header();
 						</figure>
 					</div>
 
-		
+
 					<div class="entry-content">
 						<?php
 
@@ -142,7 +142,7 @@ get_header();
 						comments_template();
 					endif;
 					?>
-		  
+
 		<?php endwhile; // End of the loop. ?>
 
 	</main><!-- #main -->
