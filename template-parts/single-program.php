@@ -64,6 +64,34 @@ get_header();
 							);
 						?>
 
+						<?php if ( $accreditation = uri_modern_get_field( 'accreditation' ) ) { ?>
+						<div class="accreditation">
+							<h3>Accreditation</h3>
+							<?php print $accreditation; ?>
+						</div>
+						<?php } ?>
+
+						<?php if ( $specializations = uri_modern_get_field( 'specializations' ) ) { ?>
+						<div class="specializations">
+							<h3>Specializations</h3>
+							<?php
+							$specializations = explode( ',', $specializations );
+							print '<ul>';
+							foreach ( $specializations as $s ) {
+								print '<li>' . trim( $s ) . '</li>';
+							}
+							print '</ul>';
+							?>
+						</div>
+						<?php } ?>
+
+						<?php if ( $classes_offered = uri_modern_get_field( 'classes_offered' ) ) { ?>
+							<div class="classes-offered">
+								<h3>Classes Offered</h3>
+								<?php print $classes_offered; ?>
+							</div>
+							<?php } ?>
+
 						<?php if ( $time_to_completion = get_field( 'time_to_completion' ) ) { ?>
 						<div class="time-to-completion">
 							<h3>Time to Completion</h3>
@@ -110,19 +138,17 @@ get_header();
 						<?php } ?>
 
 						<?php
-							$curriculum_sheets = get_field( 'curriculum_sheets' );
-						if ( null !== $curriculum_sheets || has_category( 'bachelors' ) ) {
-							?>
-							<div class="curriculum-sheets">
-							<?php
-							if ( null !== $curriculum_sheets ) {
-								echo do_shortcode( '[cl-button link="' . $curriculum_sheets . '" text="Curriculum Sheets"]' );
-							} else if ( has_category( 'bachelors' ) ) {
-								echo do_shortcode( '[cl-button link="https://web.uri.edu/advising/curriculum-sheets-all/" text="Curriculum Sheets"]' );
-							}
-							?>
-							</div>
-						<?php } ?>
+						$curriculum_sheets = get_field( 'curriculum_sheets' );
+						if ( null != $curriculum_sheets || ! empty( $curriculum_sheets ) ) {
+							echo '<div class="advising">';
+							echo do_shortcode( '[cl-button link="' . $curriculum_sheets . '" text="Advising"]' );
+							echo '</div>';
+						} else if ( has_category( 'bachelors' ) ) {
+							echo '<div class="curriculum-sheets">';
+							echo do_shortcode( '[cl-button link="https://web.uri.edu/advising/curriculum-sheets-all/" text="Curriculum Sheets"]' );
+							echo '</div>';
+						}
+						?>
 
 						<?php if ( $apply = get_field( 'apply' ) ) { ?>
 						<div class="apply">
