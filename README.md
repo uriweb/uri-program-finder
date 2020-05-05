@@ -2,15 +2,20 @@
 
 Add [programs-categories] to a page and a form magically appears.
 
-## What's new in 1.3.0
+## What's new in 1.4.0
 
-Program Finder 1.3.0 is a minor update.
+Program Finder 1.4.0 is a minor update.
 
-- Adds a curriculum sheets field and updates template accordingly
-- The return key no longer submits the form, which would result in an unstyled results screen
-- Fixes a bug that caused multiple redraws of each card when loading
-- Fixes a bug that caused urls containing multi-word search terms to populate the search field with dashes in place of spaces, thereby returning no results
-- Fixes a bug that caused the url terms parameter to reset on page load even if terms exist
+- Standardizes shortcode name to `uri-program-finder` (**`programs-categories` will no longer work**)
+- Adds fields and display for Accreditation, Specializations, and Classes Offered information
+- Adds support for displaying minor programs
+- Custom curriculum sheet links now display as "Advising", and are visible for all program types
+- Fixes an issue that prevented blank curriculum sheet fields from defaulting correctly
+- Replaces [Chosen](https://github.com/harvesthq/chosen), which is deprecated, with [Select2](https://github.com/select2/select2) for dropdown menus
+- Updates development tools
+- Other bug fixes and code improvements
+
+For complete details, see the [commit history](https://github.com/uriweb/uri-program-finder/pull/14/commits) and the [issue tracker](https://github.com/uriweb/uri-program-finder/issues).
 
 ## Plugin Details
 
@@ -22,4 +27,4 @@ Contributors: John Pennypacker, Brandon Fuller
 Tags: plugins  
 Requires at least: 4.0  
 Tested up to: 4.9  
-Stable tag: 1.3.0  
+Stable tag: 1.4.0  
