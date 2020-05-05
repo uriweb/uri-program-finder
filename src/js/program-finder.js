@@ -19,6 +19,13 @@
 		if ( getQueryString().terms === null ) {
 			updateQueryString( 'terms', '' );
 		}
+
+		window.onpopstate = function( e ) {
+			if ( e.state ) {
+				updateForm();
+				loadPrograms();
+			}
+		};
 	}
 
 	/**
@@ -107,6 +114,15 @@
 				}
 			);
 		}
+	}
+
+	/**
+	 * Update form based on url parameters
+	 * Used for stepping back through history
+	 */
+	function updateForm() {
+		const query = getQueryString();
+		console.log( query );
 	}
 
 	/**
