@@ -11,11 +11,11 @@ get_header();
 ?>
 
 	<main id="main" class="site-main" role="main">
-		
+
 		<?php
 		while ( have_posts() ) :
 			the_post();
-		?>
+			?>
 
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 					<header class="entry-header">
@@ -38,13 +38,13 @@ get_header();
 
 							$figcaption = get_the_post_thumbnail_caption();
 							if ( ( is_single() || is_page() ) && ! empty( $figcaption ) ) :
-							?>
+								?>
 							<figcaption class="wp-caption"><?php print $figcaption; ?></figcpation>
 							<?php endif; ?>
 						</figure>
 					</div>
 
-		
+
 					<div class="entry-content">
 						<?php
 
@@ -63,6 +63,49 @@ get_header();
 							 )
 							);
 						?>
+
+						<?php if ( $accreditation = uri_modern_get_field( 'accreditation' ) ) { ?>
+						<div class="accreditation">
+							<h3>Accreditation</h3>
+							<?php
+							$accreditation = explode( ',', $accreditation );
+							if ( 1 == sizeof( $accreditation ) ) {
+								print $accreditation[0];
+							} else {
+								print '<ul>';
+								foreach ( $accreditation as $a ) {
+									print '<li>' . trim( $a ) . '</li>';
+								}
+								print '</ul>';
+							}
+							?>
+						</div>
+						<?php } ?>
+
+						<?php if ( $specializations = uri_modern_get_field( 'specializations' ) ) { ?>
+						<div class="specializations">
+							<h3>Specializations</h3>
+							<?php
+							$specializations = explode( ',', $specializations );
+							if ( 1 == sizeof( $specializations ) ) {
+								print $specializations[0];
+							} else {
+								print '<ul>';
+								foreach ( $specializations as $s ) {
+									print '<li>' . trim( $s ) . '</li>';
+								}
+								print '</ul>';
+							}
+							?>
+						</div>
+						<?php } ?>
+
+						<?php if ( $classes_offered = uri_modern_get_field( 'classes_offered' ) ) { ?>
+							<div class="classes-offered">
+								<h3>Classes Offered</h3>
+								<?php print $classes_offered; ?>
+							</div>
+							<?php } ?>
 
 						<?php if ( $time_to_completion = get_field( 'time_to_completion' ) ) { ?>
 						<div class="time-to-completion">
@@ -110,19 +153,17 @@ get_header();
 						<?php } ?>
 
 						<?php
-							$curriculum_sheets = get_field( 'curriculum_sheets' );
-							if ( null !== $curriculum_sheets || has_category( 'bachelors' ) ) {
-							?>
-							<div class="curriculum-sheets">
-							<?php
-							if ( null !== $curriculum_sheets ) {
-								echo do_shortcode( '[cl-button link="' . $curriculum_sheets . '" text="Curriculum Sheets"]' );
-								} else if ( has_category( 'bachelors' ) ) {
-								echo do_shortcode( '[cl-button link="https://web.uri.edu/advising/curriculum-sheets-all/" text="Curriculum Sheets"]' );
-								}
-							?>
-							</div>
-						<?php } ?>
+						$curriculum_sheets = get_field( 'curriculum_sheets' );
+						if ( null != $curriculum_sheets || ! empty( $curriculum_sheets ) ) {
+							echo '<div class="advising">';
+							echo do_shortcode( '[cl-button link="' . $curriculum_sheets . '" text="Advising"]' );
+							echo '</div>';
+						} else if ( has_category( 'bachelors' ) ) {
+							echo '<div class="curriculum-sheets">';
+							echo do_shortcode( '[cl-button link="https://web.uri.edu/advising/curriculum-sheets-all/" text="Curriculum Sheets"]' );
+							echo '</div>';
+						}
+						?>
 
 						<?php if ( $apply = get_field( 'apply' ) ) { ?>
 						<div class="apply">
@@ -142,7 +183,7 @@ get_header();
 						comments_template();
 					endif;
 					?>
-		  
+
 		<?php endwhile; // End of the loop. ?>
 
 	</main><!-- #main -->

@@ -2,14 +2,15 @@
 
 ignore=node_modules,work_files,gulpfile.js,chosen
 ruleset=.codesniffer.ruleset.xml
+extensions=php
 warn=-n
 
 echo Running php code beautifier...
-phpcbf --standard=$ruleset --ignore=$ignore $warn .
+phpcbf --standard=$ruleset --ignore=$ignore --extensions=$extensions $warn .
 echo done beautifying.
 
 echo Running php codesniffer...
-phpcs --standard=$ruleset --ignore=$ignore $warn .
+phpcs --standard=$ruleset --ignore=$ignore --extensions=$extensions $warn .
 echo done sniffing.
 
 echo done with sniff.

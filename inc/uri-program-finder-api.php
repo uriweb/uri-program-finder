@@ -3,9 +3,6 @@
  * URI Program Finder API
  *
  * @package uri-program-finder
- *
- * @author: John Pennypacker <jpennypacker@uri.edu>
- * @author: Brandon Fuller <bjcfuller@uri.edu>
  */
 
 // Block direct requests
@@ -136,4 +133,3 @@ function uri_program_finder_register_api() {
 
 }
 add_action( 'rest_api_init', 'uri_program_finder_register_api' );
-
