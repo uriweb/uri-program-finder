@@ -8,6 +8,7 @@ Program Finder 1.4.0 is a minor update.
 
 - Standardizes shortcode name to `uri-program-finder` (**`programs-categories` will no longer work**)
 - Adds fields and display for Accreditation, Specializations, and Classes Offered information
+- Adds support for displaying minor programs
 - Replaces [Chosen](https://github.com/harvesthq/chosen), which is deprecated, with [Select2](https://github.com/select2/select2) for dropdown menus
 - Updates development tools
 - Other bug fixes and code improvements
