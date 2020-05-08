@@ -2,7 +2,18 @@
 
 Add [programs-categories] to a page and a form magically appears.
 
-## What's new in 1.4.0
+## What's new in 1.4.1
+
+Program Finder 1.4.1 is a bug fix release.
+
+- Switches fields for Accreditation and Specializations to WYSIWYG
+- Updates default template to display information from new WYSIWIG fields properly
+- Reorders fields to match front-end display
+- Adds/updates field instructions 
+
+For complete details, see the [commit history](https://github.com/uriweb/uri-program-finder/pull/16/commits) and the [issue tracker](https://github.com/uriweb/uri-program-finder/issues).
+
+## New in 1.4.0
 
 Program Finder 1.4.0 is a minor update.
 
@@ -26,5 +37,5 @@ For complete details, see the [commit history](https://github.com/uriweb/uri-pro
 Contributors: John Pennypacker, Brandon Fuller  
 Tags: plugins  
 Requires at least: 4.0  
-Tested up to: 4.9  
-Stable tag: 1.4.0  
+Tested up to: 5.4  
+Stable tag: 1.4.1  
