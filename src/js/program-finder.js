@@ -190,6 +190,9 @@
 				case 'graduate-certificate':
 					badge = [ 'cert', 'Certificate' ];
 					break;
+				case 'undergraduate-certificate':
+					badge = [ 'ucert', 'Undergraduate Certificate' ];
+					break;
 				case 'masters':
 					badge = [ 'ma', 'Master&apos;s' ];
 					break;
