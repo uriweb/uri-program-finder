@@ -163,16 +163,23 @@
 }
 
 #program-results .cl-card .badges {
-    display: block;
+    display: inline-block;
     z-index: 2;
     margin: -2.2rem 0 1rem 1rem;
-    position: relative;
+    position: absolute;
+}
+
+#program-results .cl-card .badges:after {
+  display: block;
+  content: '';
+  clear: both;
 }
 
 #program-results .cl-card .badges li {
-    display: inline-block;
+    display: block;
     height: 20px;
     line-height: 20px;
+    float: left;
     text-align: center;
     font-size: .7rem;
     font-weight: 600;
@@ -215,6 +222,18 @@
 
 #program-results .cl-card .badges li.min {
     background: #eee;
+}
+
+#program-results .cl-card .badges li.acc {
+  background: #FF7100;
+  overflow: hidden;
+  width: 0;
+  padding-left: 20px;
+  padding-right: 0;
+  background-image: url( '../i/accelerated.png' );
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 80% auto;
 }
 
 .featured-image.sc.program {

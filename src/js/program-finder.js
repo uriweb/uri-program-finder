@@ -181,6 +181,9 @@
 
 		for ( i = 0; i < data.program_types.length; i++ ) {
 			switch ( data.program_types[ i ].slug ) {
+				case 'accelerated':
+					badge = [ 'acc', 'Accelerated Option' ];
+					break;
 				case 'bachelors':
 					badge = [ 'ba', 'Bachelor&apos;s' ];
 					break;
@@ -206,7 +209,7 @@
 					badge = [];
 			}
 			if ( badge.length ) {
-				badgeHtml += '<li class="' + badge[ 0 ] + '">' + badge[ 1 ] + '</li>';
+				badgeHtml += '<li class="' + badge[ 0 ] + '" title="' + badge[ 1 ] + '">' + badge[ 1 ] + '</li>';
 			}
 		}
 
