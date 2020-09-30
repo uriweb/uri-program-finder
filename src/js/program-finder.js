@@ -210,10 +210,9 @@
 			}
 		}
 
-		html = data.image;
-		html += '<ul class="badges">' + badgeHtml + '</ul>';
-		html += '<div class="cl-card-text"><h3>' + data.title + '</h3></div>';
-		html += '<div class="cl-button">Explore</div>';
+		html = '<div class="cl-card-container media">' + data.image + '<ul class="badges">' + badgeHtml + '</ul></div>';
+		html += '<div class="cl-card-container text"><div class="cl-card-text"><h3>' + data.title + '</h3></div></div>';
+		html += '<div class="cl-card-container button">Explore</div>';
 
 		result.innerHTML = html;
 
