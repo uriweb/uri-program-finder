@@ -179,11 +179,25 @@
 		result.setAttribute( 'href', data.link );
 		result.setAttribute( 'data-id', data.id );
 
+		// Do little badges first
 		for ( i = 0; i < data.program_types.length; i++ ) {
 			switch ( data.program_types[ i ].slug ) {
 				case 'accelerated':
 					badge = [ 'acc', 'Accelerated Option' ];
 					break;
+				case 'online':
+					badge = [ 'online', 'Online' ];
+					break;
+				default:
+					badge = [];
+			}
+			if ( badge.length ) {
+				badgeHtml += '<li class="icon ' + badge[ 0 ] + '" title="' + badge[ 1 ] + '">' + badge[ 1 ] + '</li>';
+			}
+		}
+
+		for ( i = 0; i < data.program_types.length; i++ ) {
+			switch ( data.program_types[ i ].slug ) {
 				case 'bachelors':
 					badge = [ 'ba', 'Bachelor&apos;s' ];
 					break;
@@ -209,7 +223,7 @@
 					badge = [];
 			}
 			if ( badge.length ) {
-				badgeHtml += '<li class="' + badge[ 0 ] + '" title="' + badge[ 1 ] + '">' + badge[ 1 ] + '</li>';
+				badgeHtml += '<li class="program-type ' + badge[ 0 ] + '" title="' + badge[ 1 ] + '">' + badge[ 1 ] + '</li>';
 			}
 		}
 

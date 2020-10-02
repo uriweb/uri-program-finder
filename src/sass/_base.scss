@@ -163,10 +163,16 @@
 }
 
 #program-results .cl-card .badges {
-    display: inline-block;
-    z-index: 2;
-    margin: -2.2rem 0 1rem 1rem;
     position: absolute;
+    display: block;
+    z-index: 2;
+    margin: 0;
+    padding: 30px 1rem 0;
+    width: 100%;
+    height: 60px;
+    box-sizing: border-box;
+    transform: translateY(-60px);
+    background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2) 30%, rgba(0,0,0,0.5) 70%);
 }
 
 #program-results .cl-card .badges:after {
@@ -183,57 +189,41 @@
     text-align: center;
     font-size: .7rem;
     font-weight: 600;
-    border-radius: 2px;
     margin-right: 4px;
     margin-bottom: 0 !important;
-    padding: 0 8px;
-    color: rgba(0,0,0,.8);
+    padding: 0 4px 0 8px;
+    color: #fff;
 }
 
-#program-results .cl-card .badges li.bs,
-#program-results .cl-card .badges li.ba {
-    background: #d6deea;
+#program-results .cl-card .badges li.program-type:not(:first-of-type) {
+  border-left: 1px solid rgba(255,255,255,.5);
 }
 
-#program-results .cl-card .badges li.ms,
-#program-results .cl-card .badges li.ma {
-    background: #f1ecca;
-}
+#program-results .cl-card .badges li.icon {
 
-#program-results .cl-card .badges li.phd {
-    background: #cbe5d2;
-}
-
-#program-results .cl-card .badges li.cert {
-    background: #f0d8da;
-}
-
-#program-results .cl-card .badges li.ucert {
-    background: #eee;
-}
-
-#program-results .cl-card .badges li.pro {
-    background: #dfd5e9;
-}
-
-#program-results .cl-card .badges li.uw {
-    background: #ddd;
-}
-
-#program-results .cl-card .badges li.min {
-    background: #eee;
-}
-
-#program-results .cl-card .badges li.acc {
-  background: #FF7100;
   overflow: hidden;
   width: 0;
-  padding-left: 20px;
+  padding-left: 16px;
+  height: 16px;
+  transform: translateY(2px);
   padding-right: 0;
-  background-image: url( '../i/accelerated.png' );
+  margin-right: 8px;
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: 80% auto;
+  background-size: 100% auto;
+
+  &:first-child {
+    margin-left: 8px;
+  }
+
+  &.acc {
+    background-image: url( '../i/accelerated.png' );
+  }
+
+  &.online {
+    background-image: url( '../i/online.png' );
+  }
+
 }
 
 .featured-image.sc.program {
