@@ -183,10 +183,10 @@
 		for ( i = 0; i < data.program_types.length; i++ ) {
 			switch ( data.program_types[ i ].slug ) {
 				case 'accelerated':
-					badge = [ 'acc', 'Accelerated Option' ];
+					badge = [ 'acc', 'Bachelor&apos;s to master&apos;s option' ];
 					break;
 				case 'online':
-					badge = [ 'online', 'Online' ];
+					badge = [ 'online', 'Fully online program' ];
 					break;
 				default:
 					badge = [];
