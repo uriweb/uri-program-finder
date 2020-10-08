@@ -244,6 +244,18 @@ if ( function_exists( 'register_field_group' ) ) {
 					'allow_null' => 0,
 					'multiple' => 0,
 				),
+				array(
+					'key' => 'field_5f7f3423326e4',
+					'label' => 'Accelerated program language',
+					'name' => 'accelerated_language',
+					'type' => 'text',
+					'instructions' => 'Modify the display language for accelerated programs (if applicable)',
+					'default_value' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
+					'maxlength' => '',
+				),
 			),
 			'location' => array(
 				array(
