@@ -9,7 +9,7 @@ Program Finder 1.4.1 is a bug fix release.
 - Switches fields for Accreditation and Specializations to WYSIWYG
 - Updates default template to display information from new WYSIWIG fields properly
 - Reorders fields to match front-end display
-- Adds/updates field instructions 
+- Adds/updates field instructions
 
 For complete details, see the [commit history](https://github.com/uriweb/uri-program-finder/pull/16/commits) and the [issue tracker](https://github.com/uriweb/uri-program-finder/issues).
 
@@ -38,4 +38,4 @@ Contributors: John Pennypacker, Brandon Fuller
 Tags: plugins  
 Requires at least: 4.0  
 Tested up to: 5.4  
-Stable tag: 1.4.1  
+Stable tag: 1.5.0  
