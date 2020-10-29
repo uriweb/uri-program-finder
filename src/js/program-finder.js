@@ -179,6 +179,23 @@
 		result.setAttribute( 'href', data.link );
 		result.setAttribute( 'data-id', data.id );
 
+		// Do little badges first
+		for ( i = 0; i < data.program_types.length; i++ ) {
+			switch ( data.program_types[ i ].slug ) {
+				case 'accelerated':
+					badge = [ 'acc', 'Bachelor&apos;s to master&apos;s option' ];
+					break;
+				case 'online':
+					badge = [ 'online', 'Fully online program' ];
+					break;
+				default:
+					badge = [];
+			}
+			if ( badge.length ) {
+				badgeHtml += '<li class="icon ' + badge[ 0 ] + '" title="' + badge[ 1 ] + '">' + badge[ 1 ] + '</li>';
+			}
+		}
+
 		for ( i = 0; i < data.program_types.length; i++ ) {
 			switch ( data.program_types[ i ].slug ) {
 				case 'bachelors':
@@ -189,6 +206,9 @@
 					break;
 				case 'graduate-certificate':
 					badge = [ 'cert', 'Certificate' ];
+					break;
+				case 'undergraduate-certificate':
+					badge = [ 'ucert', 'Undergraduate Certificate' ];
 					break;
 				case 'masters':
 					badge = [ 'ma', 'Master&apos;s' ];
@@ -203,14 +223,13 @@
 					badge = [];
 			}
 			if ( badge.length ) {
-				badgeHtml += '<li class="' + badge[ 0 ] + '">' + badge[ 1 ] + '</li>';
+				badgeHtml += '<li class="program-type ' + badge[ 0 ] + '" title="' + badge[ 1 ] + '">' + badge[ 1 ] + '</li>';
 			}
 		}
 
-		html = data.image;
-		html += '<ul class="badges">' + badgeHtml + '</ul>';
-		html += '<div class="cl-card-text"><h3>' + data.title + '</h3></div>';
-		html += '<div class="cl-button">Explore</div>';
+		html = '<div class="cl-card-container media">' + data.image + '<ul class="badges">' + badgeHtml + '</ul></div>';
+		html += '<div class="cl-card-container text"><div class="cl-card-text"><h3>' + data.title + '</h3></div></div>';
+		html += '<div class="cl-card-container button">Explore</div>';
 
 		result.innerHTML = html;
 

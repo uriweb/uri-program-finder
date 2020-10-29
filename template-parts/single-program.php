@@ -64,6 +64,24 @@ get_header();
 							);
 						?>
 
+						<?php if ( $accreditation = uri_modern_get_field( 'accelerated' ) ) { ?>
+						<div class="accelerated">
+							<?php
+							if ( $accelerated_language = uri_modern_get_field( 'accelerated_language' ) ) {
+								print $accelerated_language;
+							} else {
+								echo "<p>Optional bachelor's to master's in five years</p>";
+							}
+							?>
+						</div>
+						<?php } ?>
+
+						<?php if ( $accreditation = uri_modern_get_field( 'online' ) ) { ?>
+						<div class="online">
+							<p>Fully online program</p>
+						</div>
+						<?php } ?>
+
 						<?php if ( $accreditation = uri_modern_get_field( 'accreditation' ) ) { ?>
 						<div class="accreditation">
 							<h3>Accreditation</h3>

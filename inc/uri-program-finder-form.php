@@ -57,9 +57,12 @@ function uri_program_finder_make_form( $categories ) {
 
 	// now create the js form
 	$output .= '<form class="has-js" style="display: none;">';
+	$output .= '<div class="keyword-search">';
 	$output .= $text_input;
 	$output .= '<button type="button" id="js-form-reset">Clear</button>';
+	$output .= '</div>';
 
+	$output .= '<div class="facets">';
 	foreach ( $categories as $c ) {
 		$subcats = uri_program_finder_get_children( $c['id'] );
 		array_unshift(
@@ -71,6 +74,7 @@ function uri_program_finder_make_form( $categories ) {
 			);
 		$output .= uri_program_finder_make_select( $c, $subcats, true );
 	}
+	$output .= '</div>';
 	$output .= '</form';
 	$output .= '</div>';
 

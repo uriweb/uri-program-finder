@@ -5,7 +5,7 @@
 .gitignore export-ignore
 # test files
 .codesniffer.ruleset.xml export-ignore
-.eslintrc.json
+.eslintrc.yml
 .sniff export-ignore
 .travis.yml export-ignore
 # gulp files
