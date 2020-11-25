@@ -1,0 +1,47 @@
+/* ===== DISPLAY POSTS ===== */
+
+.programs-list-has-details {
+
+  .title span {
+    padding-right: 10px;
+  }
+
+  .program-details {
+
+    display: inline-block;
+    background: #e3e3e3;
+    border-radius: .2rem;
+    height: 22px;
+    transform: translateY(5px);
+
+    .icon {
+
+      display: inline-block;
+      overflow: hidden;
+      width: 0;
+      padding-left: 24px;
+      height: 22px;
+      transform: translateY(-2px);
+      padding-right: 0;
+      margin-right: 8px;
+      background-position: right center;
+      background-repeat: no-repeat;
+      background-size: auto 16px;
+
+      &:not(:first-child) {
+        border-left: 1px solid #fff;
+      }
+
+      &.accelerated {
+        background-image: url( '../i/accelerated_dark.png' );
+      }
+
+      &.online {
+        background-image: url( '../i/online_dark.png' );
+      }
+
+    }
+
+  }
+
+}

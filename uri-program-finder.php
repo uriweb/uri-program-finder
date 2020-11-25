@@ -92,3 +92,6 @@ include( URI_PROGRAM_FINDER_PATH . 'inc/uri-program-finder-form.php' );
 
 // Include shortcode
 include( URI_PROGRAM_FINDER_PATH . 'inc/uri-program-finder-shortcode.php' );
+
+// Include display posts customizations
+include( URI_PROGRAM_FINDER_PATH . 'inc/uri-program-finder-display-posts.php' );
