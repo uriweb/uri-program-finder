@@ -93,3 +93,13 @@ function uri_program_finder_get_children( $id, $exclude = array() ) {
 	return $cats;
 
 }
+
+/**
+ * Helper function to excape square brackets in text that would otherwise appear in shortcodes
+ *
+ * @param str $input is the input string.
+ * @return str
+ */
+function uri_program_finder_escape_brackets( $input ) {
+	return str_replace( array( '[', ']' ), array( '&#91;', '&#93;' ), $input );
+}

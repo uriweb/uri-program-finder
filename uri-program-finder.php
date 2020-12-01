@@ -3,7 +3,7 @@
  * Plugin Name: URI Program Finder
  * Plugin URI: http://www.uri.edu
  * Description: Program finder tools
- * Version: 1.5.0
+ * Version: 1.5.1
  * Author: URI Web Communications
  * Author URI:
  *
@@ -92,3 +92,6 @@ include( URI_PROGRAM_FINDER_PATH . 'inc/uri-program-finder-form.php' );
 
 // Include shortcode
 include( URI_PROGRAM_FINDER_PATH . 'inc/uri-program-finder-shortcode.php' );
+
+// Include display posts customizations
+include( URI_PROGRAM_FINDER_PATH . 'inc/uri-program-finder-display-posts.php' );
