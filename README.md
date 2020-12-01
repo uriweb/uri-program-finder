@@ -31,6 +31,6 @@ __Contributors:__ [johnpennypacker](https://github.com/johnpennypacker), [bjcful
 __Tags:__ plugins, shortcodes  
 __Requires at least:__ 4.0  
 __Tested up to:__ 5.5  
-__Stable tag:__ 1.5.0  
+__Stable tag:__ 1.5.1  
 __License:__ GPL-3.0  
 __Licence URI:__ https://www.gnu.org/licenses/gpl-3.0.html
