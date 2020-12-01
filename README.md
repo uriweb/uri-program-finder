@@ -8,18 +8,14 @@
 
 Add `[programs-categories]` to a page and a form magically appears.
 
-## What's new in 1.5.0
+## What's new in 1.5.1
 
-Program Finder 1.5.0 is a minor release.
+Program Finder 1.5.1 is a supplemental release.
 
-* Adds a badge for undergraduate certificate programs
-* Adds a badge icon and associated detail page display for accelerated programs, with the ability to customize detail page descriptor
-* Adds a badge icon and associated detail page display for online programs
-* Adds compatibility for [URI Component Library v5.0](https://github.com/uriweb/uri-component-library/releases/tag/v5.0.0)
-* Updates development tools, including migrating to Autoprefixer v10 (plus required peer dependencies)
-* Other bug fixes
+* Extends the [Display Posts](https://github.com/billerickson/display-posts-shortcode) shortcode to optionally display program details
+* Updates development tools
 
-For complete details, see the [commit history](https://github.com/uriweb/uri-program-finder/pull/18/commits) and the [issue tracker](https://github.com/uriweb/uri-program-finder/issues).
+For complete details, see the [commit history](https://github.com/uriweb/uri-program-finder/pull/20/commits) and the [issue tracker](https://github.com/uriweb/uri-program-finder/issues).
 
 ## Plugin Details
 
