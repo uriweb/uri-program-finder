@@ -14,20 +14,21 @@
   "license": "GPL-3.0",
   "licenseURI": "http://www.gnu.org/licenses/gpl.html",
   "devDependencies": {
-    "@wordpress/eslint-plugin": "^7.3.0",
-    "autoprefixer": "^10.0.4",
+    "@wordpress/eslint-plugin": "^9.1.1",
+    "autoprefixer": "^10.3.3",
     "gulp": "^4.0.2",
     "gulp-concat": ">=2.6.1",
     "gulp-eslint": "^6.0.0",
-    "gulp-postcss": "^9.0.0",
-    "gulp-replace-task": "^0.11.0",
-    "gulp-sass": "^4.1.0",
+    "gulp-postcss": "^9.0.1",
+    "gulp-replace-task": "^2.0.1",
+    "gulp-sass": "^5.0.0",
     "gulp-shell": "^0.8.0",
     "gulp-sourcemaps": "^3.0.0",
-    "gulp-terser": "^2.0.0",
-    "postcss": "^8.1.10",
-    "tsutils": "^3.17.1",
-    "typescript": "^4.1.2"
+    "gulp-terser": "^2.0.1",
+    "postcss": "^8.3.6",
+    "sass": "^1.39.0",
+    "tsutils": "^3.21.0",
+    "typescript": "^4.4.2"
   },
   "browserslist": {
     "production": [
