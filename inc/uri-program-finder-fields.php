@@ -145,7 +145,7 @@ if ( function_exists( 'register_field_group' ) ) {
 				),
 				array(
 					'key' => 'field_5a90787f3b990',
-					'label' => 'Application Deadline',
+					'label' => 'Entry Term',
 					'name' => 'application_deadline',
 					'type' => 'wysiwyg',
 					'default_value' => '',
