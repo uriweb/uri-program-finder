@@ -110,7 +110,7 @@ get_header();
 						</div>
 						<?php } ?>
 
-						<?php if ( $entry_term = get_field( 'entry_term' ) ) { ?>
+						<?php if ( $entry_term = get_field( 'application_deadline' ) ) { ?>
 						<div class="entry-term">
 							<h3>Entry Term</h3>
 							<?php print $entry_term; ?>
