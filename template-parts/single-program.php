@@ -110,13 +110,12 @@ get_header();
 						</div>
 						<?php } ?>
 
-						<?php if ( $application_deadline = get_field( 'application_deadline' ) ) { ?>
-						<div class="application-deadline">
-							<h3>Application Deadline</h3>
-							<?php print $application_deadline; ?>
+						<?php if ( $entry_term = get_field( 'application_deadline' ) ) { ?>
+						<div class="entry-term">
+							<h3>Entry Term</h3>
+							<?php print $entry_term; ?>
 						</div>
 						<?php } ?>
-
 
 						<?php if ( $department_website = get_field( 'department_website' ) ) { ?>
 						<div class="department-website">

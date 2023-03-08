@@ -7,7 +7,7 @@ var concat = require('gulp-concat');
 var eslint = require('gulp-eslint');
 var postcss = require('gulp-postcss');
 var replace = require('gulp-replace-task');
-var sass = require('gulp-sass');
+var sass = require('gulp-sass')(require('sass'));
 var shell = require('gulp-shell');
 var sourcemaps = require('gulp-sourcemaps');
 var terser = require('gulp-terser');
@@ -18,14 +18,17 @@ var sassOptions = {
   outputStyle: 'compressed' //expanded, nested, compact, compressed
 };
 
-// CSS concat, auto-prefix and minify
-gulp.task('styles', styles);
+// watch
+const watchCSS = () => gulp.watch('./src/sass/*.scss', styles);
+const watchJS = () => gulp.watch('./src/js/*.js', scripts);
+const watchPHP = () => gulp.watch('./**/*.php', sniffs);
 
+// CSS concat, auto-prefix and minify
 function styles(done) {
 
 	gulp.src('./src/sass/*.scss')
 		.pipe(sourcemaps.init())
-		.pipe(sass(sassOptions).on('error', sass.logError))
+		.pipe(sass.sync(sassOptions).on('error', sass.logError))
 		.pipe(concat('programs.built.css'))
     .pipe(postcss([ autoprefixer() ]))
 		.pipe(sourcemaps.write('./map'))
@@ -36,8 +39,6 @@ function styles(done) {
 }
 
 // JS code checking
-gulp.task('scripts', scripts);
-
 function scripts(done) {
 
   // Run eslint for src js
@@ -56,8 +57,6 @@ function scripts(done) {
 }
 
 // run codesniffer
-gulp.task('sniffs', sniffs);
-
 function sniffs(done) {
 
     return gulp.src('.', {read:false})
@@ -68,8 +67,6 @@ function sniffs(done) {
 }
 
 // Update plugin version
-gulp.task('version', version);
-
 function version(done) {
 
 	gulp.src('./uri-program-finder.php')
@@ -81,31 +78,16 @@ function version(done) {
 		}))
 		.pipe(gulp.dest('./'));
 
+    done();
+    // console.log('version ran');
 }
 
-// watch
-gulp.task('watcher', watcher);
-
-function watcher(done) {
-
-  // watch for CSS changes
-  gulp.watch('./src/sass/*.scss', styles);
-
-    // watch for JS changes
-	gulp.watch('./src/js/*.js', scripts);
-
-    // watch for PHP change
-    gulp.watch('./**/*.php', sniffs);
-
-	done();
-}
-
-gulp.task( 'default',
-	gulp.parallel('styles', 'scripts', 'sniffs', 'version', 'watcher', function(done){
-		done();
-	})
+// Default
+const dev = gulp.series(
+    gulp.parallel(styles, scripts, sniffs, version),
+    gulp.parallel(watchCSS, watchJS, watchPHP)
 );
-
+exports.default = dev;
 
 function done() {
 	console.log('done');
