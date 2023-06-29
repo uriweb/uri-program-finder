@@ -8,11 +8,11 @@
 
 Add `[programs-categories]` to a page and a form magically appears.
 
-## What's new in 1.6.0
+## What's new in 1.7.0
 
-Program Finder 1.6.0 is a minor release.
+Program Finder 1.7.0 is a minor release.
 
-* Adds a composer.json file
+* Adds field for customizing the accelerated program link
 
 For complete details, see the [commit history](https://github.com/uriweb/uri-program-finder/pull/20/commits) and the [issue tracker](https://github.com/uriweb/uri-program-finder/issues).
 
@@ -26,6 +26,6 @@ __Contributors:__ [johnpennypacker](https://github.com/johnpennypacker), [bjcful
 __Tags:__ plugins, shortcodes  
 __Requires at least:__ 4.0  
 __Tested up to:__ 5.5  
-__Stable tag:__ 1.6.0  
+__Stable tag:__ 1.7.0  
 __License:__ GPL-3.0  
 __Licence URI:__ https://www.gnu.org/licenses/gpl-3.0.html
