@@ -67,11 +67,18 @@ get_header();
 						<?php if ( $accreditation = uri_modern_get_field( 'accelerated' ) ) { ?>
 						<div class="accelerated">
 							<?php
-							if ( $accelerated_language = uri_modern_get_field( 'accelerated_language' ) ) {
-								print $accelerated_language;
-							} else {
-								echo "<p>Optional bachelor's to master's in five years</p>";
+								$accelerated_link = 'https://' . uri_modern_get_the_domain() . '/programs/abm/';
+								$accelerated_language = 'Optional bachelor&#39;s to master&#39;s in five years';
+
+							if ( $accelerated_custom_language = uri_modern_get_field( 'accelerated_language' ) ) {
+								$accelerated_language = $accelerated_custom_language;
 							}
+
+							if ( $accelerated_custom_link = uri_modern_get_field( 'accelerated_link' ) ) {
+								$accelerated_link = $accelerated_custom_link;
+							}
+
+								echo '<a href="' . $accelerated_link . '">' . $accelerated_language . '</a>';
 							?>
 						</div>
 						<?php } ?>
