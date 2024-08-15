@@ -8,11 +8,11 @@
 
 Add `[programs-categories]` to a page and a form magically appears.
 
-## What's new in 1.7.0
+## What's new in 1.7.1
 
-Program Finder 1.7.0 is a minor release.
+Program Finder 1.7.1 is a fix release.
 
-* Adds field for customizing the accelerated program link
+* Sets jquery as a dependency.
 
 For complete details, see the [commit history](https://github.com/uriweb/uri-program-finder/pull/20/commits) and the [issue tracker](https://github.com/uriweb/uri-program-finder/issues).
 
@@ -25,7 +25,7 @@ For complete details, see the [commit history](https://github.com/uriweb/uri-pro
 __Contributors:__ [johnpennypacker](https://github.com/johnpennypacker), [bjcfuller](https://github.com/bjcfuller)  
 __Tags:__ plugins, shortcodes  
 __Requires at least:__ 4.0  
-__Tested up to:__ 5.5  
-__Stable tag:__ 1.7.0  
+__Tested up to:__ 6.1.7  
+__Stable tag:__ 1.7.1  
 __License:__ GPL-3.0  
 __Licence URI:__ https://www.gnu.org/licenses/gpl-3.0.html

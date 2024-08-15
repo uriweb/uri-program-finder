@@ -3,7 +3,7 @@
  * Plugin Name: URI Program Finder
  * Plugin URI: http://www.uri.edu
  * Description: Program finder tools
- * Version: 1.7.0
+ * Version: 1.7.1
  * Author: URI Web Communications
  * Author URI:
  *
@@ -57,7 +57,7 @@ function uri_program_finder_enqueue_scripts() {
 	);
 
 	$plugin_handle = 'uri-program-finder';
-	wp_register_script( $plugin_handle, plugins_url( '/js/programs.built.js', __FILE__ ), array(), uri_program_finder_cache_buster(), true );
+	wp_register_script( $plugin_handle, plugins_url( '/js/programs.built.js', __FILE__ ), array('jquery'), uri_program_finder_cache_buster(), true );
 	wp_localize_script( $plugin_handle, 'URIProgramFinder', $values );
 	wp_enqueue_script( $plugin_handle );
 
