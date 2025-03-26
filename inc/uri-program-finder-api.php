@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function uri_program_finder_api_callback( $data ) {
 
-	$search = ( isset( $data['s'] ) ) ? filter_var( $data['s'], FILTER_SANITIZE_STRING ) : '';
+	$search = ( isset( $data['s'] ) ) ? filter_var( $data['s'], FILTER_SANITIZE_SPECIAL_CHARS ) : '';
 	$ids = uri_program_sanitize_ids( $data['ids'] );
 
 	$program_type = uri_program_sanitize_ids( $data['program-type'] );
