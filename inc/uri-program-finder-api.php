@@ -128,6 +128,7 @@ function uri_program_finder_register_api() {
 		array(
 			'methods' => 'GET',
 			'callback' => 'uri_program_finder_api_callback',
+			'permission_callback' => '__return_true',
 		)
 	  );
 
