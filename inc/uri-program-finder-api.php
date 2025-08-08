@@ -112,6 +112,8 @@ function uri_program_finder_api_callback( $data ) {
  * @param str $str is a GET param.
  * @return str or bool false.
  */
+
+//To-do add check to $str for null
 function uri_program_sanitize_ids( $str ) {
 	return ( preg_match( '/[\d,]+/', $str ) == 1 ) ? $str : false;
 }
