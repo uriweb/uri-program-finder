@@ -110,6 +110,11 @@
 				onChange() {
 					changeListener( form );
 				},
+				plugins: {
+					remove_button: {
+						title: 'Remove this item',
+					},
+				},
 			} );
 			selects[ i ].tomSelectInstance = ts;
 		}
