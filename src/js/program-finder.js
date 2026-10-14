@@ -413,7 +413,7 @@
 		if ( url !== lasturl ) {
 			showLoader();
 			lasturl = url;
-			fetchPrograms( url, handleResponse );
+			fetch( url, handleResponse );
 		}
 	}
 	/**
@@ -422,7 +422,7 @@
 	 * @param {string}   url     the URL to query
 	 * @param {Function} success
 	 */
-	function fetchPrograms( url, success ) {
+	function fetch( url, success ) {
 		xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function() {
 			if ( xmlhttp.readyState === XMLHttpRequest.DONE ) {
@@ -472,7 +472,7 @@
 			t = ( 1 !== dataL ) ? 'programs match' : 'program matches';
 			setStatus( 'results', dataL + ' ' + t + ' your search.' );
 
-			existingCards = $( '#program-results .cl-card' );
+			existingCards = Array.from( document.querySelectorAll( '#program-results .cl-card' ) );
 
 			// If there are existing cards, figure out what stays/goes
 			if ( existingCards.length ) {
@@ -482,13 +482,11 @@
 				}
 
 				// Remove existing cards that aren't in the new results
-				existingCards.each(
-					function() {
-						if ( ids.indexOf( $( this ).data( 'id' ) ) === -1 ) {
-							$( this ).remove();
-						}
+				existingCards.forEach( function( card ) {
+					if ( ids.indexOf( card.dataset.id ) === -1 ) {
+						card.remove();
 					}
-				);
+				} );
 
 				// Loop through new result ids, check for dups, and add cards accordingly
 				for ( i = 0; i < dataL; i++ ) {
@@ -496,10 +494,11 @@
 						timers.push(
 							window.setTimeout(
 								function() {
-									refCard = $( '#program-results .cl-card' ).eq( arg.i );
-									if ( refCard.length ) {
-										if ( arg.data.id !== refCard.data( 'id' ) ) {
-											refCard.before( createResultCard( arg.data ) );
+                                    const currentCards = document.querySelectorAll( '#program-results .cl-card' );
+									refCard = currentCards[ arg.i ] || null;
+									if ( refCard ) {
+										if ( arg.data.id !== refCard.dataset.id ) {
+											refCard.insertAdjacentElement( 'beforebegin', createResultCard( arg.data ) );
 										}
 									} else {
 										resultsDiv.appendChild( createResultCard( arg.data ) );
