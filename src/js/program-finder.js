@@ -1,4 +1,4 @@
-( function( $ ) {
+( function() {
 	'use strict';
 
 	// @todo: this is probably the wrong scope for this variable
@@ -39,7 +39,7 @@
 		}
 
 		const form = el.querySelector( '.has-js' );
-		$( form ).css( 'display', 'block' );
+		form.style.display = 'block';
 
 		const textSearch = form.querySelector( 'input[name="s"]' );
 		if ( textSearch ) {
@@ -73,11 +73,12 @@
 		const selects = form.querySelectorAll( 'select' );
 
 		for ( i = 0; i < selects.length; i++ ) {
-			firstopt = $( selects[ i ] ).find( 'option:eq(0)' );
-			$( firstopt ).html( '' ).removeAttr( 'selected' );
+			firstopt = selects[ i ].querySelector( 'option:first-child' );
+			firstopt.textContent = '';
+			firstopt.removeAttribute( 'selected' );
 		}
 
-		initSelect2( form, selects );
+		initTomSelect( form, selects );
 
 		form.querySelector( '#js-form-reset' ).addEventListener(
 			'click',
@@ -90,22 +91,27 @@
 	}
 
 	/**
-	 * Initiate Select2 on all selects and binds listener
+	  
+	 * Initiate Tom Select on all selects and bind change listener
 	 *
-	 * @param {Object} form
-	 * @param {Object} selects
+	  
+	 * Stores the TomSelect instance on each <select> element as
+	 * el.tomSelectInstance so it can be accessed later (e.g. for reset).
+	 *
+	  
+	 * @param {Object}   form
+	 * @param {NodeList} selects
 	 */
-	function initSelect2( form, selects ) {
+	function initTomSelect( form, selects ) {
 		let i;
 		for ( i = 0; i < selects.length; i++ ) {
-			$( selects[ i ] ).select2( {
+			const ts = new TomSelect( selects[ i ], {
 				width: '100%',
-			} ).on(
-				'change',
-				function() {
+				onChange() {
 					changeListener( form );
-				}
-			);
+				},
+			} );
+			selects[ i ].tomSelectInstance = ts;
 		}
 	}
 
@@ -260,7 +266,7 @@
 	function textSearchListener( input, blurs ) {
 		window.clearTimeout( searchTimer );
 
-		if ( ( false === $( input ).is( ':focus' ) && blurs > 1 ) || '' !== input.value ) {
+		if ( ( document.activeElement !== input && blurs > 1 ) || '' !== input.value ) {
 			searchTimer = window.setTimeout(
 				function() {
 					updateQueryString( 'terms', input.value );
@@ -279,16 +285,20 @@
 	 * @param {Object} selects
 	 */
 	function resetForm( form, input, selects ) {
+		let i;
+
 		input.value = '';
 		updateQueryString( 'terms', input.value );
 
-		$( selects ).each(
-			function() {
-				this.selectedIndex = -1;
-				$( this ).trigger( 'select2:updated' );
-				updateQueryString( $( this ).attr( 'name' ), 'any' );
+		for ( i = 0; i < selects.length; i++ ) {
+			const ts = selects[ i ].tomSelectInstance;
+			if ( ts ) {
+				ts.clear( true );
+			} else {
+				selects[ i ].selectedIndex = -1;
 			}
-		);
+			updateQueryString( selects[ i ].name, 'any' );
+		}
 
 		loadPrograms();
 	}
@@ -324,19 +334,29 @@
 	 * @return {Array} cats
 	 */
 	function getSelectedCategoryIds( form ) {
-		let vals, i;
+		let i;
 
 		const cats = {};
 		const selects = form.querySelectorAll( 'select' );
 
 		for ( i = 0; i < selects.length; i++ ) {
-			vals = $( selects[ i ] ).val();
+			const ts = selects[ i ].tomSelectInstance;
+			let vals;
 
-			if ( null !== vals ) {
-				cats[ $( selects[ i ] ).attr( 'name' ) ] = vals;
+			if ( ts ) {
+				// TomSelect stores selected items as an array of value strings
+				vals = ts.getValue();
+				// getValue() returns '' (empty string) when nothing is selected
+				vals = ( vals === '' || ( Array.isArray( vals ) && vals.length === 0 ) ) ? null : vals;
 			} else {
-				cats[ $( selects[ i ] ).attr( 'name' ) ] = 'all';
+				// Fallback: read directly from the <select> element
+				const selectedOptions = Array.from( selects[ i ].selectedOptions );
+				vals = selectedOptions.length > 0 ? selectedOptions.map( function( o ) {
+					return o.value;
+				} ) : null;
 			}
+
+			cats[ selects[ i ].name ] = ( null !== vals ) ? vals : 'all';
 		}
 
 		return cats;
@@ -366,7 +386,6 @@
 		}
 		return obj;
 	}
-
 	/**
 	 * Load programs from the REST API
 	 */
@@ -389,17 +408,16 @@
 		if ( url !== lasturl ) {
 			showLoader();
 			lasturl = url;
-			fetch( url, handleResponse );
+			fetchPrograms( url, handleResponse );
 		}
 	}
-
 	/**
 	 * Make the AJAX call
 	 *
-	 * @param {string} url the URL to query
+	 * @param {string}   url     the URL to query
 	 * @param {Function} success
 	 */
-	function fetch( url, success ) {
+	function fetchPrograms( url, success ) {
 		xmlhttp = new XMLHttpRequest();
 		xmlhttp.onreadystatechange = function() {
 			if ( xmlhttp.readyState === XMLHttpRequest.DONE ) {
@@ -505,4 +523,4 @@
 			}
 		}
 	}
-}( jQuery ) );
+}() );
