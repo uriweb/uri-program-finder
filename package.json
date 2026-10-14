@@ -43,5 +43,8 @@
       "Firefox >= 20",
       "iOS >=8"
     ]
+  },
+  "dependencies": {
+    "tom-select": "^2.6.2"
   }
 }
