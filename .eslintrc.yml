@@ -27,6 +27,7 @@ rules:
 globals:
   jQuery: readonly
   URIProgramFinder: readonly
+  TomSelect: readonly
 
 # Specify files and directories to ignore
 ignorePatterns:
