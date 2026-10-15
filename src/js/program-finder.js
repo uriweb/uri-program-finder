@@ -91,14 +91,11 @@
 	}
 
 	/**
-	  
 	 * Initiate Tom Select on all selects and bind change listener
 	 *
-	  
 	 * Stores the TomSelect instance on each <select> element as
 	 * el.tomSelectInstance so it can be accessed later (e.g. for reset).
 	 *
-	  
 	 * @param {Object}   form
 	 * @param {NodeList} selects
 	 */
@@ -271,7 +268,9 @@
 	function textSearchListener( input, blurs ) {
 		window.clearTimeout( searchTimer );
 
-		if ( ( document.activeElement !== input && blurs > 1 ) || '' !== input.value ) {
+		const doc = input.ownerDocument || document;
+
+		if ( ( doc.activeElement !== input && blurs > 1 ) || '' !== input.value ) {
 			searchTimer = window.setTimeout(
 				function() {
 					updateQueryString( 'terms', input.value );
@@ -494,7 +493,7 @@
 						timers.push(
 							window.setTimeout(
 								function() {
-                                    const currentCards = document.querySelectorAll( '#program-results .cl-card' );
+									const currentCards = document.querySelectorAll( '#program-results .cl-card' );
 									refCard = currentCards[ arg.i ] || null;
 									if ( refCard ) {
 										if ( arg.data.id !== refCard.dataset.id ) {
