@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function uri_program_finder_shortcode( $attributes, $content, $shortcode ) {
 
-	// enqueue scripts and Select2
+	// enqueue scripts and Tom Select 
 	uri_program_finder_enqueue_scripts();
 	uri_program_finder_enqueue_tomselect();
 

@@ -64,18 +64,6 @@ function uri_program_finder_enqueue_scripts() {
 }
 
 /**
- * Include Select2
- */
-/*
-function uri_program_finder_enqueue_select2() {
-	wp_register_script( 'uri-program-finder-select2-js', plugins_url( '/select2/select2.min.js', __FILE__ ), array(), uri_program_finder_cache_buster(), true );
-	wp_enqueue_script( 'uri-program-finder-select2-js' );
-
-	wp_register_style( 'uri-program-finder-select2-css', plugins_url( '/select2/select2.min.css', __FILE__ ), array(), uri_program_finder_cache_buster(), 'all' );
-	wp_enqueue_style( 'uri-program-finder-select2-css' );
-}
-	*/
-/**
  * Include Tom Select
  */
 	function uri_program_finder_enqueue_tomselect() {

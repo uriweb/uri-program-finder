@@ -32,6 +32,6 @@ globals:
 # Specify files and directories to ignore
 ignorePatterns:
   - 'node_modules/'
-  - 'select2/'
   - 'gulpfile.js'
   - 'js/programs.built.js'
+  - 'tom-select/'
