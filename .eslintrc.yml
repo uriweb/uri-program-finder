@@ -27,10 +27,11 @@ rules:
 globals:
   jQuery: readonly
   URIProgramFinder: readonly
+  TomSelect: readonly
 
 # Specify files and directories to ignore
 ignorePatterns:
   - 'node_modules/'
-  - 'select2/'
   - 'gulpfile.js'
   - 'js/programs.built.js'
+  - 'tom-select/'

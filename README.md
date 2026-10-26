@@ -8,9 +8,9 @@
 
 Add `[programs-categories]` to a page and a form magically appears.
 
-## What's new in 1.7.2
+## What's new in 1.8.0
 
-Program Finder 1.7.2 includes minor updates and edits to be compatible with PHP 8. 
+Program Finder 1.8.0 swaps JQuery's Select2 for the Javascript framework Tom Select. This change enhances accessibility  for the form and dropdown menues. 
 
 For complete details, see the [commit history](https://github.com/uriweb/uri-program-finder/pull/20/commits) and the [issue tracker](https://github.com/uriweb/uri-program-finder/issues).
 
@@ -23,7 +23,7 @@ For complete details, see the [commit history](https://github.com/uriweb/uri-pro
 __Contributors:__ [johnpennypacker](https://github.com/johnpennypacker), [bjcfuller](https://github.com/bjcfuller)  
 __Tags:__ plugins, shortcodes  
 __Requires at least:__ 4.0  
-__Tested up to:__ 6.8.1  
-__Stable tag:__ 1.7.2  
+__Tested up to:__ 7.1.3  
+__Stable tag:__ 1.8.0  
 __License:__ GPL-3.0  
 __Licence URI:__ https://www.gnu.org/licenses/gpl-3.0.html

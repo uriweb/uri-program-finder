@@ -3,7 +3,7 @@
  * Plugin Name: URI Program Finder
  * Plugin URI: http://www.uri.edu
  * Description: Program finder tools
- * Version: 1.7.2
+ * Version: 1.8.0
  * Author: URI Web Communications
  * Author URI:
  *
@@ -64,15 +64,17 @@ function uri_program_finder_enqueue_scripts() {
 }
 
 /**
- * Include Select2
+ * Include Tom Select
  */
-function uri_program_finder_enqueue_select2() {
-	wp_register_script( 'uri-program-finder-select2-js', plugins_url( '/select2/select2.min.js', __FILE__ ), array(), uri_program_finder_cache_buster(), true );
-	wp_enqueue_script( 'uri-program-finder-select2-js' );
-
-	wp_register_style( 'uri-program-finder-select2-css', plugins_url( '/select2/select2.min.css', __FILE__ ), array(), uri_program_finder_cache_buster(), 'all' );
-	wp_enqueue_style( 'uri-program-finder-select2-css' );
-}
+	function uri_program_finder_enqueue_tomselect() {
+		wp_register_script( 'uri-program-finder-tom-select-js', 'https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js', array(), '2.4.1', true  ); 
+		
+		wp_enqueue_script( 'uri-program-finder-tom-select-js' );
+		
+		wp_register_style( 'uri-program-finder-tom-select-css', 'https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.default.min.css', array(), '2.4.1'); 
+		
+		wp_enqueue_style( 'uri-program-finder-tom-select-css' ); 
+	}
 
 
 // Include API
