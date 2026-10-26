@@ -5,7 +5,7 @@
     width: 100vw;
     margin-left: -25px;
     background: #f3f3f3;
-    overflow: hidden;
+    //overflow: hidden;
     border: 1px solid #ddd;
 
     .has-js {
@@ -151,11 +151,11 @@
     }
 
     &.empty {
-        color: #999;
+        color: #2c2c2c;
     }
 
     &.error {
-        color: #999;
+        color: #2c2c2c;
     }
 
     &.loading {
